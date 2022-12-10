@@ -1,0 +1,9 @@
+github:
+  release: true
+hooks:
+  "before:bump": "poetry version ${version}"
+  "after:bump": "poetry publish --build"
+plugins:
+  "@release-it/conventional-changelog":
+    preset: conventionalcommits
+    infile: CHANGELOG.md
