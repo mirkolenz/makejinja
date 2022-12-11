@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: "${{ env.PYTHON_VERSION }}"
       - name: Setup Poetry
-        run: "pip install ${{ env.POETRY_VERSION }}"
+        run: "pip install poetry==${{ env.POETRY_VERSION }}"
       - name: Semantic Release
         uses: bjoluc/semantic-release-config-poetry@v2
         with:
