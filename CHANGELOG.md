@@ -1,5 +1,7 @@
 # Changelog
 
+ <!--next-version-placeholder-->
+
 ## [v0.1.1](https://github.com/mirkolenz/makejinja/compare/0.1.0...0.1.1) (2022-12-10)
 
 ### Bug Fixes
