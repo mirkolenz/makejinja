@@ -6,18 +6,20 @@ on:
     branches:
       - main
 jobs:
-  release-please:
+  release:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.run.outputs.release_created }}
     steps:
       - uses: google-github-actions/release-please-action@v3
-        id: release
+        id: run
         with:
           release-type: python
           package-name: makejinja
   publish:
     runs-on: ubuntu-latest
-    needs: release-please
-    if: ${{ steps.release.outputs.release_created }}
+    needs: release
+    if: ${{ needs.release.outputs.release_created }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
