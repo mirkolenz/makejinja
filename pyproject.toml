@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "makejinja"
-version = "0.1.1"
+version = "0.1.2"
 description = "Automatically generate files based on Jinja templates. Use it to easily generate complex Home Assistant dashboards!"
 authors = ["Mirko Lenz <mirko@mirkolenz.com>"]
 license = "MIT"
