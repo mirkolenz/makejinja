@@ -21,6 +21,7 @@ def run(
     output_folder: Path,
     pattern: str = "**/*",
     jinja_suffix: str = ".jinja",
+    remove_jinja_suffix: bool = True,
     config: list[Path] = typer.Option([]),
     extensions: list[str] = typer.Option([]),
     lstrip_blocks: bool = True,
@@ -72,8 +73,11 @@ def run(
                 if copy_tree:
                     output_path.unlink()
 
+                if remove_jinja_suffix:
+                    output_path = output_path.with_suffix("")
+
                 # Write the rendered template
-                with output_path.with_suffix("").open("w") as f:
+                with output_path.open("w") as f:
                     f.write(template.render(data))
 
             elif not copy_tree:
