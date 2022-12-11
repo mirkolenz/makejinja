@@ -22,6 +22,7 @@ jobs:
         env:
           REPOSITORY_USERNAME: "__token__"
           REPOSITORY_PASSWORD: "${{ secrets.PYPI_TOKEN }}"
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
           pip install python-semantic-release
           git config user.name github-actions
