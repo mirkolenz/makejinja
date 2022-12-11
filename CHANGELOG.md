@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/mirkolenz/makejinja/compare/v0.2.0...v0.2.1) (2022-12-11)
+
+
+### Bug Fixes
+
+* improve compatability with python 3.9 ([30919e8](https://github.com/mirkolenz/makejinja/commit/30919e83e11fbc368b8d97d498dab7ae2e766671))
+
 ## v0.2.0 (2022-12-11)
 
 ### Feature
