@@ -30,7 +30,7 @@ def run(
     copy_tree: bool = True,
 ):
     # Also consider env vars with `jinja_` prefix
-    config_files: list[str | Path] = ["jinja.osenv"]
+    config_files: list[t.Union[str, Path]] = ["jinja.osenv"]
 
     for path in config:
         if path.is_dir():
