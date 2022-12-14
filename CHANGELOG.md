@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/mirkolenz/makejinja/compare/v0.3.0...v0.4.0) (2022-12-14)
+
+
+### Features
+
+* add skip-entry cli param ([7d79fa9](https://github.com/mirkolenz/makejinja/commit/7d79fa95c2411aced7d7085d5d385b8f594cbd55))
+
 ## [0.3.0](https://github.com/mirkolenz/makejinja/compare/v0.2.1...v0.3.0) (2022-12-14)
 
 
