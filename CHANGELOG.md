@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/mirkolenz/makejinja/compare/v0.5.0...v0.5.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* enable file-based loading of globals & filters ([cf9f331](https://github.com/mirkolenz/makejinja/commit/cf9f331f81c13cc8d2834f5c748776d7d332fd4d))
+
 ## [0.5.0](https://github.com/mirkolenz/makejinja/compare/v0.4.1...v0.5.0) (2022-12-14)
 
 
