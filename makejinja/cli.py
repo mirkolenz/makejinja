@@ -1,3 +1,4 @@
+import importlib
 import shutil
 import typing as t
 from pathlib import Path
@@ -6,9 +7,6 @@ import typer
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from rich import print
 from simpleconf import Config
-
-from makejinja.filters import filters
-from makejinja.globals import globals
 
 app = typer.Typer()
 
@@ -22,6 +20,8 @@ def run(
     remove_jinja_suffix: bool = True,
     config: list[Path] = typer.Option([]),
     extensions: list[str] = typer.Option([]),
+    globals: list[str] = typer.Option([]),
+    filters: list[str] = typer.Option([]),
     lstrip_blocks: bool = True,
     trim_blocks: bool = True,
     keep_trailing_newline: bool = False,
@@ -48,8 +48,14 @@ def run(
         trim_blocks=trim_blocks,
         lstrip_blocks=lstrip_blocks,
     )
-    env.filters.update(filters)
-    env.globals.update(globals)
+
+    for _global in globals:
+        mod = importlib.import_module(_global)
+        env.globals.update(mod.globals)
+
+    for _filter in filters:
+        mod = importlib.import_module(_filter)
+        env.filters.update(mod.filters)
 
     if output_folder.is_dir():
         shutil.rmtree(output_folder)
