@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/mirkolenz/makejinja/compare/v0.2.1...v0.3.0) (2022-12-14)
+
+
+### Features
+
+* add global function to select a language ([b26836d](https://github.com/mirkolenz/makejinja/commit/b26836df42f87af42a5145cd2ddfd3e61f8e5dd9))
+
 ## [0.2.1](https://github.com/mirkolenz/makejinja/compare/v0.2.0...v0.2.1) (2022-12-11)
 
 
