@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/mirkolenz/makejinja/compare/v0.4.0...v0.4.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* handle empty templates with newlines ([97123b6](https://github.com/mirkolenz/makejinja/commit/97123b6f20ac608edd42962b4f031ef967c8e5df))
+
 ## [0.4.0](https://github.com/mirkolenz/makejinja/compare/v0.3.0...v0.4.0) (2022-12-14)
 
 
