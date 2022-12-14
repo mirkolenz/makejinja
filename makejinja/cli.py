@@ -79,7 +79,7 @@ def run(
 
                 # Write the rendered template if it has content
                 # Prevents empty macro definitions
-                if rendered == "" and skip_empty:
+                if rendered.strip() == "" and skip_empty:
                     print(f"Skip '{input_path}'")
                 else:
                     print(f"Render '{input_path}'->'{output_path}'")
