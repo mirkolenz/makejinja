@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/mirkolenz/makejinja/compare/v0.4.1...v0.5.0) (2022-12-14)
+
+
+### Features
+
+* allow customization of globals and filters ([d86bd5a](https://github.com/mirkolenz/makejinja/commit/d86bd5a195b0e8ace992f28e13bb0c13f4bcea42))
+
 ## [0.4.1](https://github.com/mirkolenz/makejinja/compare/v0.4.0...v0.4.1) (2022-12-14)
 
 
