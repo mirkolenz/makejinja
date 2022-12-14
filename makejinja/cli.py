@@ -1,7 +1,10 @@
-import importlib
+import importlib.util
 import shutil
+import sys
 import typing as t
 from pathlib import Path
+from types import ModuleType
+from uuid import uuid1 as uuid
 
 import typer
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -9,6 +12,33 @@ from rich import print
 from simpleconf import Config
 
 app = typer.Typer()
+
+
+def import_file(path: Path) -> ModuleType:
+    # https://stackoverflow.com/a/41595552
+    name = str(uuid()).lower().replace("-", "")
+    spec = importlib.util.spec_from_file_location(name, path)
+    assert spec is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+
+    return module
+
+
+def collect_files(paths: t.Iterable[Path]) -> t.List[Path]:
+    files = []
+
+    for path in paths:
+        if path.is_dir():
+            files.extend(
+                file for file in path.iterdir() if not file.name.startswith(".")
+            )
+        elif path.is_file():
+            files.append(path)
+
+    return files
 
 
 @app.command()
@@ -20,26 +50,19 @@ def run(
     remove_jinja_suffix: bool = True,
     config: list[Path] = typer.Option([]),
     extensions: list[str] = typer.Option([]),
-    globals: list[str] = typer.Option([]),
-    filters: list[str] = typer.Option([]),
+    globals: list[Path] = typer.Option([]),
+    filters: list[Path] = typer.Option([]),
     lstrip_blocks: bool = True,
     trim_blocks: bool = True,
     keep_trailing_newline: bool = False,
     copy_tree: bool = True,
     skip_empty: bool = True,
+    env_prefix: str = "JINJA",
 ):
-    # Also consider env vars with `jinja_` prefix
-    config_files: list[t.Union[str, Path]] = ["jinja.osenv"]
-
-    for path in config:
-        if path.is_dir():
-            config_files.extend(
-                file for file in path.iterdir() if not file.name.startswith(".")
-            )
-        elif path.is_file():
-            config_files.append(path)
-
-    data = Config.load(*config_files)
+    # Also consider env vars with specified prefix
+    _config: list[t.Union[str, Path]] = [f"{env_prefix}.osenv"]
+    _config.extend(collect_files(config))
+    data = Config.load(*_config)
 
     env = Environment(
         loader=FileSystemLoader(input_folder),
@@ -49,12 +72,12 @@ def run(
         lstrip_blocks=lstrip_blocks,
     )
 
-    for _global in globals:
-        mod = importlib.import_module(_global)
+    for _global in collect_files(globals):
+        mod = import_file(_global)
         env.globals.update(mod.globals)
 
-    for _filter in filters:
-        mod = importlib.import_module(_filter)
+    for _filter in collect_files(filters):
+        mod = import_file(_filter)
         env.filters.update(mod.filters)
 
     if output_folder.is_dir():
