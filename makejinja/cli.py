@@ -26,6 +26,7 @@ def run(
     trim_blocks: bool = True,
     keep_trailing_newline: bool = False,
     copy_tree: bool = True,
+    skip_empty: bool = True,
 ):
     # Also consider env vars with `jinja_` prefix
     config_files: list[t.Union[str, Path]] = ["jinja.osenv"]
@@ -65,7 +66,6 @@ def run(
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             if relative_path.suffix == jinja_suffix:
-                print(f"Render '{relative_path}'")
                 template = env.get_template(str(relative_path))
 
                 # Remove the copied file if the tree has been duplicated
@@ -75,12 +75,19 @@ def run(
                 if remove_jinja_suffix:
                     output_path = output_path.with_suffix("")
 
-                # Write the rendered template
-                with output_path.open("w") as f:
-                    f.write(template.render(data))
+                rendered = template.render(data)
+
+                # Write the rendered template if it has content
+                # Prevents empty macro definitions
+                if rendered == "" and skip_empty:
+                    print(f"Skip '{input_path}'")
+                else:
+                    print(f"Render '{input_path}'->'{output_path}'")
+                    with output_path.open("w") as f:
+                        f.write(rendered)
 
             elif not copy_tree:
-                print(f"Copy '{relative_path}'")
+                print(f"Copy '{input_path}'")
                 shutil.copy2(input_path, output_path)
 
 
