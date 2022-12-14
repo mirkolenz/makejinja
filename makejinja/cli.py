@@ -1,18 +1,16 @@
 import shutil
 import typing as t
 from pathlib import Path
-from urllib.parse import quote as urlparse
 
 import typer
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from rich import print
 from simpleconf import Config
 
-app = typer.Typer()
+from makejinja.filters import filters
+from makejinja.globals import globals
 
-filters: dict[str, t.Callable[[t.Any], t.Any]] = {
-    "hassurl": lambda x: urlparse(x).replace("_", "-")
-}
+app = typer.Typer()
 
 
 @app.command()
@@ -50,6 +48,7 @@ def run(
         lstrip_blocks=lstrip_blocks,
     )
     env.filters.update(filters)
+    env.globals.update(globals)
 
     if output_folder.is_dir():
         shutil.rmtree(output_folder)
