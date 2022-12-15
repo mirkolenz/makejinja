@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/mirkolenz/makejinja/compare/v0.5.1...v0.6.0) (2022-12-15)
+
+
+### Features
+
+* update cli param names ([c819a51](https://github.com/mirkolenz/makejinja/commit/c819a51d309803fb8e6a56d9ba6d52334b79bda0))
+
+
+### Documentation
+
+* update readme ([dd3eec7](https://github.com/mirkolenz/makejinja/commit/dd3eec77ffc96f1cc544013c4ada4e4663bbe7b7))
+
 ## [0.5.1](https://github.com/mirkolenz/makejinja/compare/v0.5.0...v0.5.1) (2022-12-14)
 
 
