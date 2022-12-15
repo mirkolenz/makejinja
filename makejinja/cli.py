@@ -214,9 +214,11 @@ def run(
         env.filters.update(mod.filters)
 
     if output_folder.is_dir():
+        print(f"Remove '{output_folder}' from previous run")
         shutil.rmtree(output_folder)
 
     if copy_tree:
+        print(f"Copy file tree to '{output_folder}'")
         shutil.copytree(input_folder, output_folder)
 
     output_folder.mkdir(parents=True, exist_ok=True)
@@ -249,7 +251,7 @@ def run(
                         f.write(rendered)
 
             elif not copy_tree:
-                print(f"Copy '{input_path}'")
+                print(f"Copy '{input_path}'->'{output_path}'")
                 shutil.copy2(input_path, output_path)
 
 
