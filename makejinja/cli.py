@@ -36,7 +36,9 @@ def collect_files(paths: t.Iterable[Path]) -> t.List[Path]:
     for path in paths:
         if path.is_dir():
             files.extend(
-                file for file in path.iterdir() if not file.name.startswith(".")
+                file
+                for file in sorted(path.iterdir())
+                if not file.name.startswith(".") and file.is_file()
             )
         elif path.is_file():
             files.append(path)
