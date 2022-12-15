@@ -7,7 +7,7 @@ from types import ModuleType
 from uuid import uuid1 as uuid
 
 import typer
-from jinja2 import Environment, FileSystemLoader, StrictUndefined
+from jinja2 import Environment, FileSystemLoader
 from rich import print
 from simpleconf import Config
 
@@ -50,22 +50,22 @@ def run(
     output_folder: Path,
     pattern: str = "**/*",
     jinja_suffix: str = ".jinja",
-    remove_jinja_suffix: bool = True,
-    config: list[Path] = typer.Option([]),
-    extensions: list[str] = typer.Option([]),
+    data: list[Path] = typer.Option([]),
     globals: list[Path] = typer.Option([]),
     filters: list[Path] = typer.Option([]),
+    extensions: list[str] = typer.Option([]),
+    data_env_prefix: str = "JINJA",
     lstrip_blocks: bool = True,
     trim_blocks: bool = True,
     keep_trailing_newline: bool = False,
     copy_tree: bool = True,
+    remove_jinja_suffix: bool = True,
     skip_empty: bool = True,
-    env_prefix: str = "JINJA",
 ):
     # Also consider env vars with specified prefix
-    _config: list[t.Union[str, Path]] = [f"{env_prefix}.osenv"]
-    _config.extend(collect_files(config))
-    data = Config.load(*_config)
+    _data: list[t.Union[str, Path]] = [f"{data_env_prefix}.osenv"]
+    _data.extend(collect_files(data))
+    render_args = Config.load(*_data)
 
     env = Environment(
         loader=FileSystemLoader(input_folder),
@@ -107,7 +107,7 @@ def run(
                 if remove_jinja_suffix:
                     output_path = output_path.with_suffix("")
 
-                rendered = template.render(data)
+                rendered = template.render(render_args)
 
                 # Write the rendered template if it has content
                 # Prevents empty macro definitions
