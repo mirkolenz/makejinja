@@ -190,9 +190,9 @@ def run(
         """,
     ),
 ):
+    _data = [str(path) for path in collect_files(data)]
     # Also consider env vars with specified prefix
-    _data: list[t.Union[str, Path]] = [f"{data_env_prefix}.osenv"]
-    _data.extend(collect_files(data))
+    _data.extend(f"{data_env_prefix}.osenv")
     render_args = Config.load(*_data)
 
     env = Environment(
