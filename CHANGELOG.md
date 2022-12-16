@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.0](https://github.com/mirkolenz/makejinja/compare/v0.6.0...v0.7.0) (2022-12-16)
+
+
+### Features
+
+* add documentation to cli ([b001d04](https://github.com/mirkolenz/makejinja/commit/b001d04c0a622b3012e7a6d587be171d22331d12))
+
+
+### Bug Fixes
+
+* improve command output ([36df06f](https://github.com/mirkolenz/makejinja/commit/36df06fecc14b443a452e2f2e49107870fb517d9))
+* process env vars after files ([31cb946](https://github.com/mirkolenz/makejinja/commit/31cb946b5ad47beed2788e53d4b39c50fe7da256))
+* sort files in iterdir ([5be3db1](https://github.com/mirkolenz/makejinja/commit/5be3db18898fe868d45fea6cfdab6ba3fe6bbbf3))
+
 ## [0.6.0](https://github.com/mirkolenz/makejinja/compare/v0.5.1...v0.6.0) (2022-12-15)
 
 
