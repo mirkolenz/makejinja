@@ -8,22 +8,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    outputs:
-      release_created: ${{ steps.run.outputs.release_created }}
     steps:
-      - uses: google-github-actions/release-please-action@v3
-        id: run
+      - uses: cihelper/action-semanticrelease-poetry@v1
         with:
-          release-type: python
-          package-name: makejinja
-  publish:
-    runs-on: ubuntu-latest
-    needs: release
-    if: ${{ needs.release.outputs.release_created }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "${{ env.PYTHON_VERSION }}"
-      - run: "pip install poetry==${{ env.POETRY_VERSION }}"
-      - run: "poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN }} --no-interaction -vv"
+          poetry-version: "1.3.1"
+          python-version: "3.9"
+          pypi-token: ${{ secrets.PYPI_TOKEN }}
