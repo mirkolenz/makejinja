@@ -194,7 +194,7 @@ def run(
 ):
     _data = [str(path) for path in collect_files(data)]
     # Also consider env vars with specified prefix
-    _data.extend(f"{data_env_prefix}.osenv")
+    _data.append(f"{data_env_prefix}.osenv")
     render_args = Config.load(*_data)
 
     env = Environment(
