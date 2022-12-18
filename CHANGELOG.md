@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.4](https://github.com/mirkolenz/makejinja/compare/v0.7.3...v0.7.4) (2022-12-18)
+
+
+### Bug Fixes
+
+* bump version ([2a80893](https://github.com/mirkolenz/makejinja/commit/2a808933a75cfdb5af5e2e4b6c1b982304ce1a9d))
+
 ## [0.7.3](https://github.com/mirkolenz/makejinja/compare/v0.7.2...v0.7.3) (2022-12-18)
 
 
