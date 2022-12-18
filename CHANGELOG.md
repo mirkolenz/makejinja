@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/mirkolenz/makejinja/compare/v0.7.0...v0.7.1) (2022-12-18)
+
+
+### Bug Fixes
+
+* wrong loading of env vars data ([4bd764b](https://github.com/mirkolenz/makejinja/commit/4bd764b85b09985ce1990ac90147f084394d3a9f))
+
 ## [0.7.0](https://github.com/mirkolenz/makejinja/compare/v0.6.0...v0.7.0) (2022-12-17)
 
 
