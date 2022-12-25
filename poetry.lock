@@ -43,45 +43,6 @@ files = [
 test = ["flake8 (==3.7.8)", "hypothesis (==3.55.3)"]
 
 [[package]]
-name = "diot"
-version = "0.1.6"
-description = "Python dictionary with dot notation."
-category = "main"
-optional = false
-python-versions = ">=3.7,<4.0"
-files = [
-    {file = "diot-0.1.6-py3-none-any.whl", hash = "sha256:1e7f97bbc92cbbdd51d8c535885f5e2a71762b364c1b2410dfc84f3a4572d551"},
-    {file = "diot-0.1.6.tar.gz", hash = "sha256:1dcfc37dff406c96020d14350c05f920cb7446c3e5abf3477cf2ae0587f72066"},
-]
-
-[package.dependencies]
-inflection = ">=0.5,<0.6"
-
-[[package]]
-name = "inflection"
-version = "0.5.1"
-description = "A port of Ruby on Rails inflector to Python"
-category = "main"
-optional = false
-python-versions = ">=3.5"
-files = [
-    {file = "inflection-0.5.1-py2.py3-none-any.whl", hash = "sha256:f38b2b640938a4f35ade69ac3d053042959b62a0f1076a5bbaa1b9526605a8a2"},
-    {file = "inflection-0.5.1.tar.gz", hash = "sha256:1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417"},
-]
-
-[[package]]
-name = "iniconfig"
-version = "1.1.1"
-description = "iniconfig: brain-dead simple config-ini parsing"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
-    {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
-]
-
-[[package]]
 name = "jinja2"
 version = "3.1.2"
 description = "A very fast and expressive template engine."
@@ -165,47 +126,6 @@ files = [
 plugins = ["importlib-metadata"]
 
 [[package]]
-name = "python-dotenv"
-version = "0.20.0"
-description = "Read key-value pairs from a .env file and set them as environment variables"
-category = "main"
-optional = false
-python-versions = ">=3.5"
-files = [
-    {file = "python-dotenv-0.20.0.tar.gz", hash = "sha256:b7e3b04a59693c42c36f9ab1cc2acc46fa5df8c78e178fc33a8d4cd05c8d498f"},
-    {file = "python_dotenv-0.20.0-py3-none-any.whl", hash = "sha256:d92a187be61fe482e4fd675b6d52200e7be63a12b724abbf931a40ce4fa92938"},
-]
-
-[package.extras]
-cli = ["click (>=5.0)"]
-
-[[package]]
-name = "python-simpleconf"
-version = "0.5.7"
-description = "Simple configuration management with python."
-category = "main"
-optional = false
-python-versions = ">=3.7,<4.0"
-files = [
-    {file = "python-simpleconf-0.5.7.tar.gz", hash = "sha256:e8c41be99cc835d59efe6a0d1617cffcfa6c7661142c5299d7ae39ecc06b3f14"},
-    {file = "python_simpleconf-0.5.7-py3-none-any.whl", hash = "sha256:e44f2ef56ee931607f2e6a836e5a3b77457abea8dc0e536e8ba8403751f07b2c"},
-]
-
-[package.dependencies]
-diot = ">=0.1,<0.2"
-iniconfig = {version = ">=1.1,<2.0", optional = true, markers = "extra == \"ini\" or extra == \"all\""}
-python-dotenv = {version = ">=0.20,<0.21", optional = true, markers = "extra == \"env\" or extra == \"all\""}
-pyyaml = {version = ">=6,<7", optional = true, markers = "extra == \"yaml\" or extra == \"all\""}
-rtoml = {version = ">=0.8,<0.9", optional = true, markers = "extra == \"toml\" or extra == \"all\""}
-
-[package.extras]
-all = ["iniconfig (>=1.1,<2.0)", "python-dotenv (>=0.20,<0.21)", "pyyaml (>=6,<7)", "rtoml (>=0.8,<0.9)"]
-env = ["python-dotenv (>=0.20,<0.21)"]
-ini = ["iniconfig (>=1.1,<2.0)"]
-toml = ["rtoml (>=0.8,<0.9)"]
-yaml = ["pyyaml (>=6,<7)"]
-
-[[package]]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
@@ -275,52 +195,6 @@ pygments = ">=2.6.0,<3.0.0"
 jupyter = ["ipywidgets (>=7.5.1,<8.0.0)"]
 
 [[package]]
-name = "rtoml"
-version = "0.8.0"
-description = "A better TOML library for python implemented in rust."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "rtoml-0.8.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e924ae37aeafd60d09b888ea30ae18bceac5086689216ab3ae16dd93692202a9"},
-    {file = "rtoml-0.8.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:715bf814144f47306752b0ddf0965a1cf2e36410c3edc05fafe1363ba57fa2b6"},
-    {file = "rtoml-0.8.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b11aefaaeab294bb98b3afa3a47d3f898378904e6a2b62fa1eca48caf1cfe878"},
-    {file = "rtoml-0.8.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:87da140716797198c9d011896c2b092ea5662d48d94059e705504b37131255a8"},
-    {file = "rtoml-0.8.0-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b77916b8d0cea069b0b7b59eb40a7948fa2289eb7938546749b801290785632a"},
-    {file = "rtoml-0.8.0-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:c7fca6d6cd6182cf758c3b4b8554f6d548f9d921ba1cb91adb4aca779010cdfa"},
-    {file = "rtoml-0.8.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:f9cbd99d158e440951f851613ce3b6f29c201676124900876937ebf65307c3a1"},
-    {file = "rtoml-0.8.0-cp310-cp310-win32.whl", hash = "sha256:9708df41c348fa570cfaa9d62bfb46d14a1e7f3fe08203dab55fa22c1cd81a9f"},
-    {file = "rtoml-0.8.0-cp310-cp310-win_amd64.whl", hash = "sha256:9d93a2e9197ecda83765ed14661a933abf616de37442a8705ef6f1a897fa3299"},
-    {file = "rtoml-0.8.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:1f494155b5321718d3e9afecf94c0ca02bba03fbae7ec1922ab14543694c1603"},
-    {file = "rtoml-0.8.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bc6d82e5a28fffd3910a54d511ba7adc66f668b0c25d0ee75685aeb24ce4a730"},
-    {file = "rtoml-0.8.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0d0f46641b4ac2e6934801d29c6c4c6f2bda017b34482aeb8f8170b977a60b17"},
-    {file = "rtoml-0.8.0-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:fb2a996587e39359ec1b638fa74d1247b7adebe4f804d03d1c681c064b0ae24c"},
-    {file = "rtoml-0.8.0-cp37-cp37m-musllinux_1_1_aarch64.whl", hash = "sha256:a7846ed05136de9ec60f5ee5bb6a53c640f7e0504bd9ec3586016cb6cf36ea2b"},
-    {file = "rtoml-0.8.0-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:2883cd30caac29c8f00dd8c7f20ee7cade778aba1413bea3c8e0fa6013581c9c"},
-    {file = "rtoml-0.8.0-cp37-cp37m-win32.whl", hash = "sha256:4ce8bb6ea93ce1ce2de7a48bed47a290fcf6adf8d427768397512f4d9a107461"},
-    {file = "rtoml-0.8.0-cp37-cp37m-win_amd64.whl", hash = "sha256:0eea2ed0d724df91b230c89653a021fc0e22b1353d9a567d166093104cbe8e0c"},
-    {file = "rtoml-0.8.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:71a6ed08313755891a8341007892f4738e624a25f757136deea7a1c75862254e"},
-    {file = "rtoml-0.8.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:77173831317fc493752ddcc3c4ce20d6c322bbffbe4bcb3131a78fc6ca63a8a9"},
-    {file = "rtoml-0.8.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ffbfa5ae5b88991f88a8a8f06aeb572f7d5ec4811ee101ba90493754be3df677"},
-    {file = "rtoml-0.8.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5502507da47e142013e316133eaa0c0312c351aed9c02e51104dd9fc725b0925"},
-    {file = "rtoml-0.8.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:97fc53d7bb277ef379c919a5972e5faa403c7d41951c0e6fd57e00ad470ea992"},
-    {file = "rtoml-0.8.0-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:617b57d9254c83d09646b8f6062a7da066c23b1999a63788f894a16707b710a7"},
-    {file = "rtoml-0.8.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:3773957d1a67d5620d64f73e855fd81de01fac5aff14d643cb5821854633c6d4"},
-    {file = "rtoml-0.8.0-cp38-cp38-win32.whl", hash = "sha256:a2a743456652d881f4baf61e593f1b131500f03d7d9aa55c41812d8737624aa0"},
-    {file = "rtoml-0.8.0-cp38-cp38-win_amd64.whl", hash = "sha256:1cc362b02d586721ec3b24cf1f6e9da0223fc2009dfa5b49b929e7d2c6fbaaf7"},
-    {file = "rtoml-0.8.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:10d0f771558b8f8c0940e517f089cbea5f1ddfa8d684c176ac6c3a1797b50f19"},
-    {file = "rtoml-0.8.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:a42c8faf9d7ea40a86ac8cb73d0e485467d4702fcc3b763276a046d9b6cd738e"},
-    {file = "rtoml-0.8.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f84b83a852ac8f8efca56490cd21eb53c55a116dd2485658f0ced2ee99e0b09f"},
-    {file = "rtoml-0.8.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9de660acc172db507321498275c8c8f052c6d3261331eb5aa964447bfecc90d1"},
-    {file = "rtoml-0.8.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ccc9fdd7064b1c8a990548956e27a3217c7a692e8bae222af8cdb3d0750dddf6"},
-    {file = "rtoml-0.8.0-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:0ce59d9e077030a2bfc915ebb872d15532e61e57d967075ab978b76b933b9634"},
-    {file = "rtoml-0.8.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:88a2187059be67a94e59519a91785f43db3159f2963ea8e15c31808a95b58c9f"},
-    {file = "rtoml-0.8.0-cp39-cp39-win32.whl", hash = "sha256:fb106a90e1dc55e9fe2774b41d57074f02a716aac864a58fedca2cf399114f29"},
-    {file = "rtoml-0.8.0-cp39-cp39-win_amd64.whl", hash = "sha256:333e5e1fc257b1302f589b662fd2405ec4b3b68a032e125011bcf86ea52b19eb"},
-    {file = "rtoml-0.8.0.tar.gz", hash = "sha256:6d55fa9df88256c6762f01f18b8bd3f6dc1836600ea8655eb3719a2b8f3df764"},
-]
-
-[[package]]
 name = "typer"
 version = "0.7.0"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
@@ -344,4 +218,4 @@ test = ["black (>=22.3.0,<23.0.0)", "coverage (>=6.2,<7.0)", "isort (>=5.0.6,<6.
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "f3a163314ec86adf89537319d32605b058bcdbfe103a2053616b7d2723193793"
+content-hash = "80f0f9448ab7a13b5aa86178e742cd3b77e07984781c356b43e5ee1f00ba6e1d"

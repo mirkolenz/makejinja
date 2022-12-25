@@ -7,9 +7,9 @@ from types import ModuleType
 from uuid import uuid1 as uuid
 
 import typer
+import yaml
 from jinja2 import Environment, FileSystemLoader
 from rich import print
-from simpleconf import Config
 
 app = typer.Typer(rich_markup_mode="markdown", add_completion=False)
 
@@ -85,28 +85,11 @@ def run(
         [],
         rich_help_panel="Jinja Environment Options",
         help="""
-            Load variables from various file formats for use in your Jinja templates.
+            Load variables from yaml/yaml files for use in your Jinja templates.
             The defintions are passed to Jinja's `render` function.
             Can either be a file or a folder containg files.
             **Note:** This option may be passed multiple times to pass a list of values.
             If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
-            The following file formats are supported:
-
-            - `.ini/.cfg/.config` (using `iniconfig`)
-            - `.env` (using `python-dotenv`)
-            - `.yaml/.yml` (using `pyyaml`)
-            - `.toml` (using `rtoml`)
-            - `.json` (using `json`)
-        """,
-    ),
-    data_env_prefix: str = typer.Option(
-        "jinja",
-        rich_help_panel="Jinja Environment Options",
-        help="""
-            It is possible to provide data to the templates via environment variables.
-            This option allows to configure the (case-sensitive) prefix to use for this.
-            **Example:** When using `--data-env-prefix jinja` and setting the env var `jinja_style`, the variable `style` will be available in your templates.
-            **Note:** Environment variables are processed after all other data files, allowing you to override their contents.
         """,
     ),
     globals: list[Path] = typer.Option(
@@ -193,10 +176,15 @@ def run(
         """,
     ),
 ):
-    _data = [str(path) for path in collect_files(data)]
-    # Also consider env vars with specified prefix
-    _data.append(f"{data_env_prefix}.osenv")
-    render_args = Config.load(*_data)
+    render_args = {}
+
+    for path in collect_files(data):
+        if path.suffix in DATA_SUFFIXES:
+            with path.open("r") as fp:
+                yaml_docs = yaml.safe_load_all(fp)
+
+                for doc in yaml_docs:
+                    render_args.update(doc)
 
     env = Environment(
         loader=FileSystemLoader(input_folder),
