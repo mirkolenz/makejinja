@@ -13,6 +13,8 @@ from rich import print
 
 app = typer.Typer(rich_markup_mode="markdown", add_completion=False)
 
+DATA_SUFFIXES = {".yaml", ".yml"}
+
 
 def import_file(path: Path) -> ModuleType:
     # https://stackoverflow.com/a/41595552
@@ -30,14 +32,14 @@ def import_file(path: Path) -> ModuleType:
     return module
 
 
-def collect_files(paths: t.Iterable[Path]) -> t.List[Path]:
+def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> t.List[Path]:
     files = []
 
     for path in paths:
         if path.is_dir():
             files.extend(
                 file
-                for file in sorted(path.iterdir())
+                for file in sorted(path.glob(pattern))
                 if not file.name.startswith(".") and file.is_file()
             )
         elif path.is_file():
@@ -50,6 +52,10 @@ def collect_files(paths: t.Iterable[Path]) -> t.List[Path]:
 def run(
     input_folder: Path = typer.Argument(
         ...,
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
         help="""
             Path to a folder containing template files.
             It is passed to Jinja's [FileSystemLoader](https://jinja.palletsprojects.com/en/3.1.x/api/#jinja2.FileSystemLoader) when creating the environment.
@@ -57,6 +63,10 @@ def run(
     ),
     output_folder: Path = typer.Argument(
         ...,
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
         help="""
             Path to a folder where the rendered templates are stored.
             MakeJinja preserves the relative paths in the process, meaning that you can even use it on nested directories.
@@ -83,6 +93,10 @@ def run(
     ),
     data: list[Path] = typer.Option(
         [],
+        exists=True,
+        file_okay=True,
+        dir_okay=True,
+        readable=True,
         rich_help_panel="Jinja Environment Options",
         help="""
             Load variables from yaml/yaml files for use in your Jinja templates.
@@ -94,6 +108,10 @@ def run(
     ),
     globals: list[Path] = typer.Option(
         [],
+        exists=True,
+        file_okay=True,
+        dir_okay=True,
+        readable=True,
         rich_help_panel="Jinja Environment Options",
         help="""
             You can import functions/varibales defined in `.py` files to use them in your Jinja templates.
@@ -104,6 +122,10 @@ def run(
     ),
     filters: list[Path] = typer.Option(
         [],
+        exists=True,
+        file_okay=True,
+        dir_okay=True,
+        readable=True,
         rich_help_panel="Jinja Environment Options",
         help="""
             Jinja has support for filters (e.g., `[1, 2, 3] | length`) to easily call functions.
@@ -194,11 +216,11 @@ def run(
         lstrip_blocks=lstrip_blocks,
     )
 
-    for _global in collect_files(globals):
+    for _global in collect_files(globals, "**/*.py"):
         mod = import_file(_global)
         env.globals.update(mod.globals)
 
-    for _filter in collect_files(filters):
+    for _filter in collect_files(filters, "**/*.py"):
         mod = import_file(_filter)
         env.filters.update(mod.filters)
 
