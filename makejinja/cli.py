@@ -136,6 +136,7 @@ def run(
         help="""
             Extend Jinja's parser by loading the specified extensions.
             An overview of the built-in ones can be found on the [project website](https://jinja.palletsprojects.com/en/3.1.x/extensions/).
+            Currently, only those built-in filters are allowed.
             **Note:** This option may be passed multiple times to pass a list of values.
         """,
     ),
@@ -246,12 +247,12 @@ def run(
                 if rendered.strip() == "" and skip_empty:
                     print(f"Skip '{input_path}'")
                 else:
-                    print(f"Render '{input_path}'->'{output_path}'")
+                    print(f"Render '{input_path}' -> '{output_path}'")
                     with output_path.open("w") as f:
                         f.write(rendered)
 
             elif not copy_tree:
-                print(f"Copy '{input_path}'->'{output_path}'")
+                print(f"Copy '{input_path}' -> '{output_path}'")
                 shutil.copy2(input_path, output_path)
 
 
