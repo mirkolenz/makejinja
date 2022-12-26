@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.0-beta.1](https://github.com/mirkolenz/makejinja/compare/v0.7.4...v1.0.0-beta.1) (2022-12-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* Massive performance boost over python-simpleconf. The CLI options changed: env-vars are no longer supported and we only handle files ending in `yaml` or `yml`.
+
+### Features
+
+* add checks to verify correct file handling ([5d5d5fd](https://github.com/mirkolenz/makejinja/commit/5d5d5fdd3473efebf41fbad83891786f9e902688))
+* switch to pure yaml config parsing ([ac22a0d](https://github.com/mirkolenz/makejinja/commit/ac22a0df5e1a6bd48bda457e797b271aa9b9aae5))
+
+
+### Bug Fixes
+
+* improve cli output ([1280fa7](https://github.com/mirkolenz/makejinja/commit/1280fa71c83af483419c6e0c58f3e5c4757c5c3c))
+
 ## [0.7.4](https://github.com/mirkolenz/makejinja/compare/v0.7.3...v0.7.4) (2022-12-18)
 
 
