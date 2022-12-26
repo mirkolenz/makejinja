@@ -5,7 +5,7 @@ FROM python:${PYTHON_VERSION}-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
-ENV cmd="--help"
+ENV args="--help"
 
 WORKDIR /app
 
@@ -20,4 +20,4 @@ COPY poetry.lock* pyproject.toml ./
 RUN poetry install --no-interaction --no-ansi --no-root
 COPY makejinja ./makejinja
 
-CMD [ "sh", "-c", "poetry run python -m makejinja ${cmd}" ]
+CMD [ "sh", "-c", "poetry run python -m makejinja ${args}" ]

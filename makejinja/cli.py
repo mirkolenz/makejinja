@@ -69,7 +69,7 @@ def run(
         readable=True,
         help="""
             Path to a folder where the rendered templates are stored.
-            MakeJinja preserves the relative paths in the process, meaning that you can even use it on nested directories.
+            makejinja preserves the relative paths in the process, meaning that you can even use it on nested directories.
         """,
     ),
     pattern: str = typer.Option(
@@ -135,7 +135,7 @@ def run(
             If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
         """,
     ),
-    extensions: list[str] = typer.Option(
+    extension: list[str] = typer.Option(
         [],
         rich_help_panel="Jinja Environment Options",
         help="""
@@ -210,7 +210,7 @@ def run(
 
     env = Environment(
         loader=FileSystemLoader(input_folder),
-        extensions=extensions,
+        extensions=extension,
         keep_trailing_newline=keep_trailing_newline,
         trim_blocks=trim_blocks,
         lstrip_blocks=lstrip_blocks,

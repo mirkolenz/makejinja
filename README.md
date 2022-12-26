@@ -1,8 +1,15 @@
-# MakeJinja
+# makejinja
+
+makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
+This allows you to load variables from external files or create repeating patterns via loops.
+A use case for this tool is generating config files for [Home Assistant](https://www.home-assistant.io/):
+Using the same language that the built-in templates use, you can greatly simplify your configuration.
+
+<!-- A concrete example can be found in the `tests` folder. -->
 
 ## Installation
 
-MakeJinja is available via `pip` and can be installed via
+makejinja is available via `pip` and can be installed via
 
 `pip install makejinja`
 
@@ -11,9 +18,16 @@ Thus, we advise leveraging [`pipx`](https://github.com/pypa/pipx) instead:
 
 `pipx install makejinja`
 
+Alternatively, the application can also be used via Docker.
+We automatically publish an image at `ghcr.io/mirkolenz/makejinja`.
+To use it, mount a folder to the container and pass the command options via the environment variable `cmd`.
+For example, to process files in `./data/input` and render them to `./data/output` while using the extension `jinja2.ext.do`, you could run:
+
+`docker run --rm -it -v $(pwd)/data:/data -e args="/data/input /data/output --extension jinja2.ext.do" ghcr.io/mirkolenz/makejinja@latest`
+
 ## Usage
 
-In its default configuration, MakeJinja searches the input folder recursively for files ending in `.jinja`.
+In its default configuration, makejinja searches the input folder recursively for files ending in `.jinja`.
 Also, we copy all contents (except raw template files) of the input folder to the output folder and remove the `.jinja` ending during the render process.
 To get an overview of the remaining options, we advise you to run `makejinja --help`:
 
@@ -28,7 +42,7 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 │                               when creating the environment.                                                         │
 │                               [default: None]                                                                        │
 │                               [required]                                                                             │
-│ *    output_folder      PATH  Path to a folder where the rendered templates are stored. MakeJinja preserves the      │
+│ *    output_folder      PATH  Path to a folder where the rendered templates are stored. makejinja preserves the      │
 │                               relative paths in the process, meaning that you can even use it on nested directories. │
 │                               [default: None]                                                                        │
 │                               [required]                                                                             │
@@ -74,7 +88,7 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 │                                a folder containg files. Note: This option may be passed multiple times to pass a     │
 │                                list of files/folders. If multiple files are supplied, beware that previous           │
 │                                declarations will be overwritten by newer ones.                                       │
-│ --extensions             TEXT  Extend Jinja's parser by loading the specified extensions. An overview of the         │
+│ --extension              TEXT  Extend Jinja's parser by loading the specified extensions. An overview of the         │
 │                                built-in ones can be found on the project website. Note: This option may be passed    │
 │                                multiple times to pass a list of values.                                              │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
