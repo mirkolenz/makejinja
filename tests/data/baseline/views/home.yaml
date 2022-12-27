@@ -1,0 +1,89 @@
+- title: Living room
+  path: living-room
+  icon: mdi:sofa
+  cards:
+    - type: grid
+      square: false
+      columns: 2
+      cards:
+        - type: tile
+          entity: light.living_room_ceiling
+          name: Ceiling
+          features:
+            - type: light-brightness
+        - type: tile
+          entity: light.living_room_spots
+          name: Spots
+          features:
+            - type: light-brightness
+        - type: tile
+          entity: cover.living_room_door
+          name: Cover door
+          features:
+            - type: cover-open-close
+        - type: tile
+          entity: cover.living_room_window
+          name: Cover window
+          features:
+            - type: cover-open-close
+        - type: tile
+          entity: climate.living_room
+          name: Thermostat
+        - type: tile
+          entity: binary_sensor.living_room_door_contact
+          name: Door
+        - type: tile
+          entity: binary_sensor.living_room_window_contact
+          name: Window
+        - type: tile
+          entity: media_player.living_room_homepod
+          name: HomePod
+          tap_action:
+            action: more-info
+        - type: tile
+          entity: media_player.living_room_apple_tv
+          name: Apple TV
+          tap_action:
+            action: more-info
+    - type: history-graph
+      title: Thermostat history
+      show_names: false
+      entities:
+        - climate.living_room
+- title: Kitchen
+  path: kitchen
+  icon: mdi:chef-hat
+  cards:
+    - type: grid
+      square: false
+      columns: 2
+      cards:
+        - type: tile
+          entity: light.kitchen_spots
+          name: Spots
+          features:
+            - type: light-brightness
+        - type: tile
+          entity: climate.kitchen
+          name: Thermostat
+        - type: tile
+          entity: cover.kitchen_window
+          name: Cover window
+        - type: tile
+          entity: binary_sensor.kitchen_window_contact
+          name: Window
+        - type: tile
+          entity: media_player.kitchen_homepod
+          name: HomePod
+          tap_action:
+            action: more-info
+    - type: history-graph
+      title: Thermostat history
+      show_names: false
+      entities:
+        - climate.kitchen
+    - type: history-graph
+      title: Cover window history
+      show_names: false
+      entities:
+        - cover.kitchen_window

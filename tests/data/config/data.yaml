@@ -1,0 +1,64 @@
+areas:
+  living_room:
+    name:
+      en: Living room
+      de: Wohnzimmer
+    icon: mdi:sofa
+    entities:
+      climate:
+        - entity: climate.living_room
+          name: Thermostat
+      cover:
+        - entity: cover.living_room_door
+          name:
+            en: Cover door
+            de: Rollo Tür
+        - entity: cover.living_room_window
+          name:
+            en: Cover window
+            de: Rollo Fenster
+      light:
+        - entity: light.living_room_ceiling
+          name:
+            en: Ceiling
+            de: Decke
+        - entity: light.living_room_spots
+          name: Spots
+      binary_sensor:
+        - entity: binary_sensor.living_room_door_contact
+          name:
+            en: Door
+            de: Tür
+        - entity: binary_sensor.living_room_window_contact
+          name:
+            en: Window
+            de: Fenster
+      media_player:
+        - entity: media_player.living_room_homepod
+          name: HomePod
+        - entity: media_player.living_room_apple_tv
+          name: Apple TV
+  kitchen:
+    name:
+      en: Kitchen
+      de: Küche
+    icon: mdi:chef-hat
+    entities:
+      climate:
+        - entity: climate.kitchen
+          name: Thermostat
+        - entity: cover.kitchen_window
+          name:
+            en: Cover window
+            de: Rollo Fenster
+      light:
+        - entity: light.kitchen_spots
+          name: Spots
+      binary_sensor:
+        - entity: binary_sensor.kitchen_window_contact
+          name:
+            en: Window
+            de: Fenster
+      media_player:
+        - entity: media_player.kitchen_homepod
+          name: HomePod

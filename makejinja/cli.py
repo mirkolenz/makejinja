@@ -6,6 +6,7 @@ from pathlib import Path
 from types import ModuleType
 from uuid import uuid1 as uuid
 
+import dtyper
 import typer
 import yaml
 from jinja2 import Environment, FileSystemLoader
@@ -48,6 +49,7 @@ def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> t.List[Path
     return files
 
 
+@dtyper.function
 @app.command()
 def run(
     input_folder: Path = typer.Argument(
@@ -63,7 +65,6 @@ def run(
     ),
     output_folder: Path = typer.Argument(
         ...,
-        exists=True,
         file_okay=False,
         dir_okay=True,
         readable=True,
@@ -229,7 +230,7 @@ def run(
         shutil.rmtree(output_folder)
 
     if copy_tree:
-        print(f"Copy file tree to '{output_folder}'")
+        print(f"Copy file tree '{input_folder}' -> '{output_folder}'")
         shutil.copytree(input_folder, output_folder)
 
     output_folder.mkdir(parents=True, exist_ok=True)

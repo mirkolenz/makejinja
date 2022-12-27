@@ -7,15 +7,25 @@ on:
       - main
       - beta
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: "pip install poetry==${{ env.POETRY_VERSION }}"
+      - run: "poetry run pytest"
   release:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - uses: actions/checkout@v3
       - uses: cihelper/action-semanticrelease-poetry@v1
         id: semanticrelease
         with:
-          poetry-version: "1.3.1"
-          python-version: "3.9"
+          poetry-version: ${{ env.POETRY_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
           pypi-token: ${{ secrets.PYPI_TOKEN }}
       - uses: cihelper/action-docker-publish@v1
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
