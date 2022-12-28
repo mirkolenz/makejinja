@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0-beta.2](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2022-12-28)
+
+
+### Features
+
+* add options to change jinja delimiters ([edd1caa](https://github.com/mirkolenz/makejinja/commit/edd1caac1b1cd22d14d0bd59aa33061934b1a25b))
+
 ## [1.0.0-beta.1](https://github.com/mirkolenz/makejinja/compare/v0.7.4...v1.0.0-beta.1) (2022-12-26)
 
 
