@@ -10,6 +10,14 @@ import dtyper
 import typer
 import yaml
 from jinja2 import Environment, FileSystemLoader
+from jinja2.defaults import (
+    BLOCK_END_STRING,
+    BLOCK_START_STRING,
+    COMMENT_END_STRING,
+    COMMENT_START_STRING,
+    VARIABLE_END_STRING,
+    VARIABLE_START_STRING,
+)
 from rich import print
 
 app = typer.Typer(rich_markup_mode="markdown", add_completion=False)
@@ -171,6 +179,30 @@ def run(
             Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
         """,
     ),
+    block_start_string: str = typer.Option(
+        BLOCK_START_STRING,
+        rich_help_panel="Jinja Delimiters",
+    ),
+    block_end_string: str = typer.Option(
+        BLOCK_END_STRING,
+        rich_help_panel="Jinja Delimiters",
+    ),
+    comment_start_string: str = typer.Option(
+        COMMENT_START_STRING,
+        rich_help_panel="Jinja Delimiters",
+    ),
+    comment_end_string: str = typer.Option(
+        COMMENT_END_STRING,
+        rich_help_panel="Jinja Delimiters",
+    ),
+    variable_start_string: str = typer.Option(
+        VARIABLE_START_STRING,
+        rich_help_panel="Jinja Delimiters",
+    ),
+    variable_end_string: str = typer.Option(
+        VARIABLE_END_STRING,
+        rich_help_panel="Jinja Delimiters",
+    ),
     copy_tree: bool = typer.Option(
         True,
         rich_help_panel="Output File Handling",
@@ -215,6 +247,12 @@ def run(
         keep_trailing_newline=keep_trailing_newline,
         trim_blocks=trim_blocks,
         lstrip_blocks=lstrip_blocks,
+        block_start_string=block_start_string,
+        block_end_string=block_end_string,
+        comment_start_string=comment_start_string,
+        comment_end_string=comment_end_string,
+        variable_start_string=variable_start_string,
+        variable_end_string=variable_end_string,
     )
 
     for _global in collect_files(globals, "**/*.py"):

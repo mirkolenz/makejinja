@@ -4,6 +4,7 @@
 
 makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
 This allows you to load variables from external files or create repeating patterns via loops.
+It is conceptually similar to [gomplate](https://github.com/hairyhenderson/gomplate), but is built on Python and Jinja instead of Go.
 A use case for this tool is generating config files for [Home Assistant](https://www.home-assistant.io/):
 Using the same language that the built-in templates use, you can greatly simplify your configuration.
 

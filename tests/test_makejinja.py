@@ -30,6 +30,12 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
         data=[data_path / "config"],
         filters=[data_path / "filters.py"],
         globals=[data_path / "globals.py"],
+        block_start_string="<%",
+        block_end_string="%>",
+        comment_start_string="<#",
+        comment_end_string="#>",
+        variable_start_string="<<",
+        variable_end_string=">>",
     )
 
     return Paths(input_path, baseline_path, output_path)

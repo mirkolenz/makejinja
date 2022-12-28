@@ -1,59 +1,59 @@
-{% set lang = "en" %}
-{% for area_id, area in areas.items() %}
-- title: {{ getlang(area.name, lang) }}
-  path: {{ area_id | hassurl }}
-  icon: {{ area.icon }}
+<% set lang = "en" %>
+<% for area_id, area in areas.items() %>
+- title: << getlang(area.name, lang) >>
+  path: << area_id | hassurl >>
+  icon: << area.icon >>
   cards:
     - type: grid
       square: false
       columns: 2
       cards:
-        {% for item in area.entities.light %}
+        <% for item in area.entities.light %>
         - type: tile
-          entity: {{ item.entity }}
-          name: {{ getlang(item.name, lang) }}
+          entity: << item.entity >>
+          name: << getlang(item.name, lang) >>
           features:
             - type: light-brightness
-        {% endfor %}
-        {% for item in area.entities.cover %}
+        <% endfor %>
+        <% for item in area.entities.cover %>
         - type: tile
-          entity: {{ item.entity }}
-          name: {{ getlang(item.name, lang) }}
+          entity: << item.entity >>
+          name: << getlang(item.name, lang) >>
           features:
             - type: cover-open-close
-        {% endfor %}
-        {% for item in area.entities.climate %}
+        <% endfor %>
+        <% for item in area.entities.climate %>
         - type: tile
-          entity: {{ item.entity }}
-          name: {{ getlang(item.name, lang) }}
-        {% endfor %}
-        {% for item in area.entities.switch %}
+          entity: << item.entity >>
+          name: << getlang(item.name, lang) >>
+        <% endfor %>
+        <% for item in area.entities.switch %>
         - type: tile
-          entity: {{ item.entity }}
-          name: {{ getlang(item.name, lang) }}
-        {% endfor %}
-        {% for item in area.entities.sensor %}
+          entity: << item.entity >>
+          name: << getlang(item.name, lang) >>
+        <% endfor %>
+        <% for item in area.entities.sensor %>
         - type: tile
-          entity: {{ item.entity }}
-          name: {{ getlang(item.name, lang) }}
-        {% endfor %}
-        {% for item in area.entities.binary_sensor %}
+          entity: << item.entity >>
+          name: << getlang(item.name, lang) >>
+        <% endfor %>
+        <% for item in area.entities.binary_sensor %>
         - type: tile
-          entity: {{ item.entity }}
-          name: {{ getlang(item.name, lang) }}
-        {% endfor %}
-        {% for item in area.entities.media_player %}
+          entity: << item.entity >>
+          name: << getlang(item.name, lang) >>
+        <% endfor %>
+        <% for item in area.entities.media_player %>
         - type: tile
-          entity: {{ item.entity }}
-          name: {{ getlang(item.name, lang) }}
+          entity: << item.entity >>
+          name: << getlang(item.name, lang) >>
           tap_action:
             action: more-info
-        {% endfor %}
-    {% for item in area.entities.climate %}
+        <% endfor %>
+    <% for item in area.entities.climate %>
     - type: history-graph
-      title: {{ getlang(item.name, lang) }} history
+      title: << getlang(item.name, lang) >> history
       show_names: false
       entities:
-        - {{ item.entity }}
-    {% endfor %}
-{% endfor %}
+        - << item.entity >>
+    <% endfor %>
+<% endfor %>
