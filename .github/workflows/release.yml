@@ -15,6 +15,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - run: "pip install poetry==${{ env.POETRY_VERSION }}"
+      - run: "poetry install --no-interaction -vv"
       - run: "poetry run pytest"
   release:
     runs-on: ubuntu-latest
