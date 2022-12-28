@@ -21,7 +21,7 @@ class Paths:
 def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
     data_path = Path(__package__, "data")
     input_path = data_path / "input"
-    baseline_path = data_path / "baseline"
+    baseline_path = data_path / "output"
     output_path = tmp_path_factory.mktemp("data")
 
     makejinja.run(

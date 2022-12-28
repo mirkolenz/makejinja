@@ -1,11 +1,13 @@
 # makejinja
 
+**Note:** Development happens in the [beta branch](https://github.com/mirkolenz/makejinja/tree/beta).
+
 makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
 This allows you to load variables from external files or create repeating patterns via loops.
 A use case for this tool is generating config files for [Home Assistant](https://www.home-assistant.io/):
 Using the same language that the built-in templates use, you can greatly simplify your configuration.
 
-<!-- A concrete example can be found in the `tests` folder. -->
+A concrete example for Home Assistant can be found in the [test directory](./tests/data)
 
 ## Installation
 
