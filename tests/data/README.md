@@ -3,9 +3,13 @@
 This folder contains a fully working example for automatically generating a dashboard for Home Assistant.
 The app should be invoked as follows (assuming that you run it inside the `tests/data` folder):
 
-`makejinja ./input ./output --data ./config --filters ./filters.py --globals ./globals.py`
+`makejinja ./input ./output --data ./config --filters ./filters.py --globals ./globals.py --block-start-string "<%" --block-end-string "%>" --comment-start-string "<#" --comment-end-string "#>" --variable-start-string "<<" --variable-end-string ">>"`
 
-It is composed of the following files/folders:
+**Note:**
+We adjust the default Jinja template tags so that there are no collisions with the Home Assistant template syntax.
+This way, you can even automatically generate correct templates for sensors and other use cases.
+
+The following files/folders are relevant:
 
 - `input`: Regular `yaml` config files together with `yaml.jinja` config templates (these are rendered by makejinja).
 - `output`: Resulting directory tree after running makejinja with the command shown above.
