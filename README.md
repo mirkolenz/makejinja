@@ -41,14 +41,15 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
  Usage: makejinja [OPTIONS] INPUT_FOLDER OUTPUT_FOLDER
 
 ╭─ Arguments ──────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ *    input_folder       PATH  Path to a folder containing template files. It is passed to Jinja's FileSystemLoader   │
-│                               when creating the environment.                                                         │
-│                               [default: None]                                                                        │
-│                               [required]                                                                             │
-│ *    output_folder      PATH  Path to a folder where the rendered templates are stored. makejinja preserves the      │
-│                               relative paths in the process, meaning that you can even use it on nested directories. │
-│                               [default: None]                                                                        │
-│                               [required]                                                                             │
+│ *    input_folder       DIRECTORY  Path to a folder containing template files. It is passed to Jinja's               │
+│                                    FileSystemLoader when creating the environment.                                   │
+│                                    [default: None]                                                                   │
+│                                    [required]                                                                        │
+│ *    output_folder      DIRECTORY  Path to a folder where the rendered templates are stored. makejinja preserves the │
+│                                    relative paths in the process, meaning that you can even use it on nested         │
+│                                    directories.                                                                      │
+│                                    [default: None]                                                                   │
+│                                    [required]                                                                        │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ --help          Show this message and exit.                                                                          │
@@ -65,35 +66,22 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 │                             [default: .jinja]                                                                        │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Jinja Environment Options ──────────────────────────────────────────────────────────────────────────────────────────╮
-│ --data                   PATH  Load variables from various file formats for use in your Jinja templates. The         │
-│                                defintions are passed to Jinja's render function. Can either be a file or a folder    │
-│                                containg files. Note: This option may be passed multiple times to pass a list of      │
-│                                values. If multiple files are supplied, beware that previous declarations will be     │
-│                                overwritten by newer ones. The following file formats are supported:                  │
-│                                                                                                                      │
-│                                 • .ini/.cfg/.config (using iniconfig)                                                │
-│                                 • .env (using python-dotenv)                                                         │
-│                                 • .yaml/.yml (using pyyaml)                                                          │
-│                                 • .toml (using rtoml)                                                                │
-│                                 • .json (using json)                                                                 │
-│ --data-env-prefix        TEXT  It is possible to provide data to the templates via environment variables. This       │
-│                                option allows to configure the (case-sensitive) prefix to use for this. Example: When │
-│                                using --data-env-prefix jinja and setting the env var jinja_style, the variable style │
-│                                will be available in your templates. Note: Environment variables are processed after  │
-│                                all other data files, allowing you to override their contents.                        │
-│                                [default: jinja]                                                                      │
-│ --globals                PATH  You can import functions/varibales defined in .py files to use them in your Jinja     │
-│                                templates. Can either be a file or a folder containg files. Note: This option may be  │
-│                                passed multiple times to pass a list of files/folders. If multiple files are          │
-│                                supplied, beware that previous declarations will be overwritten by newer ones.        │
-│ --filters                PATH  Jinja has support for filters (e.g., [1, 2, 3] | length) to easily call functions.    │
-│                                This option allows you to define custom filters in .py files. Can either be a file or │
-│                                a folder containg files. Note: This option may be passed multiple times to pass a     │
-│                                list of files/folders. If multiple files are supplied, beware that previous           │
-│                                declarations will be overwritten by newer ones.                                       │
-│ --extension              TEXT  Extend Jinja's parser by loading the specified extensions. An overview of the         │
-│                                built-in ones can be found on the project website. Note: This option may be passed    │
-│                                multiple times to pass a list of values.                                              │
+│ --data             PATH  Load variables from yaml/yaml files for use in your Jinja templates. The defintions are     │
+│                          passed to Jinja's render function. Can either be a file or a folder containg files. Note:   │
+│                          This option may be passed multiple times to pass a list of values. If multiple files are    │
+│                          supplied, beware that previous declarations will be overwritten by newer ones.              │
+│ --globals          PATH  You can import functions/varibales defined in .py files to use them in your Jinja           │
+│                          templates. Can either be a file or a folder containg files. Note: This option may be passed │
+│                          multiple times to pass a list of files/folders. If multiple files are supplied, beware that │
+│                          previous declarations will be overwritten by newer ones.                                    │
+│ --filters          PATH  Jinja has support for filters (e.g., [1, 2, 3] | length) to easily call functions. This     │
+│                          option allows you to define custom filters in .py files. Can either be a file or a folder   │
+│                          containg files. Note: This option may be passed multiple times to pass a list of            │
+│                          files/folders. If multiple files are supplied, beware that previous declarations will be    │
+│                          overwritten by newer ones.                                                                  │
+│ --extension        TEXT  Extend Jinja's parser by loading the specified extensions. An overview of the built-in ones │
+│                          can be found on the project website. Currently, only those built-in filters are allowed.    │
+│                          Note: This option may be passed multiple times to pass a list of values.                    │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Jinja Whitespace Control ───────────────────────────────────────────────────────────────────────────────────────────╮
 │ --lstrip-blocks            --no-lstrip-blocks              The lstrip_blocks option can also be set to strip tabs    │
@@ -112,6 +100,14 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 │                                                            keep_trailing_newline. Refer to the Jinja docs for more   │
 │                                                            details.                                                  │
 │                                                            [default: no-keep-trailing-newline]                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Jinja Delimiters ───────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --block-start-string           TEXT  [default: {%]                                                                   │
+│ --block-end-string             TEXT  [default: %}]                                                                   │
+│ --comment-start-string         TEXT  [default: {#]                                                                   │
+│ --comment-end-string           TEXT  [default: #}]                                                                   │
+│ --variable-start-string        TEXT  [default: {{]                                                                   │
+│ --variable-end-string          TEXT  [default: }}]                                                                   │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Output File Handling ───────────────────────────────────────────────────────────────────────────────────────────────╮
 │ --copy-tree              --no-copy-tree                If your input_folder containes additional files besides Jinja │
