@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.5](https://github.com/mirkolenz/makejinja/compare/v0.7.4...v0.7.5) (2022-12-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rich to v13 ([#11](https://github.com/mirkolenz/makejinja/issues/11)) ([86b15d7](https://github.com/mirkolenz/makejinja/commit/86b15d7325c9cc4e50f69cad6c3fd5628a242817))
+
 ## [1.0.0-beta.2](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2022-12-28)
 
 
