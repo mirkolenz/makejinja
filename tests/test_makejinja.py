@@ -1,10 +1,10 @@
+import os
 import typing as t
 from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
-
-import makejinja
+from click.testing import CliRunner
 
 
 @dataclass
@@ -24,19 +24,24 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
     baseline_path = data_path / "output"
     output_path = tmp_path_factory.mktemp("data")
 
-    makejinja.run(
-        input_path,
-        output_path,
-        data=[data_path / "config"],
-        filters=[data_path / "filters.py"],
-        globals=[data_path / "globals.py"],
-        block_start_string="<%",
-        block_end_string="%>",
-        comment_start_string="<#",
-        comment_end_string="#>",
-        variable_start_string="<<",
-        variable_end_string=">>",
-    )
+    with pytest.MonkeyPatch.context() as m:
+        m.chdir(data_path)
+        runner = CliRunner()
+
+        # Need to import it AFTER chdir
+        import makejinja.cli
+
+        res = runner.invoke(
+            makejinja.cli.main,
+            [
+                # Override it here to use our tmp_path
+                "--output-path",
+                str(output_path),
+            ],
+        )
+
+    # For logging wrong config options
+    print(res.stdout)
 
     return Paths(input_path, baseline_path, output_path)
 

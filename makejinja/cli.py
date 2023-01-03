@@ -1,4 +1,5 @@
 import importlib.util
+import os
 import shutil
 import sys
 import typing as t
@@ -6,23 +7,32 @@ from pathlib import Path
 from types import ModuleType
 from uuid import uuid1 as uuid
 
-import dtyper
-import typer
+import rich_click as click
+import typed_settings as ts
 import yaml
 from jinja2 import Environment, FileSystemLoader
-from jinja2.defaults import (
-    BLOCK_END_STRING,
-    BLOCK_START_STRING,
-    COMMENT_END_STRING,
-    COMMENT_START_STRING,
-    VARIABLE_END_STRING,
-    VARIABLE_START_STRING,
-)
 from rich import print
 
-app = typer.Typer(rich_markup_mode="markdown", add_completion=False)
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
 
-DATA_SUFFIXES = {".yaml", ".yml"}
+from makejinja.config import OPTION_GROUPS, Config
+
+click.rich_click.USE_MARKDOWN = True
+click.rich_click.OPTION_GROUPS = OPTION_GROUPS
+
+
+def from_yaml(fp: t.BinaryIO) -> t.Iterable[dict[str, t.Any]]:
+    return yaml.safe_load_all(fp)
+
+
+def from_toml(fp: t.BinaryIO) -> t.Iterable[dict[str, t.Any]]:
+    return (tomllib.load(fp),)
+
+
+DATA_LOADERS = {".yaml": from_yaml, ".yml": from_yaml, ".toml": from_toml}
 
 
 def import_file(path: Path) -> ModuleType:
@@ -57,253 +67,92 @@ def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> t.List[Path
     return files
 
 
-@dtyper.function
-@app.command()
-def run(
-    input_folder: Path = typer.Argument(
-        ...,
-        exists=True,
-        file_okay=False,
-        dir_okay=True,
-        readable=True,
-        help="""
-            Path to a folder containing template files.
-            It is passed to Jinja's [FileSystemLoader](https://jinja.palletsprojects.com/en/3.1.x/api/#jinja2.FileSystemLoader) when creating the environment.
-        """,
-    ),
-    output_folder: Path = typer.Argument(
-        ...,
-        file_okay=False,
-        dir_okay=True,
-        readable=True,
-        help="""
-            Path to a folder where the rendered templates are stored.
-            makejinja preserves the relative paths in the process, meaning that you can even use it on nested directories.
-        """,
-    ),
-    pattern: str = typer.Option(
-        "**/*",
-        rich_help_panel="Input File Handling",
-        help="""
-            Glob pattern to search for files in `input_folder`.
-            Accepts all pattern supported by [`fnmatch`](https://docs.python.org/3/library/fnmatch.html#module-fnmatch).
-            If a file is matched by this pattern and does not end with the specified `jinja-suffix`, it is copied over to the `output_folder`.
-            **Note:** Do not add a special suffix used by your template files here, instead use the `jinja-suffix` option.
-        """,
-    ),
-    jinja_suffix: str = typer.Option(
-        ".jinja",
-        rich_help_panel="Input File Handling",
-        help="""
-            File ending of Jinja template files.
-            All files with this suffix in `input_folder` matched by `pattern` are passed to the Jinja renderer.
-            **Note:** Should be provided *with* the leading dot.
-        """,
-    ),
-    data: list[Path] = typer.Option(
-        [],
-        exists=True,
-        file_okay=True,
-        dir_okay=True,
-        readable=True,
-        rich_help_panel="Jinja Environment Options",
-        help="""
-            Load variables from yaml/yaml files for use in your Jinja templates.
-            The defintions are passed to Jinja's `render` function.
-            Can either be a file or a folder containg files.
-            **Note:** This option may be passed multiple times to pass a list of values.
-            If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
-        """,
-    ),
-    globals: list[Path] = typer.Option(
-        [],
-        exists=True,
-        file_okay=True,
-        dir_okay=True,
-        readable=True,
-        rich_help_panel="Jinja Environment Options",
-        help="""
-            You can import functions/varibales defined in `.py` files to use them in your Jinja templates.
-            Can either be a file or a folder containg files.
-            **Note:** This option may be passed multiple times to pass a list of files/folders.
-            If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
-        """,
-    ),
-    filters: list[Path] = typer.Option(
-        [],
-        exists=True,
-        file_okay=True,
-        dir_okay=True,
-        readable=True,
-        rich_help_panel="Jinja Environment Options",
-        help="""
-            Jinja has support for filters (e.g., `[1, 2, 3] | length`) to easily call functions.
-            This option allows you to define [custom filters](https://jinja.palletsprojects.com/en/3.1.x/api/#custom-filters) in `.py` files.
-            Can either be a file or a folder containg files.
-            **Note:** This option may be passed multiple times to pass a list of files/folders.
-            If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
-        """,
-    ),
-    extension: list[str] = typer.Option(
-        [],
-        rich_help_panel="Jinja Environment Options",
-        help="""
-            Extend Jinja's parser by loading the specified extensions.
-            An overview of the built-in ones can be found on the [project website](https://jinja.palletsprojects.com/en/3.1.x/extensions/).
-            Currently, only those built-in filters are allowed.
-            **Note:** This option may be passed multiple times to pass a list of values.
-        """,
-    ),
-    lstrip_blocks: bool = typer.Option(
-        True,
-        rich_help_panel="Jinja Whitespace Control",
-        help="""
-            The lstrip_blocks option can also be set to strip tabs and spaces from the beginning of a line to the start of a block.
-            (Nothing will be stripped if there are other characters before the start of the block.)
-            Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
-        """,
-    ),
-    trim_blocks: bool = typer.Option(
-        True,
-        rich_help_panel="Jinja Whitespace Control",
-        help="""
-            If an application configures Jinja to trim_blocks, the first newline after a template tag is removed automatically (like in PHP).
-            Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
-        """,
-    ),
-    keep_trailing_newline: bool = typer.Option(
-        False,
-        rich_help_panel="Jinja Whitespace Control",
-        help="""
-            By default, Jinja also removes trailing newlines. To keep single trailing newlines, configure Jinja to keep_trailing_newline.
-            Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
-        """,
-    ),
-    block_start_string: str = typer.Option(
-        BLOCK_START_STRING,
-        rich_help_panel="Jinja Delimiters",
-    ),
-    block_end_string: str = typer.Option(
-        BLOCK_END_STRING,
-        rich_help_panel="Jinja Delimiters",
-    ),
-    comment_start_string: str = typer.Option(
-        COMMENT_START_STRING,
-        rich_help_panel="Jinja Delimiters",
-    ),
-    comment_end_string: str = typer.Option(
-        COMMENT_END_STRING,
-        rich_help_panel="Jinja Delimiters",
-    ),
-    variable_start_string: str = typer.Option(
-        VARIABLE_START_STRING,
-        rich_help_panel="Jinja Delimiters",
-    ),
-    variable_end_string: str = typer.Option(
-        VARIABLE_END_STRING,
-        rich_help_panel="Jinja Delimiters",
-    ),
-    copy_tree: bool = typer.Option(
-        True,
-        rich_help_panel="Output File Handling",
-        help="""
-            If your `input_folder` containes additional files besides Jinja templates, you may want to copy them to `output_folder` as well.
-            This operation maintains the metadata of all files and folders, meaning that tools like `rsync` will treat them exactly like the original ones.
-            **Note:** Even if set to `no-copy-tree`, files that are matched by your provided `pattern` within `input_folder` are still copied over.
-            In both cases, a file's metadata is untouched.
-            The main difference is that with `copy-tree`, folders keep their metadata while matched files are copied to newly-created subfolders that differ in their metadata.
-        """,
-    ),
-    remove_jinja_suffix: bool = typer.Option(
-        True,
-        rich_help_panel="Output File Handling",
-        help="""
-            Decide whether the specified `jinja-suffix` is removed from the file after rendering.
-        """,
-    ),
-    skip_empty: bool = typer.Option(
-        True,
-        rich_help_panel="Output File Handling",
-        help="""
-            Some Jinja template files may be empty after rendering (e.g., if they only contain macros that are imported by other templates).
-            By default, we do not copy such empty files.
-            If there is a need to have them available anyway, you can adjust that.
-        """,
-    ),
-):
-    render_args = {}
+loader = ts.default_loaders(
+    appname="makejinja", config_files=(Path(".makejinja.toml"),)
+)
 
-    for path in collect_files(data):
-        if path.suffix in DATA_SUFFIXES:
-            with path.open("r") as fp:
-                yaml_docs = yaml.safe_load_all(fp)
 
-                for doc in yaml_docs:
+@click.command("makejinja")
+@ts.click_options(Config, loader)
+def main(config: Config):
+    """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
+
+    Instead of passing CLI options, you can also write them to a file called `.makejinja.toml` in your working directory.
+    **Note**: In this file, options may be named differently.
+    Please refer to the file [`makejinja/config.py`](https://github.com/mirkolenz/makejinja/blob/main/makejinja/config.py) to see their actual names.
+    You will also find an example here: [`makejinja/tests/data/.makejinja.toml`](https://github.com/mirkolenz/makejinja/blob/main/tests/data/.makejinja.toml).
+    """
+    render_args: dict[str, t.Any] = {}
+
+    for path in collect_files(config.data_paths):
+        if path.suffix in DATA_LOADERS:
+            with path.open("rb") as fp:
+                for doc in DATA_LOADERS[path.suffix](fp):
                     render_args.update(doc)
 
     env = Environment(
-        loader=FileSystemLoader(input_folder),
-        extensions=extension,
-        keep_trailing_newline=keep_trailing_newline,
-        trim_blocks=trim_blocks,
-        lstrip_blocks=lstrip_blocks,
-        block_start_string=block_start_string,
-        block_end_string=block_end_string,
-        comment_start_string=comment_start_string,
-        comment_end_string=comment_end_string,
-        variable_start_string=variable_start_string,
-        variable_end_string=variable_end_string,
+        loader=FileSystemLoader(config.input_path),
+        extensions=config.extension_names,
+        keep_trailing_newline=config.keep_trailing_newline,
+        trim_blocks=config.trim_blocks,
+        lstrip_blocks=config.lstrip_blocks,
+        block_start_string=config.delimiter.block_start,
+        block_end_string=config.delimiter.block_end,
+        comment_start_string=config.delimiter.comment_start,
+        comment_end_string=config.delimiter.comment_end,
+        variable_start_string=config.delimiter.variable_start,
+        variable_end_string=config.delimiter.variable_end,
     )
 
-    for _global in collect_files(globals, "**/*.py"):
+    for _global in collect_files(config.global_paths, "**/*.py"):
         mod = import_file(_global)
         env.globals.update(mod.globals)
 
-    for _filter in collect_files(filters, "**/*.py"):
+    for _filter in collect_files(config.filter_paths, "**/*.py"):
         mod = import_file(_filter)
         env.filters.update(mod.filters)
 
-    if output_folder.is_dir():
-        print(f"Remove '{output_folder}' from previous run")
-        shutil.rmtree(output_folder)
+    if config.output_path.is_dir():
+        print(f"Remove '{config.output_path}' from previous run")
+        shutil.rmtree(config.output_path)
 
-    if copy_tree:
-        print(f"Copy file tree '{input_folder}' -> '{output_folder}'")
-        shutil.copytree(input_folder, output_folder)
+    if config.copy_tree:
+        print(f"Copy file tree '{config.input_path}' -> '{config.output_path}'")
+        shutil.copytree(config.input_path, config.output_path)
 
-    output_folder.mkdir(parents=True, exist_ok=True)
+    config.output_path.mkdir(parents=True, exist_ok=True)
 
-    for input_path in input_folder.glob(pattern):
+    for input_path in config.input_path.glob(config.input_pattern):
         if not input_path.is_dir():
-            relative_path = input_path.relative_to(input_folder)
-            output_path = output_folder / relative_path
+            relative_path = input_path.relative_to(config.input_path)
+            output_path = config.output_path / relative_path
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
-            if relative_path.suffix == jinja_suffix:
+            if relative_path.suffix == config.jinja_suffix:
                 template = env.get_template(str(relative_path))
 
                 # Remove the copied file if the tree has been duplicated
-                if copy_tree:
+                if config.copy_tree:
                     output_path.unlink()
 
-                if remove_jinja_suffix:
+                if not config.keep_jinja_suffix:
                     output_path = output_path.with_suffix("")
 
                 rendered = template.render(render_args)
 
                 # Write the rendered template if it has content
                 # Prevents empty macro definitions
-                if rendered.strip() == "" and skip_empty:
+                if rendered.strip() == "" and not config.keep_empty:
                     print(f"Skip '{input_path}'")
                 else:
                     print(f"Render '{input_path}' -> '{output_path}'")
                     with output_path.open("w") as f:
                         f.write(rendered)
 
-            elif not copy_tree:
+            elif not config.copy_tree:
                 print(f"Copy '{input_path}' -> '{output_path}'")
                 shutil.copy2(input_path, output_path)
 
 
 if __name__ == "__main__":
-    app()
+    main()
