@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0-beta.4](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2023-01-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* switch from typer to click & typed-settings
+
+### Features
+
+* switch from typer to click & typed-settings ([3e9d09d](https://github.com/mirkolenz/makejinja/commit/3e9d09d53c1a68fb47a40c25b088809198f30e10))
+
 ## [1.0.0-beta.3](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2023-01-02)
 
 
