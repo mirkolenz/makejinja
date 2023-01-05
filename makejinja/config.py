@@ -104,7 +104,7 @@ class Config:
             factory=list,
             click={
                 "type": click.Path(exists=True, path_type=Path),
-                "param_decls": ("--data-path",),
+                "param_decls": "--data-path",
             },
             help="""
                 Load variables from yaml/yml or toml files for use in your Jinja templates.
@@ -121,7 +121,7 @@ class Config:
             factory=list,
             click={
                 "type": click.Path(exists=True, path_type=Path),
-                "param_decls": ("--global-path",),
+                "param_decls": "--global-path",
             },
             help="""
                 You can import functions/varibales defined in `.py` files to use them in your Jinja templates.
@@ -137,7 +137,7 @@ class Config:
             factory=list,
             click={
                 "type": click.Path(exists=True, path_type=Path),
-                "param_decls": ("--filter-path",),
+                "param_decls": "--filter-path",
             },
             help="""
                 Jinja has support for filters (e.g., `[1, 2, 3] | length`) to easily call functions.
@@ -152,7 +152,7 @@ class Config:
         list[str],
         ts.option(
             factory=list,
-            click={"param_decls": ("--extension-name",)},
+            click={"param_decls": "--extension-name"},
             help="""
                 Extend Jinja's parser by loading the specified extensions.
                 An overview of the built-in ones can be found on the [project website](https://jinja.palletsprojects.com/en/3.1.x/extensions/).
@@ -186,9 +186,7 @@ class Config:
         bool,
         ts.option(
             default=False,
-            click={
-                "param_decls": ("--keep-trailing-newline/--remove-trailing-newline",)
-            },
+            click={"param_decls": "--keep-trailing-newline/--remove-trailing-newline"},
             help="""
                 By default, Jinja also removes trailing newlines. To keep single trailing newlines, configure Jinja to keep_trailing_newline.
                 Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
@@ -200,7 +198,7 @@ class Config:
         bool,
         ts.option(
             default=False,
-            click={"param_decls": ("--copy-tree",), "is_flag": True},
+            click={"param_decls": "--copy-tree", "is_flag": True},
             help="""
                 If your `input_folder` containes additional files besides Jinja templates, you may want to copy them to `output_folder` as well.
                 This operation maintains the metadata of all files and folders, meaning that tools like `rsync` will treat them exactly like the original ones.
@@ -214,7 +212,7 @@ class Config:
         bool,
         ts.option(
             default=False,
-            click={"param_decls": ("--keep-jinja-suffix",), "is_flag": True},
+            click={"param_decls": "--keep-jinja-suffix", "is_flag": True},
             help="""
                 Decide whether the specified `jinja-suffix` is removed from the file after rendering.
             """,
@@ -224,7 +222,7 @@ class Config:
         bool,
         ts.option(
             default=False,
-            click={"param_decls": ("--keep-empty",), "is_flag": True},
+            click={"param_decls": "--keep-empty", "is_flag": True},
             help="""
                 Some Jinja template files may be empty after rendering (e.g., if they only contain macros that are imported by other templates).
                 By default, we do not copy such empty files.
