@@ -200,7 +200,7 @@ class Config:
         bool,
         ts.option(
             default=False,
-            click={"param_decls": ("--copy-tree", "flag"), "is_flag": True},
+            click={"param_decls": ("--copy-tree",), "is_flag": True},
             help="""
                 If your `input_folder` containes additional files besides Jinja templates, you may want to copy them to `output_folder` as well.
                 This operation maintains the metadata of all files and folders, meaning that tools like `rsync` will treat them exactly like the original ones.
@@ -214,7 +214,7 @@ class Config:
         bool,
         ts.option(
             default=False,
-            click={"param_decls": ("--keep-jinja-suffix", "flag"), "is_flag": True},
+            click={"param_decls": ("--keep-jinja-suffix",), "is_flag": True},
             help="""
                 Decide whether the specified `jinja-suffix` is removed from the file after rendering.
             """,
@@ -224,7 +224,7 @@ class Config:
         bool,
         ts.option(
             default=False,
-            click={"param_decls": ("--keep-empty", "flag"), "is_flag": True},
+            click={"param_decls": ("--keep-empty",), "is_flag": True},
             help="""
                 Some Jinja template files may be empty after rendering (e.g., if they only contain macros that are imported by other templates).
                 By default, we do not copy such empty files.
