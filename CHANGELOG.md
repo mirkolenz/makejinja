@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0-beta.5](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2023-01-05)
+
+
+### Bug Fixes
+
+* remove wrong flag decls from click params ([5d98f08](https://github.com/mirkolenz/makejinja/commit/5d98f08752b264b94d9091755e3ad1ca515496c0))
+
 ## [1.0.0-beta.4](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2023-01-03)
 
 
