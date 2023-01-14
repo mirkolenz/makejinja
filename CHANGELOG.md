@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.0-beta.7](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2023-01-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* enhance custom code & remove cli options
+
+### Features
+
+* add initial support to load custom code ([9404ecc](https://github.com/mirkolenz/makejinja/commit/9404eccca2db01858242d2f445b814311188ba07))
+* add python data loader ([2a0b817](https://github.com/mirkolenz/makejinja/commit/2a0b8170f68e8e6a3658ff3c1bd79e7eeab4841b))
+* enhance custom code & remove cli options ([a8b0b64](https://github.com/mirkolenz/makejinja/commit/a8b0b641304583377975d9960d0677596ad88709))
+
 ## [1.0.0-beta.6](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2023-01-14)
 
 
