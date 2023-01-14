@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0-beta.6](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2023-01-14)
+
+
+### Bug Fixes
+
+* add missing main package file ([b436dda](https://github.com/mirkolenz/makejinja/commit/b436dda408e04b510d3bd6185e29dd257029aa84))
+* update typed-settings and remove type casts ([e42309d](https://github.com/mirkolenz/makejinja/commit/e42309de1020c4cd0463ec4948933b83caad9438))
+
 ## [1.0.0-beta.5](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2023-01-05)
 
 
