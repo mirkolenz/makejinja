@@ -427,14 +427,14 @@ files = [
 
 [[package]]
 name = "typed-settings"
-version = "2.0.0"
+version = "2.0.1"
 description = "Typed settings based on attrs classes"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typed_settings-2.0.0-py3-none-any.whl", hash = "sha256:ab74a95307f41b4da88f3b7e3081a48419f13eac0eba92f847fb99478e9f12a8"},
-    {file = "typed_settings-2.0.0.tar.gz", hash = "sha256:a3470f0ffeff0d2f5a52d2c3035621c4aaf150313b125bf807bce52954ac1494"},
+    {file = "typed_settings-2.0.1-py3-none-any.whl", hash = "sha256:8d0471f51e05bfd05d10aae2f84136320114119e4682aa218b4cad9235389f91"},
+    {file = "typed_settings-2.0.1.tar.gz", hash = "sha256:8dfc14f1ef71422dc2a729ddb4523e32c6aa3703e94d10c86d1022b1bc5aade9"},
 ]
 
 [package.dependencies]
@@ -450,9 +450,9 @@ dev = ["nox", "safety", "typed-settings[docs,lint,test]"]
 docs = ["furo", "sphinx", "typed-settings[all]"]
 lint = ["autoflake", "bandit", "flake8 (>=4.0.0,<5.0.0)", "flake8-bandit", "flake8-black", "flake8-bugbear", "flake8-isort", "mypy", "typed-settings[all]", "types-toml"]
 option-groups = ["click (>=7,<9)", "click-option-group"]
-test = ["coverage[toml] (>=5.3)", "pytest (>=7.2.0)", "pytest-cov", "typed-settings[all]", "typing-extensions"]
+test = ["coverage[toml] (>=5.3)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "typed-settings[all]", "typing-extensions"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "588cc71cd1359e0ba66476cefd5cb073fc4d83d7d49a7d8759a2714f71086454"
+content-hash = "fc0490619b7ce17946be2bd513b55a70096d13125092e6298f8188f4e4b7224d"
