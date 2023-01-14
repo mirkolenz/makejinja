@@ -55,10 +55,16 @@ def _from_toml(path: Path) -> dict[str, t.Any]:
         return tomllib.load(fp)
 
 
+def _from_py(path: Path) -> dict[str, t.Any]:
+    mod = _import_module(path)
+    return mod.data
+
+
 DATA_LOADERS: dict[str, t.Callable[[Path], dict[str, t.Any]]] = {
     ".yaml": _from_yaml,
     ".yml": _from_yaml,
     ".toml": _from_toml,
+    ".py": _from_py,
 }
 
 
