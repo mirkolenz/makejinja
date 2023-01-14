@@ -125,6 +125,14 @@ def main(config: Config):
     for path in _collect_files(config.data_paths):
         if loader := DATA_LOADERS.get(path.suffix):
             data.update(loader(path))
+
+    # TODO: Maybe remove `collect_files` and import as real module instead
+    for file in _collect_files(config.custom_code, "**/*.py"):
+        mod = _import_module(file)
+        env.globals.update(mod.globals)
+        env.filters.update(mod.filters)
+        data.update(mod.data)
+
     if config.output_path.is_dir():
         print(f"Remove '{config.output_path}' from previous run")
         shutil.rmtree(config.output_path)

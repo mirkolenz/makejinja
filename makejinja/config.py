@@ -107,6 +107,13 @@ class Config:
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
             """,
     )
+    custom_code: list[Path] = ts.option(
+        factory=list,
+        click={"type": click.Path(exists=True, path_type=Path)},
+        help="""
+            Load custom code into the program. TODO: More details
+        """,
+    )
     extension_names: list[str] = ts.option(
         factory=list,
         click={"param_decls": "--extension-name"},
