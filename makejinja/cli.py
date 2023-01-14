@@ -35,7 +35,7 @@ def from_toml(fp: t.BinaryIO) -> t.Iterable[dict[str, t.Any]]:
 DATA_LOADERS = {".yaml": from_yaml, ".yml": from_yaml, ".toml": from_toml}
 
 
-def import_file(path: Path) -> ModuleType:
+def _import_module(path: Path) -> ModuleType:
     # https://stackoverflow.com/a/41595552
     # https://docs.python.org/3.11/library/importlib.html#importing-a-source-file-directly
     name = str(uuid()).lower().replace("-", "")
@@ -105,11 +105,11 @@ def main(config: Config):
     )
 
     for _global in collect_files(config.global_paths, "**/*.py"):
-        mod = import_file(_global)
+        mod = _import_module(_global)
         env.globals.update(mod.globals)
 
     for _filter in collect_files(config.filter_paths, "**/*.py"):
-        mod = import_file(_filter)
+        mod = _import_module(_filter)
         env.filters.update(mod.filters)
 
     if config.output_path.is_dir():
