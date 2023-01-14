@@ -24,17 +24,6 @@ click.rich_click.USE_MARKDOWN = True
 click.rich_click.OPTION_GROUPS = OPTION_GROUPS
 
 
-def from_yaml(fp: t.BinaryIO) -> t.Iterable[dict[str, t.Any]]:
-    return yaml.safe_load_all(fp)
-
-
-def from_toml(fp: t.BinaryIO) -> t.Iterable[dict[str, t.Any]]:
-    return (tomllib.load(fp),)
-
-
-DATA_LOADERS = {".yaml": from_yaml, ".yml": from_yaml, ".toml": from_toml}
-
-
 def _import_module(path: Path) -> ModuleType:
     # https://stackoverflow.com/a/41595552
     # https://docs.python.org/3.11/library/importlib.html#importing-a-source-file-directly
@@ -51,7 +40,29 @@ def _import_module(path: Path) -> ModuleType:
     return module
 
 
-def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> t.List[Path]:
+def _from_yaml(path: Path) -> dict[str, t.Any]:
+    data = {}
+
+    with path.open("rb") as fp:
+        for doc in yaml.safe_load_all(fp):
+            data.update(doc)
+
+    return data
+
+
+def _from_toml(path: Path) -> dict[str, t.Any]:
+    with path.open("rb") as fp:
+        return tomllib.load(fp)
+
+
+DATA_LOADERS: dict[str, t.Callable[[Path], dict[str, t.Any]]] = {
+    ".yaml": _from_yaml,
+    ".yml": _from_yaml,
+    ".toml": _from_toml,
+}
+
+
+def _collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> t.List[Path]:
     files = []
 
     for path in paths:
@@ -67,13 +78,13 @@ def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> t.List[Path
     return files
 
 
-loader = ts.default_loaders(
+_loader = ts.default_loaders(
     appname="makejinja", config_files=(Path(".makejinja.toml"),)
 )
 
 
 @click.command("makejinja")
-@ts.click_options(Config, loader)
+@ts.click_options(Config, _loader)
 def main(config: Config):
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
 
@@ -82,14 +93,6 @@ def main(config: Config):
     Please refer to the file [`makejinja/config.py`](https://github.com/mirkolenz/makejinja/blob/main/makejinja/config.py) to see their actual names.
     You will also find an example here: [`makejinja/tests/data/.makejinja.toml`](https://github.com/mirkolenz/makejinja/blob/main/tests/data/.makejinja.toml).
     """
-    render_args: dict[str, t.Any] = {}
-
-    for path in collect_files(config.data_paths):
-        if path.suffix in DATA_LOADERS:
-            with path.open("rb") as fp:
-                for doc in DATA_LOADERS[path.suffix](fp):
-                    render_args.update(doc)
-
     env = Environment(
         loader=FileSystemLoader(config.input_path),
         extensions=config.extension_names,
@@ -104,14 +107,19 @@ def main(config: Config):
         variable_end_string=config.delimiter.variable_end,
     )
 
-    for _global in collect_files(config.global_paths, "**/*.py"):
+    for _global in _collect_files(config.global_paths, "**/*.py"):
         mod = _import_module(_global)
         env.globals.update(mod.globals)
 
-    for _filter in collect_files(config.filter_paths, "**/*.py"):
+    for _filter in _collect_files(config.filter_paths, "**/*.py"):
         mod = _import_module(_filter)
         env.filters.update(mod.filters)
 
+    data: dict[str, t.Any] = {}
+
+    for path in _collect_files(config.data_paths):
+        if loader := DATA_LOADERS.get(path.suffix):
+            data.update(loader(path))
     if config.output_path.is_dir():
         print(f"Remove '{config.output_path}' from previous run")
         shutil.rmtree(config.output_path)
@@ -138,7 +146,7 @@ def main(config: Config):
                 if not config.keep_jinja_suffix:
                     output_path = output_path.with_suffix("")
 
-                rendered = template.render(render_args)
+                rendered = template.render(data)
 
                 # Write the rendered template if it has content
                 # Prevents empty macro definitions
