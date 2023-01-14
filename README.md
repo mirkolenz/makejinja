@@ -8,7 +8,16 @@ It is conceptually similar to [gomplate](https://github.com/hairyhenderson/gompl
 A use case for this tool is generating config files for [Home Assistant](https://www.home-assistant.io/):
 Using the same language that the built-in templates use, you can greatly simplify your configuration.
 
-A concrete example for Home Assistant can be found in the [test directory](./tests/data)
+A concrete example for Home Assistant can be found in the [tests directory](./tests/data)
+
+## Features
+
+- Recursively convert nested directories containing template files. One can even specify a pattern to specify relevant files in a folder.
+- Load data files containing variables to use in your Jinja templates from YAML, TOML, and Python files.
+- Use custom functions in your Jinja templates by loading custom filters and/or globals.
+- Easily load all extensions bundled with Jinja (custom extensions are not yet supported).
+- Tailor the whitespace behavior to your needs.
+- Use custom delimiters for Jinja blocks/comments/variables.
 
 ## Installation
 
