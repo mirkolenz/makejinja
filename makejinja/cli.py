@@ -12,6 +12,8 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 from rich import print
 
+from makejinja.types import ExportsTemplate
+
 try:
     import tomllib
 except ModuleNotFoundError:
@@ -23,20 +25,26 @@ click.rich_click.USE_MARKDOWN = True
 click.rich_click.OPTION_GROUPS = OPTION_GROUPS
 
 
-def _import_module(path: Path) -> ModuleType:
+def _import_module(path: Path) -> ExportsTemplate:
     # https://stackoverflow.com/a/41595552
     # https://docs.python.org/3.11/library/importlib.html#importing-a-source-file-directly
     name = str(uuid()).lower().replace("-", "")
-    spec = importlib.util.spec_from_file_location(name, path)
-    assert spec is not None
 
-    module = importlib.util.module_from_spec(spec)
+    if path.is_dir():
+        path /= "__init__.py"
+
+    spec = importlib.util.spec_from_file_location(name, path)
+    assert (
+        spec is not None
+    ), f"The module has not been found. Please verify the given path '{path}'."
+
+    module: ModuleType = importlib.util.module_from_spec(spec)
     sys.modules[name] = module
     assert spec.loader is not None
 
     spec.loader.exec_module(module)
 
-    return module
+    return module.Exports()
 
 
 def _from_yaml(path: Path) -> dict[str, t.Any]:
@@ -54,16 +62,10 @@ def _from_toml(path: Path) -> dict[str, t.Any]:
         return tomllib.load(fp)
 
 
-def _from_py(path: Path) -> dict[str, t.Any]:
-    mod = _import_module(path)
-    return mod.data
-
-
 DATA_LOADERS: dict[str, t.Callable[[Path], dict[str, t.Any]]] = {
     ".yaml": _from_yaml,
     ".yml": _from_yaml,
     ".toml": _from_toml,
-    ".py": _from_py,
 }
 
 
@@ -98,9 +100,17 @@ def main(config: Config):
     Please refer to the file [`makejinja/config.py`](https://github.com/mirkolenz/makejinja/blob/main/makejinja/config.py) to see their actual names.
     You will also find an example here: [`makejinja/tests/data/.makejinja.toml`](https://github.com/mirkolenz/makejinja/blob/main/tests/data/.makejinja.toml).
     """
+    modules = [_import_module(mod) for mod in config.modules]
+
+    extensions: list[t.Any] = [*config.extensions]
+
+    for mod in modules:
+        if hasattr(mod, "extensions"):
+            extensions.extend(mod.extensions())
+
     env = Environment(
         loader=FileSystemLoader(config.input_path),
-        extensions=config.extension_names,
+        extensions=extensions,
         keep_trailing_newline=config.keep_trailing_newline,
         trim_blocks=config.trim_blocks,
         lstrip_blocks=config.lstrip_blocks,
@@ -112,26 +122,24 @@ def main(config: Config):
         variable_end_string=config.delimiter.variable_end,
     )
 
-    for _global in _collect_files(config.global_paths, "**/*.py"):
-        mod = _import_module(_global)
-        env.globals.update(mod.globals)
-
-    for _filter in _collect_files(config.filter_paths, "**/*.py"):
-        mod = _import_module(_filter)
-        env.filters.update(mod.filters)
-
     data: dict[str, t.Any] = {}
 
     for path in _collect_files(config.data_paths):
         if loader := DATA_LOADERS.get(path.suffix):
             data.update(loader(path))
 
-    # TODO: Maybe remove `collect_files` and import as real module instead
-    for file in _collect_files(config.custom_code, "**/*.py"):
-        mod = _import_module(file)
-        env.globals.update(mod.globals)
-        env.filters.update(mod.filters)
-        data.update(mod.data)
+    for mod in modules:
+        if hasattr(mod, "globals"):
+            env.globals.update({func.__name__: func for func in mod.globals()})
+
+        if hasattr(mod, "filters"):
+            env.filters.update({func.__name__: func for func in mod.filters()})
+
+        if hasattr(mod, "data"):
+            data.update(mod.data())
+
+        if hasattr(mod, "setup_env"):
+            mod.setup_env(env)
 
     if config.output_path.is_dir():
         print(f"Remove '{config.output_path}' from previous run")

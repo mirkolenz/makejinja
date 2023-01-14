@@ -80,43 +80,19 @@ class Config:
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
             """,
     )
-    global_paths: list[Path] = ts.option(
+    modules: list[Path] = ts.option(
         factory=list,
         click={
             "type": click.Path(exists=True, path_type=Path),
-            "param_decls": "--global-path",
+            "param_decls": "--module",
         },
-        help="""
-                You can import functions/varibales defined in `.py` files to use them in your Jinja templates.
-                Can either be a file or a folder containg files.
-                **Note:** This option may be passed multiple times to pass a list of files/folders.
-                If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
-            """,
-    )
-    filter_paths: list[Path] = ts.option(
-        factory=list,
-        click={
-            "type": click.Path(exists=True, path_type=Path),
-            "param_decls": "--filter-path",
-        },
-        help="""
-                Jinja has support for filters (e.g., `[1, 2, 3] | length`) to easily call functions.
-                This option allows you to define [custom filters](https://jinja.palletsprojects.com/en/3.1.x/api/#custom-filters) in `.py` files.
-                Can either be a file or a folder containg files.
-                **Note:** This option may be passed multiple times to pass a list of files/folders.
-                If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
-            """,
-    )
-    custom_code: list[Path] = ts.option(
-        factory=list,
-        click={"type": click.Path(exists=True, path_type=Path)},
         help="""
             Load custom code into the program. TODO: More details
         """,
     )
-    extension_names: list[str] = ts.option(
+    extensions: list[str] = ts.option(
         factory=list,
-        click={"param_decls": "--extension-name"},
+        click={"param_decls": "--extension"},
         help="""
                 Extend Jinja's parser by loading the specified extensions.
                 An overview of the built-in ones can be found on the [project website](https://jinja.palletsprojects.com/en/3.1.x/extensions/).

@@ -2,8 +2,7 @@
 input_path = "./input"
 output_path = "./output"
 data_paths = ["./config"]
-filter_paths = ["./filters.py"]
-global_paths = ["./globals.py"]
+modules = ["./exports.py"]
 
 [makejinja.delimiter]
 block_start = "<%"
