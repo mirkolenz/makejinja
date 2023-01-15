@@ -1,4 +1,5 @@
 import shutil
+import sys
 import typing as t
 from pathlib import Path
 
@@ -76,6 +77,9 @@ def main(config: Config):
     Please refer to the file [`makejinja/config.py`](https://github.com/mirkolenz/makejinja/blob/main/makejinja/config.py) to see their actual names.
     You will also find an example here: [`makejinja/tests/data/.makejinja.toml`](https://github.com/mirkolenz/makejinja/blob/main/tests/data/.makejinja.toml).
     """
+
+    for path in config.import_paths:
+        sys.path.append(str(path))
 
     data: dict[str, t.Any] = {}
 

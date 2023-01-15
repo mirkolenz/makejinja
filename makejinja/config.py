@@ -218,6 +218,17 @@ class Config:
             **Note:** This option may be passed multiple times to pass a list of values.
         """,
     )
+    import_paths: list[Path] = ts.option(
+        factory=lambda: list("."),
+        click={
+            "type": click.Path(exists=True, file_okay=False, path_type=Path),
+            "param_decls": "--import-path",
+        },
+        help="""
+            In order to load custom loaders or Jinja extensions, the PYTHONPATH variable needs to be patched.
+            By default, makejinja will look for modules in your current directory, but you may change that.
+        """,
+    )
     extensions: list[str] = ts.option(
         factory=list,
         click={"param_decls": "--extension"},
@@ -252,7 +263,7 @@ OPTION_GROUPS = {
             "options": [
                 "--data",
                 "--loader",
-                "--loader-class",
+                "--import-path",
                 "--extension",
             ],
         },

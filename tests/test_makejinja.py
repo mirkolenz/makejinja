@@ -38,9 +38,6 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
                 # Override it here to use our tmp_path
                 "--output",
                 str(output_path),
-                # The import path is skewed, so we have to adjust it
-                "--loader",
-                loader_import,
             ],
         )
 
