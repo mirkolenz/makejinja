@@ -112,15 +112,26 @@ def main(config: Config):
     env = Environment(
         loader=FileSystemLoader(config.input_path),
         extensions=extensions,
-        keep_trailing_newline=config.whitespace.keep_trailing_newline,
-        trim_blocks=config.whitespace.trim_blocks,
-        lstrip_blocks=config.whitespace.lstrip_blocks,
         block_start_string=config.delimiter.block_start,
         block_end_string=config.delimiter.block_end,
-        comment_start_string=config.delimiter.comment_start,
-        comment_end_string=config.delimiter.comment_end,
         variable_start_string=config.delimiter.variable_start,
         variable_end_string=config.delimiter.variable_end,
+        comment_start_string=config.delimiter.comment_start,
+        comment_end_string=config.delimiter.comment_end,
+        line_statement_prefix=config.prefix.line_statement,
+        line_comment_prefix=config.prefix.line_comment,
+        trim_blocks=config.whitespace.trim_blocks,
+        lstrip_blocks=config.whitespace.lstrip_blocks,
+        newline_sequence=config.whitespace.newline_sequence,  # type: ignore
+        keep_trailing_newline=config.whitespace.keep_trailing_newline,
+        optimized=config.internal.optimized,
+        # undefined: t.Type[Undefined] = Undefined,
+        # finalize: t.Optional[t.Callable[..., t.Any]] = None,
+        autoescape=config.internal.autoescape,
+        cache_size=config.internal.cache_size,
+        auto_reload=config.internal.auto_reload,
+        # bytecode_cache: t.Optional["BytecodeCache"] = None,
+        enable_async=config.internal.enable_async,
     )
 
     data: dict[str, t.Any] = {}

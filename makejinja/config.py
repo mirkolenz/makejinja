@@ -47,9 +47,9 @@ class Prefix:
 
 @ts.settings(frozen=True)
 class Internal:
-    unoptimized: bool = ts.option(
+    optimized: bool = ts.option(
         default=False,
-        click={"param_decls": "--internal-optimized", "hidden": True},
+        click={"hidden": True},
         help="TODO",
     )
     autoescape: bool = ts.option(

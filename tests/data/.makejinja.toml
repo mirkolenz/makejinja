@@ -1,7 +1,7 @@
 [makejinja]
 input_path = "./input"
 output_path = "./output"
-data_paths = ["./config"]
+data = ["./config"]
 modules = ["./exports.py"]
 
 [makejinja.delimiter]
