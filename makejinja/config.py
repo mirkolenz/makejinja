@@ -123,6 +123,33 @@ class Config:
                 **Note:** Should be provided *with* the leading dot.
             """,
     )
+    keep_jinja_suffix: bool = ts.option(
+        default=False,
+        click={"param_decls": "--keep-jinja-suffix"},
+        help="""
+                Decide whether the specified `jinja-suffix` is removed from the file after rendering.
+            """,
+    )
+    copy_tree: bool = ts.option(
+        default=False,
+        click={"param_decls": "--copy-tree"},
+        help="""
+                If your `input_folder` containes additional files besides Jinja templates, you may want to copy them to `output_folder` as well.
+                This operation maintains the metadata of all files and folders, meaning that tools like `rsync` will treat them exactly like the original ones.
+                **Note:** Even if set to `no-copy-tree`, files that are matched by your provided `pattern` within `input_folder` are still copied over.
+                In both cases, a file's metadata is untouched.
+                The main difference is that with `copy-tree`, folders keep their metadata while matched files are copied to newly-created subfolders that differ in their metadata.
+            """,
+    )
+    keep_empty: bool = ts.option(
+        default=False,
+        click={"param_decls": "--keep-empty"},
+        help="""
+                Some Jinja template files may be empty after rendering (e.g., if they only contain macros that are imported by other templates).
+                By default, we do not copy such empty files.
+                If there is a need to have them available anyway, you can adjust that.
+            """,
+    )
     data: list[Path] = ts.option(
         factory=list,
         click={
@@ -161,33 +188,6 @@ class Config:
     prefix: Prefix = ts.option(factory=Prefix)
     whitespace: Whitespace = ts.option(factory=Whitespace)
     internal: Internal = ts.option(factory=Internal, click={"hidden": True})
-    copy_tree: bool = ts.option(
-        default=False,
-        click={"param_decls": "--copy-tree"},
-        help="""
-                If your `input_folder` containes additional files besides Jinja templates, you may want to copy them to `output_folder` as well.
-                This operation maintains the metadata of all files and folders, meaning that tools like `rsync` will treat them exactly like the original ones.
-                **Note:** Even if set to `no-copy-tree`, files that are matched by your provided `pattern` within `input_folder` are still copied over.
-                In both cases, a file's metadata is untouched.
-                The main difference is that with `copy-tree`, folders keep their metadata while matched files are copied to newly-created subfolders that differ in their metadata.
-            """,
-    )
-    keep_jinja_suffix: bool = ts.option(
-        default=False,
-        click={"param_decls": "--keep-jinja-suffix"},
-        help="""
-                Decide whether the specified `jinja-suffix` is removed from the file after rendering.
-            """,
-    )
-    keep_empty: bool = ts.option(
-        default=False,
-        click={"param_decls": "--keep-empty"},
-        help="""
-                Some Jinja template files may be empty after rendering (e.g., if they only contain macros that are imported by other templates).
-                By default, we do not copy such empty files.
-                If there is a need to have them available anyway, you can adjust that.
-            """,
-    )
 
 
 OPTION_GROUPS = {
