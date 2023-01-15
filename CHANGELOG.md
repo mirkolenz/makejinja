@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.0-beta.8](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2023-01-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename input/output options
+
+### Features
+
+* collect modules in subfolders ([ebfa242](https://github.com/mirkolenz/makejinja/commit/ebfa24230ca8056ad2ed2194f69530c6ff93a80b))
+* pass jinja options to env constructor ([f39fe32](https://github.com/mirkolenz/makejinja/commit/f39fe32c61ef100241b58b14e9d53ba11ab20356))
+* rename input/output options ([2592c19](https://github.com/mirkolenz/makejinja/commit/2592c196fce2fd872e76c86d902f3322d6c5d02c))
+
+
+### Bug Fixes
+
+* improve options ([e81d727](https://github.com/mirkolenz/makejinja/commit/e81d727469d012579ec04fb1e61d28076ffe7a7e))
+
 ## [1.0.0-beta.7](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2023-01-14)
 
 
