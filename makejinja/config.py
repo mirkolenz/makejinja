@@ -213,8 +213,14 @@ class Config:
             "param_decls": "--loader",
         },
         help="""
-            Load custom code into the program.
-            TODO: More details
+            Use custom Python code to adjust the used Jinja environment to your needs.
+            The specified Python file should export a **class** containing a subset of the following functions:
+            `filters`, `globals`, `data`, and `extensions`.
+            In addition, you may add an `__init__` function that recives two positional arguments:
+            the created Jinja environment and the data parsed from the files supplied to makejinja's `data` option.
+            This allows you to apply aribtrary logic to makejinja.
+            An import path can be specified either in dotted notation (`your.custom.Loader`)
+            or with a colon as object delimiter (`your.custom:Loader`).
             **Note:** This option may be passed multiple times to pass a list of values.
         """,
     )
