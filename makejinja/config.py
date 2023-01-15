@@ -174,17 +174,15 @@ class Config:
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
             """,
     )
-    loaders: list[Path] = ts.option(
+    loaders: list[str] = ts.option(
         factory=list,
         click={
-            "type": click.Path(exists=True, path_type=Path),
             "param_decls": "--loader",
         },
         help="""
             Load custom code into the program. TODO: More details
         """,
     )
-    loader_class: str = ts.option(default="Loader", help="TODO")
     extensions: list[str] = ts.option(
         factory=list,
         click={"param_decls": "--extension"},

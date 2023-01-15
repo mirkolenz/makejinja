@@ -23,6 +23,7 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
     input_path = data_path / "input"
     baseline_path = data_path / "output"
     output_path = tmp_path_factory.mktemp("data")
+    loader_import = str(data_path).replace("/", ".") + ".loader:Loader"
 
     with pytest.MonkeyPatch.context() as m:
         m.chdir(data_path)
@@ -37,6 +38,9 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
                 # Override it here to use our tmp_path
                 "--output",
                 str(output_path),
+                # The import path is skewed, so we have to adjust it
+                "--loader",
+                loader_import,
             ],
         )
 

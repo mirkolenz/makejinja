@@ -1,16 +1,13 @@
-import importlib.util
 import shutil
-import sys
 import typing as t
 from pathlib import Path
-from types import ModuleType
-from uuid import uuid1 as uuid
 
 import rich_click as click
 import typed_settings as ts
 import yaml
 from jinja2 import Environment, FileSystemLoader
 from jinja2.environment import load_extensions
+from jinja2.utils import import_string
 from rich import print
 
 from makejinja.typing import AbstractLoader
@@ -24,28 +21,6 @@ from makejinja.config import OPTION_GROUPS, Config
 
 click.rich_click.USE_MARKDOWN = True
 click.rich_click.OPTION_GROUPS = OPTION_GROUPS
-
-
-def _import_module(path: Path) -> ModuleType:
-    # https://stackoverflow.com/a/41595552
-    # https://docs.python.org/3.11/library/importlib.html#importing-a-source-file-directly
-    name = str(uuid()).lower().replace("-", "")
-
-    if path.is_dir():
-        path /= "__init__.py"
-
-    spec = importlib.util.spec_from_file_location(name, path)
-    assert (
-        spec is not None
-    ), f"The module has not been found. Please verify the given path '{path}'."
-
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[name] = module
-    assert spec.loader is not None
-
-    spec.loader.exec_module(module)
-
-    return module
 
 
 def _from_yaml(path: Path) -> dict[str, t.Any]:
@@ -133,14 +108,10 @@ def main(config: Config):
         enable_async=config.internal.enable_async,
     )
 
-    modules = [
-        _import_module(module) for module in _collect_files(config.loaders, "**/*.py")
-    ]
+    loader_classes = [import_string(loader) for loader in config.loaders]
     loaders: list[AbstractLoader] = []
 
-    for module in modules:
-        loader_class = getattr(module, config.loader_class)
-
+    for loader_class in loader_classes:
         try:
             loaders.append(loader_class(env, data))
         except TypeError:
