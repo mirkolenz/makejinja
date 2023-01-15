@@ -100,7 +100,8 @@ def main(config: Config):
     Please refer to the file [`makejinja/config.py`](https://github.com/mirkolenz/makejinja/blob/main/makejinja/config.py) to see their actual names.
     You will also find an example here: [`makejinja/tests/data/.makejinja.toml`](https://github.com/mirkolenz/makejinja/blob/main/tests/data/.makejinja.toml).
     """
-    modules = [_import_module(mod) for mod in config.modules]
+
+    modules = [_import_module(mod) for mod in _collect_files(config.modules, "**/*.py")]
 
     extensions: list[t.Any] = [*config.extensions]
 
