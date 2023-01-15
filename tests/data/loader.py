@@ -17,7 +17,7 @@ def getlang(
         return value.get(lang, value.get(default_lang, ""))
 
 
-class Exports:
+class Loader:
     def filters(self) -> Filters:
         return [hassurl]
 

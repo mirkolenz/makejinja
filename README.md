@@ -18,6 +18,7 @@ A concrete example for Home Assistant can be found in the [tests directory](./te
 - Easily load all extensions bundled with Jinja (custom extensions are not yet supported).
 - Tailor the whitespace behavior to your needs.
 - Use custom delimiters for Jinja blocks/comments/variables.
+- Modify _all_ init options for the Jinja environment and even run custom hooks after the environment has been created.
 
 ## Installation
 

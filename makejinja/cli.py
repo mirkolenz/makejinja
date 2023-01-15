@@ -10,9 +10,10 @@ import rich_click as click
 import typed_settings as ts
 import yaml
 from jinja2 import Environment, FileSystemLoader
+from jinja2.environment import load_extensions
 from rich import print
 
-from makejinja.types import ExportsTemplate
+from makejinja.types import AbstractLoader
 
 try:
     import tomllib
@@ -25,7 +26,7 @@ click.rich_click.USE_MARKDOWN = True
 click.rich_click.OPTION_GROUPS = OPTION_GROUPS
 
 
-def _import_module(path: Path) -> ExportsTemplate:
+def _import_module(path: Path) -> ModuleType:
     # https://stackoverflow.com/a/41595552
     # https://docs.python.org/3.11/library/importlib.html#importing-a-source-file-directly
     name = str(uuid()).lower().replace("-", "")
@@ -38,13 +39,13 @@ def _import_module(path: Path) -> ExportsTemplate:
         spec is not None
     ), f"The module has not been found. Please verify the given path '{path}'."
 
-    module: ModuleType = importlib.util.module_from_spec(spec)
+    module = importlib.util.module_from_spec(spec)
     sys.modules[name] = module
     assert spec.loader is not None
 
     spec.loader.exec_module(module)
 
-    return module.Exports()
+    return module
 
 
 def _from_yaml(path: Path) -> dict[str, t.Any]:
@@ -101,17 +102,15 @@ def main(config: Config):
     You will also find an example here: [`makejinja/tests/data/.makejinja.toml`](https://github.com/mirkolenz/makejinja/blob/main/tests/data/.makejinja.toml).
     """
 
-    modules = [_import_module(mod) for mod in _collect_files(config.modules, "**/*.py")]
+    data: dict[str, t.Any] = {}
 
-    extensions: list[t.Any] = [*config.extensions]
-
-    for mod in modules:
-        if hasattr(mod, "extensions"):
-            extensions.extend(mod.extensions())
+    for path in _collect_files(config.data):
+        if loader := DATA_LOADERS.get(path.suffix):
+            data.update(loader(path))
 
     env = Environment(
         loader=FileSystemLoader(config.input),
-        extensions=extensions,
+        extensions=config.extensions,
         block_start_string=config.delimiter.block_start,
         block_end_string=config.delimiter.block_end,
         variable_start_string=config.delimiter.variable_start,
@@ -134,24 +133,37 @@ def main(config: Config):
         enable_async=config.internal.enable_async,
     )
 
-    data: dict[str, t.Any] = {}
+    modules = [
+        _import_module(module) for module in _collect_files(config.loaders, "**/*.py")
+    ]
+    loaders: list[AbstractLoader] = []
 
-    for path in _collect_files(config.data):
-        if loader := DATA_LOADERS.get(path.suffix):
-            data.update(loader(path))
+    for module in modules:
+        loader_class = getattr(module, config.loader_class)
 
-    for mod in modules:
-        if hasattr(mod, "globals"):
-            env.globals.update({func.__name__: func for func in mod.globals()})
+        try:
+            loaders.append(loader_class(env, data))
+        except TypeError:
+            loaders.append(loader_class())
 
-        if hasattr(mod, "filters"):
-            env.filters.update({func.__name__: func for func in mod.filters()})
+    for loader in loaders:
+        if hasattr(loader, "extensions"):
+            load_extensions(env, loader.extensions())
 
-        if hasattr(mod, "data"):
-            data.update(mod.data())
+        if hasattr(loader, "globals"):
+            env.globals.update({func.__name__: func for func in loader.globals()})
 
-        if hasattr(mod, "setup_env"):
-            mod.setup_env(env)
+        if hasattr(loader, "filters"):
+            env.filters.update({func.__name__: func for func in loader.filters()})
+
+        if hasattr(loader, "tests"):
+            env.tests.update({func.__name__: func for func in loader.tests()})
+
+        if hasattr(loader, "policies"):
+            env.policies.update(loader.policies())
+
+        if hasattr(loader, "data"):
+            data.update(loader.data())
 
     if config.output.is_dir():
         print(f"Remove '{config.output}' from previous run")
