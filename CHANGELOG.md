@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.0-beta.10](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2023-01-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* use jinja methods to import custom loaders
+
+### Features
+
+* use jinja methods to import custom loaders ([901f37a](https://github.com/mirkolenz/makejinja/commit/901f37a35e9287fc1f0a98c9f3ccc23cafd3cbc5))
+
+
+### Bug Fixes
+
+* improve types ([475e2a5](https://github.com/mirkolenz/makejinja/commit/475e2a54220998c5b1022f1b89228d42b04ccc91))
+
 ## [1.0.0-beta.9](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2023-01-15)
 
 
