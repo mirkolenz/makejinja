@@ -111,9 +111,9 @@ def main(config: Config):
     env = Environment(
         loader=FileSystemLoader(config.input_path),
         extensions=extensions,
-        keep_trailing_newline=config.keep_trailing_newline,
-        trim_blocks=config.trim_blocks,
-        lstrip_blocks=config.lstrip_blocks,
+        keep_trailing_newline=config.whitespace.keep_trailing_newline,
+        trim_blocks=config.whitespace.trim_blocks,
+        lstrip_blocks=config.whitespace.lstrip_blocks,
         block_start_string=config.delimiter.block_start,
         block_end_string=config.delimiter.block_end,
         comment_start_string=config.delimiter.comment_start,
@@ -124,7 +124,7 @@ def main(config: Config):
 
     data: dict[str, t.Any] = {}
 
-    for path in _collect_files(config.data_paths):
+    for path in _collect_files(config.data):
         if loader := DATA_LOADERS.get(path.suffix):
             data.update(loader(path))
 

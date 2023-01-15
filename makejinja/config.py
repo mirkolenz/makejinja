@@ -8,6 +8,10 @@ from jinja2.defaults import (
     BLOCK_START_STRING,
     COMMENT_END_STRING,
     COMMENT_START_STRING,
+    KEEP_TRAILING_NEWLINE,
+    LINE_COMMENT_PREFIX,
+    LINE_STATEMENT_PREFIX,
+    NEWLINE_SEQUENCE,
     VARIABLE_END_STRING,
     VARIABLE_START_STRING,
 )
@@ -30,6 +34,59 @@ class Delimiter:
     )
     variable_end: str = ts.option(
         default=VARIABLE_END_STRING,
+    )
+
+
+@ts.settings(frozen=True)
+class Prefix:
+    line_statement: t.Optional[str] = ts.option(
+        default=LINE_STATEMENT_PREFIX, help="TODO"
+    )
+    line_comment: t.Optional[str] = ts.option(default=LINE_COMMENT_PREFIX, help="TODO")
+
+
+@ts.settings(frozen=True)
+class Internal:
+    unoptimized: bool = ts.option(
+        default=False, click={"param_decls": "--optimized"}, help="TODO"
+    )
+    autoescape: bool = ts.option(
+        default=False, click={"param_decls": "--autoescape"}, help="TODO"
+    )
+    cache_size: int = ts.option(default=400, help="TODO")
+    auto_reload: bool = ts.option(default=True, help="TODO")
+    enable_async: bool = ts.option(
+        default=False, click={"param_decls": "--enable-async"}, help="TODO"
+    )
+
+
+@ts.settings(frozen=True)
+class Whitespace:
+    trim_blocks: bool = ts.option(
+        default=True,
+        help="""
+                If an application configures Jinja to trim_blocks, the first newline after a template tag is removed automatically (like in PHP).
+                Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
+            """,
+    )
+    lstrip_blocks: bool = ts.option(
+        default=True,
+        help="""
+                The lstrip_blocks option can also be set to strip tabs and spaces from the beginning of a line to the start of a block.
+                (Nothing will be stripped if there are other characters before the start of the block.)
+                Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
+            """,
+    )
+    newline_sequence: str = ts.option(
+        default=NEWLINE_SEQUENCE, help="TODO Literal['\\n', '\\r\\n', '\\r']"
+    )
+    keep_trailing_newline: bool = ts.option(
+        default=KEEP_TRAILING_NEWLINE,
+        click={"param_decls": "--keep-trailing-newline/--remove-trailing-newline"},
+        help="""
+                By default, Jinja also removes trailing newlines. To keep single trailing newlines, configure Jinja to keep_trailing_newline.
+                Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
+            """,
     )
 
 
@@ -66,11 +123,11 @@ class Config:
                 **Note:** Should be provided *with* the leading dot.
             """,
     )
-    data_paths: list[Path] = ts.option(
+    data: list[Path] = ts.option(
         factory=list,
         click={
             "type": click.Path(exists=True, path_type=Path),
-            "param_decls": "--data-path",
+            "param_decls": "--data",
         },
         help="""
                 Load variables from yaml/yml or toml files for use in your Jinja templates.
@@ -100,30 +157,10 @@ class Config:
                 **Note:** This option may be passed multiple times to pass a list of values.
             """,
     )
-    lstrip_blocks: bool = ts.option(
-        default=True,
-        help="""
-                The lstrip_blocks option can also be set to strip tabs and spaces from the beginning of a line to the start of a block.
-                (Nothing will be stripped if there are other characters before the start of the block.)
-                Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
-            """,
-    )
-    trim_blocks: bool = ts.option(
-        default=True,
-        help="""
-                If an application configures Jinja to trim_blocks, the first newline after a template tag is removed automatically (like in PHP).
-                Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
-            """,
-    )
-    keep_trailing_newline: bool = ts.option(
-        default=False,
-        click={"param_decls": "--keep-trailing-newline/--remove-trailing-newline"},
-        help="""
-                By default, Jinja also removes trailing newlines. To keep single trailing newlines, configure Jinja to keep_trailing_newline.
-                Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
-            """,
-    )
-    delimiter: Delimiter = t.cast(Delimiter, ts.option(factory=Delimiter))
+    delimiter: Delimiter = ts.option(factory=Delimiter)
+    prefix: Prefix = ts.option(factory=Prefix)
+    whitespace: Whitespace = ts.option(factory=Whitespace)
+    internal: Internal = ts.option(factory=Internal, click={"hidden": True})
     copy_tree: bool = ts.option(
         default=False,
         click={"param_decls": "--copy-tree"},
@@ -177,8 +214,12 @@ OPTION_GROUPS = {
             ],
         },
         {
-            "name": "Jinja Whitespace Control",
-            "options": ["--lstrip-blocks", "--trim-blocks", "--keep-trailing-newline"],
+            "name": "Jinja Whitespace",
+            "options": [
+                "--whitespace-lstrip-blocks",
+                "--whitespace-trim-blocks",
+                "--whitespace-keep-trailing-newline",
+            ],
         },
         {
             "name": "Jinja Delimiters",
