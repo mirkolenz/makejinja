@@ -4,8 +4,7 @@ from abc import ABC
 from jinja2 import Environment
 from jinja2.ext import Extension
 
-ExtensionType = t.Union[t.Type[Extension], str]
-Extensions = t.Sequence[ExtensionType]
+Extensions = t.Sequence[t.Type[Extension]]
 Filter = t.Callable[[t.Any], t.Any]
 Filters = t.Sequence[Filter]
 Global = t.Callable[..., t.Any]
