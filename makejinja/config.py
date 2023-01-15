@@ -48,15 +48,21 @@ class Prefix:
 @ts.settings(frozen=True)
 class Internal:
     unoptimized: bool = ts.option(
-        default=False, click={"param_decls": "--optimized"}, help="TODO"
+        default=False,
+        click={"param_decls": "--internal-optimized", "hidden": True},
+        help="TODO",
     )
     autoescape: bool = ts.option(
-        default=False, click={"param_decls": "--autoescape"}, help="TODO"
+        default=False,
+        click={"param_decls": "--internal-autoescape", "hidden": True},
+        help="TODO",
     )
-    cache_size: int = ts.option(default=400, help="TODO")
-    auto_reload: bool = ts.option(default=True, help="TODO")
+    cache_size: int = ts.option(default=400, click={"hidden": True}, help="TODO")
+    auto_reload: bool = ts.option(default=True, click={"hidden": True}, help="TODO")
     enable_async: bool = ts.option(
-        default=False, click={"param_decls": "--enable-async"}, help="TODO"
+        default=False,
+        click={"param_decls": "--internal-enable-async", "hidden": True},
+        help="TODO",
     )
 
 
@@ -64,6 +70,7 @@ class Internal:
 class Whitespace:
     trim_blocks: bool = ts.option(
         default=True,
+        click={"param_decls": "--trim-blocks/--no-trim-blocks"},
         help="""
                 If an application configures Jinja to trim_blocks, the first newline after a template tag is removed automatically (like in PHP).
                 Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
@@ -71,6 +78,7 @@ class Whitespace:
     )
     lstrip_blocks: bool = ts.option(
         default=True,
+        click={"param_decls": "--lstrip-blocks/--no-lstrip-blocks"},
         help="""
                 The lstrip_blocks option can also be set to strip tabs and spaces from the beginning of a line to the start of a block.
                 (Nothing will be stripped if there are other characters before the start of the block.)
@@ -78,11 +86,13 @@ class Whitespace:
             """,
     )
     newline_sequence: str = ts.option(
-        default=NEWLINE_SEQUENCE, help="TODO Literal['\\n', '\\r\\n', '\\r']"
+        default=NEWLINE_SEQUENCE,
+        click={"param_decls": "--newline-sequence"},
+        help="TODO Literal['\\n', '\\r\\n', '\\r']",
     )
     keep_trailing_newline: bool = ts.option(
         default=KEEP_TRAILING_NEWLINE,
-        click={"param_decls": "--keep-trailing-newline/--remove-trailing-newline"},
+        click={"param_decls": "--keep-trailing-newline"},
         help="""
                 By default, Jinja also removes trailing newlines. To keep single trailing newlines, configure Jinja to keep_trailing_newline.
                 Refer to the [Jinja docs](https://jinja.palletsprojects.com/en/3.1.x/templates/#whitespace-control) for more details.
@@ -187,7 +197,7 @@ class Config:
     delimiter: Delimiter = ts.option(factory=Delimiter)
     prefix: Prefix = ts.option(factory=Prefix)
     whitespace: Whitespace = ts.option(factory=Whitespace)
-    internal: Internal = ts.option(factory=Internal, click={"hidden": True})
+    internal: Internal = ts.option(factory=Internal)
 
 
 OPTION_GROUPS = {
@@ -207,18 +217,18 @@ OPTION_GROUPS = {
         {
             "name": "Jinja Environment",
             "options": [
-                "--data-path",
-                "--global-path",
-                "--filter-path",
-                "--extension-name",
+                "--data",
+                "--module",
+                "--extension",
             ],
         },
         {
             "name": "Jinja Whitespace",
             "options": [
-                "--whitespace-lstrip-blocks",
-                "--whitespace-trim-blocks",
-                "--whitespace-keep-trailing-newline",
+                "--lstrip-blocks",
+                "--trim-blocks",
+                "--keep-trailing-newline",
+                "--newline-sequence",
             ],
         },
         {
@@ -230,6 +240,13 @@ OPTION_GROUPS = {
                 "--delimiter-comment-end",
                 "--delimiter-variable-start",
                 "--delimiter-variable-end",
+            ],
+        },
+        {
+            "name": "Jinja Prefixes",
+            "options": [
+                "--prefix-line-statement",
+                "--prefix-line-comment",
             ],
         },
     ]
