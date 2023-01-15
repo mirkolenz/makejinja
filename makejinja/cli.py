@@ -79,7 +79,7 @@ def main(config: Config):
     """
 
     for path in config.import_paths:
-        sys.path.append(str(path))
+        sys.path.append(str(path.resolve()))
 
     data: dict[str, t.Any] = {}
 

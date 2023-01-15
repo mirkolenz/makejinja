@@ -219,7 +219,7 @@ class Config:
         """,
     )
     import_paths: list[Path] = ts.option(
-        factory=lambda: list("."),
+        factory=lambda: [Path(".")],
         click={
             "type": click.Path(exists=True, file_okay=False, path_type=Path),
             "param_decls": "--import-path",
