@@ -1,7 +1,7 @@
 import typing as t
 from urllib.parse import quote as urlparse
 
-from makejinja import Filters, Globals
+from makejinja.typing import Filters, Globals
 
 
 def hassurl(value: str) -> str:

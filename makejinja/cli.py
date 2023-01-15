@@ -13,7 +13,7 @@ from jinja2 import Environment, FileSystemLoader
 from jinja2.environment import load_extensions
 from rich import print
 
-from makejinja.types import AbstractLoader
+from makejinja.typing import AbstractLoader
 
 try:
     import tomllib
