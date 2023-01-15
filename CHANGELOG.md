@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0-beta.9](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2023-01-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* enhance support for custom loaders
+
+### Features
+
+* enhance support for custom loaders ([46c8eb1](https://github.com/mirkolenz/makejinja/commit/46c8eb1eda830f36f1d0d657adfe28046a0b82fe))
+
 ## [1.0.0-beta.8](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2023-01-15)
 
 
