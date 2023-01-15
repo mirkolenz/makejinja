@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0-beta.12](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2023-01-15)
+
+
+### Bug Fixes
+
+* make custom import paths more robust ([7424729](https://github.com/mirkolenz/makejinja/commit/7424729cdba1b168193fec72b9d0639c16962107))
+
 ## [1.0.0-beta.11](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2023-01-15)
 
 
