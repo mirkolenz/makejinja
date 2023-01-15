@@ -35,7 +35,7 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
             makejinja.cli.main,
             [
                 # Override it here to use our tmp_path
-                "--output-path",
+                "--output",
                 str(output_path),
             ],
         )

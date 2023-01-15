@@ -1,6 +1,6 @@
 [makejinja]
-input_path = "./input"
-output_path = "./output"
+input = "./input"
+output = "./output"
 data = ["./config"]
 modules = ["./exports.py"]
 

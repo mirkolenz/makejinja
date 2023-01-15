@@ -110,7 +110,7 @@ def main(config: Config):
             extensions.extend(mod.extensions())
 
     env = Environment(
-        loader=FileSystemLoader(config.input_path),
+        loader=FileSystemLoader(config.input),
         extensions=extensions,
         block_start_string=config.delimiter.block_start,
         block_end_string=config.delimiter.block_end,
@@ -153,46 +153,46 @@ def main(config: Config):
         if hasattr(mod, "setup_env"):
             mod.setup_env(env)
 
-    if config.output_path.is_dir():
-        print(f"Remove '{config.output_path}' from previous run")
-        shutil.rmtree(config.output_path)
+    if config.output.is_dir():
+        print(f"Remove '{config.output}' from previous run")
+        shutil.rmtree(config.output)
 
     if config.copy_tree:
-        print(f"Copy file tree '{config.input_path}' -> '{config.output_path}'")
-        shutil.copytree(config.input_path, config.output_path)
+        print(f"Copy file tree '{config.input}' -> '{config.output}'")
+        shutil.copytree(config.input, config.output)
 
-    config.output_path.mkdir(parents=True, exist_ok=True)
+    config.output.mkdir(parents=True, exist_ok=True)
 
-    for input_path in config.input_path.glob(config.input_pattern):
-        if not input_path.is_dir():
-            relative_path = input_path.relative_to(config.input_path)
-            output_path = config.output_path / relative_path
-            output_path.parent.mkdir(parents=True, exist_ok=True)
+    for input in config.input.glob(config.input_pattern):
+        if not input.is_dir():
+            relative_path = input.relative_to(config.input)
+            output = config.output / relative_path
+            output.parent.mkdir(parents=True, exist_ok=True)
 
             if relative_path.suffix == config.jinja_suffix:
                 template = env.get_template(str(relative_path))
 
                 # Remove the copied file if the tree has been duplicated
                 if config.copy_tree:
-                    output_path.unlink()
+                    output.unlink()
 
                 if not config.keep_jinja_suffix:
-                    output_path = output_path.with_suffix("")
+                    output = output.with_suffix("")
 
                 rendered = template.render(data)
 
                 # Write the rendered template if it has content
                 # Prevents empty macro definitions
                 if rendered.strip() == "" and not config.keep_empty:
-                    print(f"Skip '{input_path}'")
+                    print(f"Skip '{input}'")
                 else:
-                    print(f"Render '{input_path}' -> '{output_path}'")
-                    with output_path.open("w") as f:
+                    print(f"Render '{input}' -> '{output}'")
+                    with output.open("w") as f:
                         f.write(rendered)
 
             elif not config.copy_tree:
-                print(f"Copy '{input_path}' -> '{output_path}'")
-                shutil.copy2(input_path, output_path)
+                print(f"Copy '{input}' -> '{output}'")
+                shutil.copy2(input, output)
 
 
 if __name__ == "__main__":

@@ -102,14 +102,14 @@ class Whitespace:
 
 @ts.settings(frozen=True)
 class Config:
-    input_path: Path = ts.option(
+    input: Path = ts.option(
         click={"type": click.Path(exists=True, file_okay=False, path_type=Path)},
         help="""
                 Path to a folder containing template files.
                 It is passed to Jinja's [FileSystemLoader](https://jinja.palletsprojects.com/en/3.1.x/api/#jinja2.FileSystemLoader) when creating the environment.
             """,
     )
-    output_path: Path = ts.option(
+    output: Path = ts.option(
         click={"type": click.Path(file_okay=False, writable=True, path_type=Path)},
         help="""
                 Path to a folder where the rendered templates are stored.
@@ -205,8 +205,8 @@ OPTION_GROUPS = {
         {
             "name": "Input/Output",
             "options": [
-                "--input-path",
-                "--output-path",
+                "--input",
+                "--output",
                 "--input-pattern",
                 "--jinja-suffix",
                 "--copy-tree",
