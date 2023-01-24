@@ -284,14 +284,14 @@ plugins = ["importlib-metadata"]
 
 [[package]]
 name = "pytest"
-version = "7.2.0"
+version = "7.2.1"
 description = "pytest: simple powerful testing with Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pytest-7.2.0-py3-none-any.whl", hash = "sha256:892f933d339f068883b6fd5a459f03d85bfcb355e4981e146d2c7616c21fef71"},
-    {file = "pytest-7.2.0.tar.gz", hash = "sha256:c4014eb40e10f11f355ad4e3c2fb2c6c6d1919c73f3b5a433de4708202cade59"},
+    {file = "pytest-7.2.1-py3-none-any.whl", hash = "sha256:c7c6ca206e93355074ae32f7403e8ea12163b1163c976fee7d4d84027c162be5"},
+    {file = "pytest-7.2.1.tar.gz", hash = "sha256:d45e0952f3727241918b8fd0f376f5ff6b301cc0777c6f9a556935c92d8a7d42"},
 ]
 
 [package.dependencies]
@@ -396,14 +396,14 @@ jupyter = ["ipywidgets (>=7.5.1,<8.0.0)"]
 
 [[package]]
 name = "rich-click"
-version = "1.6.0"
+version = "1.6.1"
 description = "Format click help output nicely with rich"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "rich-click-1.6.0.tar.gz", hash = "sha256:33799c31f8817101f2eb8fe90e95d2c2acd428a567ee64358ca487f963f75e9c"},
-    {file = "rich_click-1.6.0-py3-none-any.whl", hash = "sha256:aefb0450c22462cf3bf9fa854457e6b3cdf692073174823a00d3b0541a81b19d"},
+    {file = "rich-click-1.6.1.tar.gz", hash = "sha256:f8ff96693ec6e261d1544e9f7d9a5811c5ef5d74c8adb4978430fc0dac16777e"},
+    {file = "rich_click-1.6.1-py3-none-any.whl", hash = "sha256:0fcf4d1a09029d79322dd814ab0b2e66ac183633037561881d45abae8a161d95"},
 ]
 
 [package.dependencies]
@@ -427,14 +427,14 @@ files = [
 
 [[package]]
 name = "typed-settings"
-version = "2.0.1"
+version = "2.0.2"
 description = "Typed settings based on attrs classes"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typed_settings-2.0.1-py3-none-any.whl", hash = "sha256:8d0471f51e05bfd05d10aae2f84136320114119e4682aa218b4cad9235389f91"},
-    {file = "typed_settings-2.0.1.tar.gz", hash = "sha256:8dfc14f1ef71422dc2a729ddb4523e32c6aa3703e94d10c86d1022b1bc5aade9"},
+    {file = "typed_settings-2.0.2-py3-none-any.whl", hash = "sha256:773cd3ae905db465983e422df0d74a39327c4288d957a0eea7391c127bd6c1fb"},
+    {file = "typed_settings-2.0.2.tar.gz", hash = "sha256:0181c0d71152d20f7d725a06223be2f25a0a4bf43f02d7b22e22c7f2b7fed8da"},
 ]
 
 [package.dependencies]
@@ -455,4 +455,4 @@ test = ["coverage[toml] (>=5.3)", "pytest (>=7.2.0)", "pytest-cov", "rich-click 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "fc0490619b7ce17946be2bd513b55a70096d13125092e6298f8188f4e4b7224d"
+content-hash = "9f83b3e59aa9aa8ab10ae2762b0de0c0003d1512cc6d68e3a1abc59303119531"
