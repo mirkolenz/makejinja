@@ -15,10 +15,11 @@ A concrete example for Home Assistant can be found in the [tests directory](./te
 - Recursively convert nested directories containing template files. One can even specify a pattern to specify relevant files in a folder.
 - Load data files containing variables to use in your Jinja templates from YAML, TOML, and Python files.
 - Use custom functions in your Jinja templates by loading custom filters and/or globals.
-- Easily load all extensions bundled with Jinja (custom extensions are not yet supported).
+- Easily load bundled as well as custom Jinja extensions.
 - Tailor the whitespace behavior to your needs.
 - Use custom delimiters for Jinja blocks/comments/variables.
-- Modify _all_ init options for the Jinja environment and even run custom hooks after the environment has been created.
+- Modify _all_ init options for the Jinja environment.
+- Write custom **Python loaders** that implement a subset of our fully typed [abstract loader class](./makejinja/loader.py)
 
 ## Installation
 
