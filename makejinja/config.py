@@ -119,8 +119,7 @@ class Whitespace:
         click={"param_decls": "--newline-sequence"},
         help="""
             The sequence that starts a newline.
-            Must be one of `\\r`, `\\n` or `\\r\\n`.
-            The default is `\\n` which is a useful default for Linux and OS X systems as well as web applications.
+            The default is tailored for UNIX-like systems (Linux/macOS).
         """,
     )
     keep_trailing_newline: bool = ts.option(
