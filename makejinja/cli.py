@@ -11,7 +11,7 @@ from jinja2.environment import load_extensions
 from jinja2.utils import import_string
 from rich import print
 
-from makejinja.typing import AbstractLoader
+from makejinja.loader import AbstractLoader
 
 try:
     import tomllib
