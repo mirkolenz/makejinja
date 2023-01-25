@@ -1,5 +1,44 @@
 # Changelog
 
+## [1.0.0](https://github.com/mirkolenz/makejinja/compare/v0.7.5...v1.0.0) (2023-01-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* use jinja methods to import custom loaders
+* enhance support for custom loaders
+* rename input/output options
+* enhance custom code & remove cli options
+* switch from typer to click & typed-settings
+* Massive performance boost over python-simpleconf. The CLI options changed: env-vars are no longer supported and we only handle files ending in `yaml` or `yml`.
+
+### Features
+
+* add checks to verify correct file handling ([5d5d5fd](https://github.com/mirkolenz/makejinja/commit/5d5d5fdd3473efebf41fbad83891786f9e902688))
+* add initial support to load custom code ([9404ecc](https://github.com/mirkolenz/makejinja/commit/9404eccca2db01858242d2f445b814311188ba07))
+* add options to change jinja delimiters ([edd1caa](https://github.com/mirkolenz/makejinja/commit/edd1caac1b1cd22d14d0bd59aa33061934b1a25b))
+* add python data loader ([2a0b817](https://github.com/mirkolenz/makejinja/commit/2a0b8170f68e8e6a3658ff3c1bd79e7eeab4841b))
+* collect modules in subfolders ([ebfa242](https://github.com/mirkolenz/makejinja/commit/ebfa24230ca8056ad2ed2194f69530c6ff93a80b))
+* enhance custom code & remove cli options ([a8b0b64](https://github.com/mirkolenz/makejinja/commit/a8b0b641304583377975d9960d0677596ad88709))
+* enhance support for custom loaders ([46c8eb1](https://github.com/mirkolenz/makejinja/commit/46c8eb1eda830f36f1d0d657adfe28046a0b82fe))
+* pass jinja options to env constructor ([f39fe32](https://github.com/mirkolenz/makejinja/commit/f39fe32c61ef100241b58b14e9d53ba11ab20356))
+* rename input/output options ([2592c19](https://github.com/mirkolenz/makejinja/commit/2592c196fce2fd872e76c86d902f3322d6c5d02c))
+* switch from typer to click & typed-settings ([3e9d09d](https://github.com/mirkolenz/makejinja/commit/3e9d09d53c1a68fb47a40c25b088809198f30e10))
+* switch to pure yaml config parsing ([ac22a0d](https://github.com/mirkolenz/makejinja/commit/ac22a0df5e1a6bd48bda457e797b271aa9b9aae5))
+* use jinja methods to import custom loaders ([901f37a](https://github.com/mirkolenz/makejinja/commit/901f37a35e9287fc1f0a98c9f3ccc23cafd3cbc5))
+
+
+### Bug Fixes
+
+* add missing main package file ([b436dda](https://github.com/mirkolenz/makejinja/commit/b436dda408e04b510d3bd6185e29dd257029aa84))
+* improve cli output ([1280fa7](https://github.com/mirkolenz/makejinja/commit/1280fa71c83af483419c6e0c58f3e5c4757c5c3c))
+* improve options ([e81d727](https://github.com/mirkolenz/makejinja/commit/e81d727469d012579ec04fb1e61d28076ffe7a7e))
+* improve types ([475e2a5](https://github.com/mirkolenz/makejinja/commit/475e2a54220998c5b1022f1b89228d42b04ccc91))
+* make custom import paths more robust ([7424729](https://github.com/mirkolenz/makejinja/commit/7424729cdba1b168193fec72b9d0639c16962107))
+* properly set pythonpath for module resolution ([6beb0b0](https://github.com/mirkolenz/makejinja/commit/6beb0b0a8bd4a7649dffd5f734805ae951c58841))
+* remove wrong flag decls from click params ([5d98f08](https://github.com/mirkolenz/makejinja/commit/5d98f08752b264b94d9091755e3ad1ca515496c0))
+* update typed-settings and remove type casts ([e42309d](https://github.com/mirkolenz/makejinja/commit/e42309de1020c4cd0463ec4948933b83caad9438))
+
 ## [1.0.0-beta.12](https://github.com/mirkolenz/makejinja/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2023-01-15)
 
 
