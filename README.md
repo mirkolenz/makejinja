@@ -37,7 +37,7 @@ We automatically publish an image at `ghcr.io/mirkolenz/makejinja`.
 To use it, mount a folder to the container and pass the command options via the environment variable `cmd`.
 For example, to process files in `./data/input` and render them to `./data/output` while using the extension `jinja2.ext.do`, you could run:
 
-`docker run --rm -it -v $(pwd)/data:/data -e args="/data/input /data/output --extension jinja2.ext.do" ghcr.io/mirkolenz/makejinja@latest`
+`docker run --rm -it -v $(pwd)/data:/data -e args="--input /data/input --output /data/output" ghcr.io/mirkolenz/makejinja@latest`
 
 ## Usage
 
