@@ -34,10 +34,10 @@ Thus, we advise leveraging [`pipx`](https://github.com/pypa/pipx) instead:
 
 Alternatively, the application can also be used via Docker.
 We automatically publish an image at `ghcr.io/mirkolenz/makejinja`.
-To use it, mount a folder to the container and pass the command options via the environment variable `cmd`.
-For example, to process files in `./data/input` and render them to `./data/output` while using the extension `jinja2.ext.do`, you could run:
+To use it, mount a folder to the container and pass the options as the command.
+For example, to process files in `./data/input` and render them to `./data/output`, you could run:
 
-`docker run --rm -it -v $(pwd)/data:/data -e args="--input /data/input --output /data/output" ghcr.io/mirkolenz/makejinja@latest`
+`docker run --rm -v $(pwd)/data:/data ghcr.io/mirkolenz/makejinja@latest --input /data/input --output /data/output`
 
 ## Usage
 
