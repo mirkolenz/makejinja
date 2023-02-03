@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/mirkolenz/makejinja/compare/v1.0.0...v1.0.1) (2023-02-03)
+
+
+### Bug Fixes
+
+* **docker:** use entrypoint for proper cli usage ([fcebe4d](https://github.com/mirkolenz/makejinja/commit/fcebe4de622bbbc654ee2799a94affb515a4ab30))
+
 ## [1.0.0](https://github.com/mirkolenz/makejinja/compare/v0.7.5...v1.0.0) (2023-01-25)
 
 
