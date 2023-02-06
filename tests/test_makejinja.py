@@ -1,4 +1,3 @@
-import os
 import typing as t
 from dataclasses import dataclass
 from pathlib import Path
@@ -29,10 +28,10 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
         runner = CliRunner()
 
         # Need to import it AFTER chdir
-        import makejinja.cli
+        from makejinja.cli import makejinja_cli
 
         res = runner.invoke(
-            makejinja.cli.main,
+            makejinja_cli,
             [
                 # Override it here to use our tmp_path
                 "--output",
@@ -47,7 +46,7 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
 
 
 def _folder_content(path: Path) -> set[Path]:
-    return set(item.relative_to(path) for item in path.rglob("*"))
+    return {item.relative_to(path) for item in path.rglob("*")}
 
 
 def test_folder_content(exec: Paths):
