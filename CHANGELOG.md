@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0](https://github.com/mirkolenz/makejinja/compare/v1.0.1...v1.1.0) (2023-02-06)
+
+
+### Features
+
+* enable programmatic usage of the library ([ddc744b](https://github.com/mirkolenz/makejinja/commit/ddc744bd4427c6d7480f6c45b10b6ab329e24b90))
+
+
+### Bug Fixes
+
+* add all annotations to config/loader ([6070e5a](https://github.com/mirkolenz/makejinja/commit/6070e5aca09adc07998dfa7240544badfd116331))
+* add py.typed file ([3756882](https://github.com/mirkolenz/makejinja/commit/3756882401b6e2402715b5ddaf484a8b3a3c5ecc))
+* modularize app, improve loader construction ([a8da7fa](https://github.com/mirkolenz/makejinja/commit/a8da7fac03a08ba23ca9a7debc9c183fc7688ce6))
+
 ## [1.0.1](https://github.com/mirkolenz/makejinja/compare/v1.0.0...v1.0.1) (2023-02-03)
 
 
