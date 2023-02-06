@@ -29,7 +29,7 @@ def _from_yaml(path: Path) -> dict[str, t.Any]:
 
     with path.open("rb") as fp:
         for doc in yaml.safe_load_all(fp):
-            data.update(doc)
+            data |= doc
 
     return data
 
@@ -85,7 +85,7 @@ def main(config: Config):
 
     for path in _collect_files(config.data):
         if loader := DATA_LOADERS.get(path.suffix):
-            data.update(loader(path))
+            data |= loader(path)
 
     env = Environment(
         loader=FileSystemLoader(config.input),
