@@ -48,11 +48,17 @@ class Delimiter:
 class Prefix:
     line_statement: t.Optional[str] = ts.option(
         default=LINE_STATEMENT_PREFIX,
-        help="If given and a string, this will be used as prefix for line based statements.",
+        help=(
+            "If given and a string, this will be used as prefix for line based"
+            " statements."
+        ),
     )
     line_comment: t.Optional[str] = ts.option(
         default=LINE_COMMENT_PREFIX,
-        help="If given and a string, this will be used as prefix for line based comments.",
+        help=(
+            "If given and a string, this will be used as prefix for line based"
+            " comments."
+        ),
     )
 
 
@@ -61,7 +67,11 @@ class Internal:
     optimized: bool = ts.option(
         default=True,
         click={"hidden": True},
-        help="Should the [optimizer](https://github.com/Pfern/jinja2/blob/master/jinja2/optimizer.py) be enabled?",
+        help=(
+            "Should the"
+            " [optimizer](https://github.com/Pfern/jinja2/blob/master/jinja2/optimizer.py)"
+            " be enabled?"
+        ),
     )
     autoescape: bool = ts.option(
         default=False,
