@@ -1,11 +1,10 @@
 import typing as t
-from abc import ABC
 
 from jinja2 import Environment
 from jinja2.ext import Extension
 
 __all__ = [
-    "AbstractLoader",
+    "LoaderProtocol",
     "Environment",
     "Extension",
     "Extensions",
@@ -32,24 +31,29 @@ MutableData = t.MutableMapping[str, t.Any]
 Data = t.Mapping[str, t.Any]
 
 
-class AbstractLoader(ABC):
-    def __init__(self, env: Environment, data: MutableData) -> None:
-        pass
+class LoaderProtocol(t.Protocol):
+    @t.overload
+    def __init__(self) -> None:
+        ...
+
+    @t.overload
+    def __init__(self, *, env: Environment, data: MutableData) -> None:
+        ...
 
     def filters(self) -> Filters:
-        return []
+        ...
 
     def globals(self) -> Globals:
-        return []
+        ...
 
     def tests(self) -> Tests:
-        return []
+        ...
 
     def policies(self) -> Policies:
-        return {}
+        ...
 
     def data(self) -> Data:
-        return {}
+        ...
 
     def extensions(self) -> Extensions:
-        return []
+        ...
