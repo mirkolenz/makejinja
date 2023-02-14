@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/mirkolenz/makejinja/compare/v1.1.1...v1.1.2) (2023-02-14)
+
+
+### Bug Fixes
+
+* **loader:** remove protocol to enable subclassing ([db55ae3](https://github.com/mirkolenz/makejinja/commit/db55ae36478ddd7899ad6fc0395f3f84e796e637))
+
 ## [1.1.1](https://github.com/mirkolenz/makejinja/compare/v1.1.0...v1.1.1) (2023-02-14)
 
 
