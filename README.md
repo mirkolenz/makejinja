@@ -19,7 +19,7 @@ Using the same language that the built-in templates use, you can greatly simplif
 - Tailor the whitespace behavior to your needs.
 - Use custom delimiters for Jinja blocks/comments/variables.
 - Modify _all_ init options for the Jinja environment.
-- Write custom **Python loaders** that implement a subset of our fully typed [loader protocol class](./makejinja/loader.py)
+- Write custom **Python loaders** that implement a subset of our fully typed [abstract loader class](./makejinja/loader.py)
 
 ## Installation
 

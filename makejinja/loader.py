@@ -4,7 +4,7 @@ from jinja2 import Environment
 from jinja2.ext import Extension
 
 __all__ = [
-    "LoaderProtocol",
+    "AbstractLoader",
     "Environment",
     "Extension",
     "Extensions",
@@ -31,29 +31,24 @@ MutableData = t.MutableMapping[str, t.Any]
 Data = t.Mapping[str, t.Any]
 
 
-class LoaderProtocol(t.Protocol):
-    @t.overload
-    def __init__(self) -> None:
-        ...
-
-    @t.overload
+class AbstractLoader:
     def __init__(self, *, env: Environment, data: MutableData) -> None:
-        ...
+        pass
 
     def filters(self) -> Filters:
-        ...
+        return []
 
     def globals(self) -> Globals:
-        ...
+        return []
 
     def tests(self) -> Tests:
-        ...
+        return []
 
     def policies(self) -> Policies:
-        ...
+        return {}
 
     def data(self) -> Data:
-        ...
+        return {}
 
     def extensions(self) -> Extensions:
-        ...
+        return []

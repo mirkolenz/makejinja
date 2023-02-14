@@ -10,7 +10,7 @@ from jinja2.environment import load_extensions
 from jinja2.utils import import_string
 from rich import print
 
-from makejinja.loader import LoaderProtocol
+from makejinja.loader import AbstractLoader
 
 try:
     import tomllib
@@ -133,7 +133,7 @@ def load_data(config: Config) -> dict[str, t.Any]:
 def process_loader(
     loader_name: str, env: Environment, data: t.MutableMapping[str, t.Any]
 ):
-    cls: t.Type[LoaderProtocol] = import_string(loader_name)
+    cls: t.Type[AbstractLoader] = import_string(loader_name)
     sig_params = signature(cls).parameters
     params: dict[str, t.Any] = {}
 
