@@ -1,8 +1,6 @@
 import typing as t
 from urllib.parse import quote as urlparse
 
-from makejinja.loader import Filters, Globals
-
 
 def hassurl(value: str) -> str:
     return urlparse(value).replace("_", "-")
@@ -18,8 +16,8 @@ def getlang(
 
 
 class Loader:
-    def filters(self) -> Filters:
+    def filters(self):
         return [hassurl]
 
-    def globals(self) -> Globals:
+    def globals(self):
         return [getlang]
