@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/mirkolenz/makejinja/compare/v1.1.0...v1.1.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* use protocol instead of abc for loader class ([d72bec1](https://github.com/mirkolenz/makejinja/commit/d72bec10bf555d9aca53e712195171253ee3f003))
+
 ## [1.1.0](https://github.com/mirkolenz/makejinja/compare/v1.0.1...v1.1.0) (2023-02-06)
 
 
