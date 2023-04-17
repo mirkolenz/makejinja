@@ -1,7 +1,9 @@
 from pathlib import Path
+from typing import Type, cast
 
 import rich_click as click
 import typed_settings as ts
+from typed_settings.types import AttrsInstance
 
 from makejinja.config import OPTION_GROUPS, Config
 
@@ -18,7 +20,7 @@ _loader = ts.default_loaders(
 
 
 @click.command("makejinja")
-@ts.click_options(Config, _loader)
+@ts.click_options(cast(Type[AttrsInstance], Config), _loader)
 def makejinja_cli(config: Config):
     makejinja(config)
 
