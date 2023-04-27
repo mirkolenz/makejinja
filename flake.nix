@@ -6,16 +6,13 @@
   outputs = inputs@{ flake-parts, nixpkgs, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = nixpkgs.lib.systems.flakeExposed;
-      perSystem = {config, pkgs, system, ...}: {
+      perSystem = { pkgs, ... }: {
         devShells.default =
-          let
-            python = pkgs.python311;
-          in
           pkgs.mkShell {
-            packages = [ pkgs.poetry python ];
-            shellHook = ''
-              poetry env use ${python}/bin/python
-              poetry install --all-extras
+            packages = with pkgs; [ poetry python311 ];
+            shellHook = with pkgs; ''
+              ${poetry}/bin/poetry env use ${python311}/bin/python
+              ${poetry}/bin/poetry install --all-extras
             '';
           };
       };
