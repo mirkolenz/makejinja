@@ -1,36 +1,38 @@
-env:
-  PYTHON_VERSION: "3.10"
-  POETRY_VERSION: "1.4.0"
 on:
   pull_request:
   push:
     branches:
       - main
       - beta
+
+permissions:
+  id-token: write
+  contents: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - run: "pip install poetry==${{ env.POETRY_VERSION }}"
-      - run: "poetry config virtualenvs.in-project true"
-      - run: "poetry install --no-interaction --no-ansi --no-root -vv"
-      - run: "poetry run pytest"
+      - uses: DeterminateSystems/nix-installer-action@v2
+      - run: "nix develop -c poetry run pytest"
   release:
     runs-on: ubuntu-latest
     needs: test
     if: ${{ github.repository_owner == 'mirkolenz' && github.event_name == 'push' }}
+    permissions:
+      id-token: write
+      contents: write
     steps:
       - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@v2
+      - run: "nix develop"
       - uses: cihelper/action-semanticrelease-poetry@v1
         id: semanticrelease
-        with:
-          poetry-version: ${{ env.POETRY_VERSION }}
-          python-version: ${{ env.PYTHON_VERSION }}
-          pypi-token: ${{ secrets.PYPI_TOKEN }}
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        if: ${{ steps.semanticrelease.outputs.released == 'true' }}
       - uses: cihelper/action-docker-publish@v1
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
         with:

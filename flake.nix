@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-22.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
   outputs = inputs@{ flake-parts, nixpkgs, ... }:
@@ -12,7 +12,7 @@
             packages = with pkgs; [ poetry python311 ];
             shellHook = with pkgs; ''
               ${poetry}/bin/poetry env use ${python311}/bin/python
-              ${poetry}/bin/poetry install --all-extras
+              ${poetry}/bin/poetry install --all-extras --no-root --no-interaction
             '';
           };
       };
