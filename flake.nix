@@ -19,7 +19,7 @@
           processes.makejinja = {
             exec = "python -m makejinja";
           };
-          containers.processes = {
+          containers."processes" = {
             startupCommand = "--help";
             version = pyproject.tool.poetry.version;
             registry = "docker://ghcr.io/";
