@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/mirkolenz/makejinja/compare/v1.1.3...v1.1.4) (2023-04-30)
+
+
+### Bug Fixes
+
+* trigger ci build ([f529ff0](https://github.com/mirkolenz/makejinja/commit/f529ff0f323941dc0bafb2366c768f1a316ae293))
+
 ## [1.1.3](https://github.com/mirkolenz/makejinja/compare/v1.1.2...v1.1.3) (2023-04-30)
 
 
