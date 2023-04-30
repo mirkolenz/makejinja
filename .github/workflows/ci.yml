@@ -15,7 +15,7 @@ jobs:
       - run: |
           nix develop --impure
           echo "$DEVENV_PROFILE/bin" >> $GITHUB_PATH
-      - run: "pytest"
+      - run: "python -m pytest"
   release:
     runs-on: ubuntu-latest
     needs: test
