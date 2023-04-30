@@ -15,27 +15,26 @@
       imports = [ devenv.flakeModule ];
       systems = nixpkgs.lib.systems.flakeExposed;
       perSystem = { pkgs, ... }: {
-        devenv = {
+        devenv.shells.default = {
           processes.makejinja = {
             exec = "python -m makejinja";
           };
-          containers."processes" = {
+          containers.processes = {
             startupCommand = "--help";
             version = pyproject.tool.poetry.version;
             registry = "docker://ghcr.io/";
           };
-          shells.default = {
-            languages.python = {
+          languages.python = {
+            enable = true;
+            package = pkgs.python311;
+            poetry = {
               enable = true;
-              package = pkgs.python311;
-              poetry = {
-                enable = true;
-                activate.enable = true;
-                install.enable = true;
-              };
+              activate.enable = true;
+              install.enable = true;
             };
           };
         };
       };
     };
+};
 }
