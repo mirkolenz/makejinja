@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/mirkolenz/makejinja/compare/v1.1.2...v1.1.3) (2023-04-30)
+
+
+### Bug Fixes
+
+* help message was missing from cli ([34b626e](https://github.com/mirkolenz/makejinja/commit/34b626e52ff32ee6ce2dbba8351877441d1c9903))
+
 ## [1.1.2](https://github.com/mirkolenz/makejinja/compare/v1.1.1...v1.1.2) (2023-02-14)
 
 
