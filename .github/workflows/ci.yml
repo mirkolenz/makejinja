@@ -20,6 +20,7 @@ jobs:
     permissions:
       id-token: write
       contents: write
+      packages: write
     steps:
       - uses: actions/checkout@v3
       - uses: JRMurr/direnv-nix-action@v4.1.0
