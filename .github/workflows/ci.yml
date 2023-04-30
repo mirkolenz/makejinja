@@ -28,7 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: DeterminateSystems/nix-installer-action@v2
-      - run: "nix develop"
+      - run: |
+          nix develop -c echo "$DEVSHELL_DIR/bin" >> $GITHUB_PATH
       - uses: cihelper/action-semanticrelease-poetry@v1
         id: semanticrelease
       - uses: pypa/gh-action-pypi-publish@release/v1
