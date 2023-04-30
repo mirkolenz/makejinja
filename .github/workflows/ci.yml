@@ -12,7 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v20
-      - run: nix develop --impure -c echo "$DEVENV_PROFILE/bin" >> $GITHUB_PATH
+      - run: |
+          nix develop --impure
+          echo "$DEVENV_PROFILE/bin" >> $GITHUB_PATH
       - run: "pytest"
   release:
     runs-on: ubuntu-latest
@@ -25,7 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v20
-      - run: nix develop --impure -c echo "$DEVENV_PROFILE/bin" >> $GITHUB_PATH
+      - run: |
+          nix develop --impure
+          echo "$DEVENV_PROFILE/bin" >> $GITHUB_PATH
       - uses: cihelper/action-semanticrelease-poetry@v1
         id: semanticrelease
       - uses: pypa/gh-action-pypi-publish@release/v1
