@@ -11,8 +11,9 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v3
-      - uses: JRMurr/direnv-nix-action@v4.1.0
-      - run: "poetry run pytest"
+      - uses: cachix/install-nix-action@v20
+      - run: nix develop --impure -c echo "$DEVENV_PROFILE/bin" >> $GITHUB_PATH
+      - run: "pytest"
   release:
     runs-on: ubuntu-latest
     needs: test
@@ -23,7 +24,8 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v3
-      - uses: JRMurr/direnv-nix-action@v4.1.0
+      - uses: cachix/install-nix-action@v20
+      - run: nix develop --impure -c echo "$DEVENV_PROFILE/bin" >> $GITHUB_PATH
       - uses: cihelper/action-semanticrelease-poetry@v1
         id: semanticrelease
       - uses: pypa/gh-action-pypi-publish@release/v1
