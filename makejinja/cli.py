@@ -22,6 +22,14 @@ _loader = ts.default_loaders(
 @click.command("makejinja")
 @ts.click_options(cast(Type[AttrsInstance], Config), _loader)
 def makejinja_cli(config: Config):
+    """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
+
+    Instead of passing CLI options, you can also write them to a file called `.makejinja.toml` in your working directory.
+    **Note**: In this file, options may be named differently.
+    Please refer to the file [`makejinja/config.py`](https://github.com/mirkolenz/makejinja/blob/main/makejinja/config.py) to see their actual names.
+    You will also find an example here: [`makejinja/tests/data/.makejinja.toml`](https://github.com/mirkolenz/makejinja/blob/main/tests/data/.makejinja.toml).
+    """
+
     makejinja(config)
 
 
