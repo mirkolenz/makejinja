@@ -28,7 +28,8 @@ jobs:
         id: semanticrelease
       - uses: pypa/gh-action-pypi-publish@release/v1
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
-      - uses: cihelper/action-docker-publish@v1
+      - name: devenv copy container
+        run: |
+          devenv container processes --copy \
+          --copy-args="--dest-registry-token ${{ secrets.GITHUB_TOKEN }}"
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
-        with:
-          version: ${{ steps.semanticrelease.outputs.version }}

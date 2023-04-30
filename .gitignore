@@ -226,3 +226,4 @@ poetry.toml
 .vscode/
 .python-version
 .direnv/
+.devenv/
