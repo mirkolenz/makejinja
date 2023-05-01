@@ -12,9 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v20
-      - run: "nix develop --impure -c echo $DEVENV_PROFILE/bin"
-      - run: "nix develop --impure -c ls $DEVENV_PROFILE/bin"
-      - run: "nix develop --impure -c echo $DEVENV_PROFILE/bin >> $GITHUB_PATH"
+      - run: "nix develop --impure -c sh -c 'echo $DEVENV_PROFILE/bin'"
+      - run: "nix develop --impure -c sh -c 'echo $DEVENV_PROFILE/bin' >> $GITHUB_PATH"
       - run: "poetry run pytest"
   release:
     runs-on: ubuntu-latest
