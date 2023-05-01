@@ -14,8 +14,10 @@ jobs:
       - uses: cachix/install-nix-action@v20
       - run: |
           nix develop --impure
+          echo "$DEVENV_PROFILE/bin"
+          ls "$DEVENV_PROFILE/bin"
           echo "$DEVENV_PROFILE/bin" >> $GITHUB_PATH
-      - run: "poetry run python -m pytest"
+      - run: "poetry run pytest"
   release:
     runs-on: ubuntu-latest
     needs: test
