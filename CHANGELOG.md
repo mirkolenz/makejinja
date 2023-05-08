@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5-beta.1](https://github.com/mirkolenz/makejinja/compare/v1.1.4...v1.1.5-beta.1) (2023-05-08)
+
+
+### Bug Fixes
+
+* trigger ci build ([acd7609](https://github.com/mirkolenz/makejinja/commit/acd7609c4cdfaf546e4d28eee14642a8e9f580e5))
+
 ## [1.1.4](https://github.com/mirkolenz/makejinja/compare/v1.1.3...v1.1.4) (2023-04-30)
 
 
