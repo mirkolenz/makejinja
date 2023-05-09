@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5-beta.4](https://github.com/mirkolenz/makejinja/compare/v1.1.5-beta.3...v1.1.5-beta.4) (2023-05-09)
+
+
+### Bug Fixes
+
+* update readme ([2445d25](https://github.com/mirkolenz/makejinja/commit/2445d254cc6cde9953ebe8055a1c97640f01527e))
+
 ## [1.1.5-beta.3](https://github.com/mirkolenz/makejinja/compare/v1.1.5-beta.2...v1.1.5-beta.3) (2023-05-09)
 
 
