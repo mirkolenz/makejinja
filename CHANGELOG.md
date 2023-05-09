@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5-beta.3](https://github.com/mirkolenz/makejinja/compare/v1.1.5-beta.2...v1.1.5-beta.3) (2023-05-09)
+
+
+### Bug Fixes
+
+* use impure nix run for pushing docker ([634f699](https://github.com/mirkolenz/makejinja/commit/634f699d3b68060d1265c47e044f993977028257))
+
 ## [1.1.5-beta.2](https://github.com/mirkolenz/makejinja/compare/v1.1.5-beta.1...v1.1.5-beta.2) (2023-05-09)
 
 
