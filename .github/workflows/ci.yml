@@ -33,5 +33,5 @@ jobs:
         with:
           version: ${{ steps.semanticrelease.outputs.version }}
           build-image: false
-      - run: "nix run .#copyDockerImage"
+      - run: "nix run --impure .#copyDockerImage"
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
