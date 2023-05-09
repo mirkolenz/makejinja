@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5-beta.2](https://github.com/mirkolenz/makejinja/compare/v1.1.5-beta.1...v1.1.5-beta.2) (2023-05-09)
+
+
+### Bug Fixes
+
+* try to fix docker image pushing ([6634507](https://github.com/mirkolenz/makejinja/commit/663450742507ba308082d4f7e17b4e71c0f4ee23))
+
 ## [1.1.5-beta.1](https://github.com/mirkolenz/makejinja/compare/v1.1.4...v1.1.5-beta.1) (2023-05-08)
 
 
