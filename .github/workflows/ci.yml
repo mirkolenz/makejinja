@@ -33,6 +33,5 @@ jobs:
         with:
           version: ${{ steps.semanticrelease.outputs.version }}
           build-image: false
-      - run: "echo $DOCKER_METADATA_OUTPUT_JSON"
-      - run: "nix run .#docker.copyToRegistry"
+      - run: "nix run .#copyDockerImage"
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}

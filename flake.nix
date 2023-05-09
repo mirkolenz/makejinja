@@ -19,7 +19,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ devenv.flakeModule ];
       systems = nixpkgs.lib.systems.flakeExposed;
-      perSystem = { pkgs, system, lib, ... }:
+      perSystem = { pkgs, system, lib, self', ... }:
         let
           inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication;
           inherit (nix2container.packages.${system}.nix2container) buildImage;
@@ -33,20 +33,20 @@
               python = py;
             };
             default = makejinja;
-            docker =
-              let
-                metaJson = builtins.getEnv "DOCKER_METADATA_OUTPUT_JSON";
-                meta = if metaJson == "" then { } else builtins.fromJSON metaJson;
-              in
-              buildImage {
-                inherit meta;
-                name = "makejinja";
-                tag = "latest";
-                config = {
-                  entrypoint = [ (lib.getExe makejinja) ];
-                  cmd = [ "--help" ];
-                };
+            dockerImage = buildImage {
+              name = "makejinja";
+              config = {
+                entrypoint = [ (lib.getExe makejinja) ];
+                cmd = [ "--help" ];
               };
+            };
+            copyDockerImage =
+              let
+                copyCmd = tag: "${lib.getExe dockerImage.copyTo} docker://${tag}";
+                tags = lib.splitString "\n" (builtins.getEnv "DOCKER_METADATA_OUTPUT_TAGS");
+              in
+              pkgs.writeShellScriptBin "copyDockerImage"
+                (lib.concatMapStringsSep "\n" copyCmd tags);
             # https://yuanwang.ca/posts/push-docker-image-to-gcr-with-nix.html
             # docker = pkgs.dockerTools.buildImage {
             #   name = "makejinja";
