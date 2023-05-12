@@ -1,6 +1,7 @@
 import shutil
 import sys
 import typing as t
+import re
 from inspect import signature
 from pathlib import Path
 
@@ -29,29 +30,40 @@ def makejinja(config: Config):
         sys.path.append(str(path.resolve()))
 
     data = load_data(config)
+    if config.output.is_dir():
+        print(f"Remove '{config.output}' from previous run")
+        shutil.rmtree(config.output)
+
+    config.output.mkdir(parents=True, exist_ok=True)
+
     env = init_jinja_env(config)
 
     for loader in config.loaders:
         process_loader(loader, env, data)
 
-    if config.output.is_dir():
-        print(f"Remove '{config.output}' from previous run")
-        shutil.rmtree(config.output)
+    files: dict[Path, tuple[Path, Path]] = {}
+    exclude_regexes: list[re.Pattern] = [re.compile(r) for r in config.exclude_pattern]
+    for input in [config.input] + config.inputs:
+        if config.copy_tree:
+            print(f"Copy file tree '{input}' -> '{config.output}'")
+            shutil.copytree(input, config.output)
 
-    if config.copy_tree:
-        print(f"Copy file tree '{config.input}' -> '{config.output}'")
-        shutil.copytree(config.input, config.output)
-
-    config.output.mkdir(parents=True, exist_ok=True)
-
-    for input in config.input.glob(config.input_pattern):
-        if not input.is_dir():
-            render_file(input, config, env, data)
+        for file in input.glob(config.input_pattern):
+            relative_path = file.relative_to(input)
+            if not file.is_dir():
+                if not any(
+                    [r.search(relative_path.as_posix()) for r in exclude_regexes]
+                ):
+                    files[relative_path] = (file, input)
+    for file, input in files.values():
+        render_file(file, input, config, env, data)
 
 
 def init_jinja_env(config: Config) -> Environment:
+    input_paths = [config.input] + config.inputs
+    input_paths.reverse()
     return Environment(
-        loader=FileSystemLoader(config.input),
+        loader=FileSystemLoader(input_paths),
         extensions=config.extensions,
         block_start_string=config.delimiter.block_start,
         block_end_string=config.delimiter.block_end,
@@ -159,8 +171,10 @@ def process_loader(
         data.update(loader.data())
 
 
-def render_file(input: Path, config: Config, env: Environment, data: dict[str, t.Any]):
-    relative_path = input.relative_to(config.input)
+def render_file(
+    file: Path, input: Path, config: Config, env: Environment, data: dict[str, t.Any]
+):
+    relative_path = file.relative_to(input)
     output = config.output / relative_path
     output.parent.mkdir(parents=True, exist_ok=True)
 
@@ -179,12 +193,12 @@ def render_file(input: Path, config: Config, env: Environment, data: dict[str, t
         # Write the rendered template if it has content
         # Prevents empty macro definitions
         if rendered.strip() == "" and not config.keep_empty:
-            print(f"Skip '{input}'")
+            print(f"Skip '{file}'")
         else:
-            print(f"Render '{input}' -> '{output}'")
+            print(f"Render '{file}' -> '{output}'")
             with output.open("w") as f:
                 f.write(rendered)
 
     elif not config.copy_tree:
-        print(f"Copy '{input}' -> '{output}'")
-        shutil.copy2(input, output)
+        print(f"Copy '{file}' -> '{output}'")
+        shutil.copy2(file, output)

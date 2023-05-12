@@ -1,8 +1,11 @@
 [makejinja]
-input = "./input"
+input = "./input_1"
 output = "./output"
 data = ["./config"]
 loaders = ["loader:Loader"]
+inputs = ["./input_2"]
+exclude_pattern = [".*\\.partial"]
+
 
 [makejinja.delimiter]
 block_start = "<%"

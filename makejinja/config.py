@@ -169,6 +169,12 @@ class Config:
             **Note:** Do not add a special suffix used by your template files here, instead use the `jinja-suffix` option.
         """,
     )
+    exclude_pattern: list[str] = ts.option(
+        factory=list,
+        help="""
+            Regex pattern to exclude for files matched by the input glob. Multiple can be provided.
+        """,
+    )
     jinja_suffix: str = ts.option(
         default=".jinja",
         help="""
@@ -203,6 +209,19 @@ class Config:
             By default, we do not copy such empty files.
             If there is a need to have them available anyway, you can adjust that.
         """,
+    )
+    inputs: list[Path] = ts.option(
+        factory=list,
+        click={
+            "type": click.Path(exists=True, path_type=Path, file_okay=False),
+            "param_decls": "--inputs",
+        },
+        help="""
+                Additional directories to search for templates within. This is useful
+                if you want to combine multiple directories of templates.
+                **Note:** This option may be passed multiple times to pass a list of values.
+                If a template exists in multiple inputs, the last value with be used.
+            """,
     )
     data: list[Path] = ts.option(
         factory=list,
@@ -267,8 +286,10 @@ OPTION_GROUPS = {
             "name": "Input/Output",
             "options": [
                 "--input",
+                "--inputs",
                 "--output",
                 "--input-pattern",
+                "--exclude-pattern",
                 "--jinja-suffix",
                 "--copy-tree",
                 "--keep-jinja-suffix",
