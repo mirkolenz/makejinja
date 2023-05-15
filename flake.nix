@@ -26,6 +26,16 @@
           py = pkgs.python311;
         in
         {
+          apps.copyDockerImage = {
+            type = "app";
+            program = builtins.toString (pkgs.writeShellScript "copyDockerImage" ''
+              IFS=$'\n' # iterate over newlines
+              set -x # echo on
+              for DOCKER_TAG in $DOCKER_METADATA_OUTPUT_TAGS; do
+                ${lib.getExe self'.packages.dockerImage.copyTo} "docker://$DOCKER_TAG"
+              done
+            '');
+          };
           packages = rec {
             makejinja = mkPoetryApplication {
               projectDir = ./.;
@@ -40,22 +50,7 @@
                 cmd = [ "--help" ];
               };
             };
-            copyDockerImage =
-              let
-                copyCmd = tag: "${lib.getExe dockerImage.copyTo} docker://${tag}";
-                tags = lib.splitString "\n" (builtins.getEnv "DOCKER_METADATA_OUTPUT_TAGS");
-              in
-              pkgs.writeShellScriptBin "copyDockerImage"
-                (lib.concatMapStringsSep "\n" copyCmd tags);
-            # https://yuanwang.ca/posts/push-docker-image-to-gcr-with-nix.html
-            # docker = pkgs.dockerTools.buildImage {
-            #   name = "makejinja";
-            #   tag = "latest";
-            #   config = {
-            #     entrypoint = [ (lib.getExe makejinja) ];
-            #     cmd = [ "--help" ];
-            #   };
-            # };
+
           };
           devenv.shells.default = {
             languages.python = {
