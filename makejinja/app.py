@@ -1,7 +1,6 @@
 import shutil
 import sys
 import typing as t
-import re
 from inspect import signature
 from pathlib import Path
 
@@ -42,19 +41,20 @@ def makejinja(config: Config):
         process_loader(loader, env, data)
 
     files: dict[Path, tuple[Path, Path]] = {}
-    exclude_regexes: list[re.Pattern] = [re.compile(r) for r in config.exclude_pattern]
-    for input in [config.input] + config.inputs:
+    input_directories = [config.input] + config.inputs
+
+    for input in input_directories:
         if config.copy_tree:
             print(f"Copy file tree '{input}' -> '{config.output}'")
             shutil.copytree(input, config.output)
 
         for file in input.glob(config.input_pattern):
             relative_path = file.relative_to(input)
-            if not file.is_dir():
-                if not any(
-                    [r.search(relative_path.as_posix()) for r in exclude_regexes]
-                ):
-                    files[relative_path] = (file, input)
+            if file.is_dir():
+                continue
+            if any([file.match(x) for x in config.exclude_pattern]):
+                continue
+            files[relative_path] = (file, input)
     for file, input in files.values():
         render_file(file, input, config, env, data)
 

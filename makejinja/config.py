@@ -172,7 +172,8 @@ class Config:
     exclude_pattern: list[str] = ts.option(
         factory=list,
         help="""
-            Regex pattern to exclude for files matched by the input glob. Multiple can be provided.
+            Glob patterns pattern to exclude files matched. Applied against files discovered by the input glob. 
+            Multiple can be provided.
         """,
     )
     jinja_suffix: str = ts.option(

@@ -4,7 +4,7 @@ output = "./output"
 data = ["./config"]
 loaders = ["loader:Loader"]
 inputs = ["./input_2"]
-exclude_pattern = [".*\\.partial"]
+exclude_pattern = ["*.partial"]
 
 
 [makejinja.delimiter]
