@@ -58,7 +58,7 @@ def makejinja(config: Config):
                 rendered_files.add(output_path)
 
             elif input_path.is_dir() and output_path not in rendered_folders:
-                print(f"Create '{output_path}' with metadata from '{input_path}'")
+                print(f"Create '{output_path}' directory.")
                 output_path.mkdir()
                 rendered_folders[output_path] = input_path
 
@@ -66,6 +66,7 @@ def makejinja(config: Config):
     # Otherwise the mtime will be updated
     if config.copy_metadata:
         for output_path, input_path in rendered_folders.items():
+            print(f"Updating '{output_path}' with metadata from '{input_path}'")
             shutil.copystat(input_path, output_path)
 
 
