@@ -227,3 +227,4 @@ poetry.toml
 .python-version
 .direnv/
 .devenv/
+/result

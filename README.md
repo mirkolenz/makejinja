@@ -23,6 +23,10 @@ Using the same language that the built-in templates use, you can greatly simplif
 
 ## Installation
 
+We support multiple installation methods: pip, nix, and docker.
+
+### PIP
+
 makejinja is available via `pip` and can be installed via
 
 `pip install makejinja`
@@ -32,12 +36,23 @@ Thus, we advise leveraging [`pipx`](https://github.com/pypa/pipx) instead:
 
 `pipx install makejinja`
 
-Alternatively, the application can also be used via Docker.
+You can then directly invoke the app as follows:
+
+`makejinja --input ./data/input --output ./data/output`
+
+### Nix
+
+If you use the `nix` package manager, you can add this repository as an input to your flake and use `makejinja.packages.${system}.default`.
+You can also run it directly
+
+`nix run github:mirkolenz/makejinja -- --input ./data/input --output ./data/output`
+
+### Docker
+
 We automatically publish an image at `ghcr.io/mirkolenz/makejinja`.
 To use it, mount a folder to the container and pass the options as the command.
-For example, to process files in `./data/input` and render them to `./data/output`, you could run:
 
-`docker run --rm -v $(pwd)/data:/data ghcr.io/mirkolenz/makejinja@latest --input /data/input --output /data/output`
+`docker run --rm -v $(pwd)/data:/data ghcr.io/mirkolenz/makejinja:latest --input /data/input --output /data/output`
 
 ## Usage
 
