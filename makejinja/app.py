@@ -22,6 +22,14 @@ from makejinja.config import Config
 __all__ = ["makejinja"]
 
 
+def makedir(input: Path, output: Path) -> None:
+    """Create a directory and copy its permissions and times from the input"""
+    if not output.exists():
+        print(f"Create '{output}' directory using '{input}' attributes")
+        output.mkdir()
+        shutil.copystat(input, output)
+
+
 def makejinja(config: Config):
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/)."""
 
@@ -33,34 +41,38 @@ def makejinja(config: Config):
         print(f"Remove '{config.output}' from previous run")
         shutil.rmtree(config.output)
 
-    config.output.mkdir(parents=True, exist_ok=True)
+    config.output.mkdir()
 
-    input_paths = config.inputs
-    input_paths.reverse()
-
-    env = init_jinja_env(config, input_paths)
+    env = init_jinja_env(config)
 
     for loader in config.loaders:
         process_loader(loader, env, data)
 
-    if config.copy_tree:
-        print(f"Copy file tree '{input_paths[0]}' -> '{config.output}'")
-        shutil.copytree(input_paths[0], config.output)
-
     rendered_files: set[Path] = set()
+    rendered_folders: dict[Path, Path] = dict()
 
-    for input_dir in input_paths:
-        for input_file in input_dir.glob(config.input_pattern):
-            relative_file = input_file.relative_to(input_dir)
-            output_file = generate_output_path(config, relative_file)
+    for input_dir in config.inputs:
+        for input_path in input_dir.glob(config.input_pattern):
+            relative_path = input_path.relative_to(input_dir)
+            output_path = generate_output_path(config, relative_path)
 
             if (
-                input_file.is_file()
-                and (output_file not in rendered_files)
-                and not any(input_file.match(x) for x in config.exclude_patterns)
+                input_path.is_file()
+                and (output_path not in rendered_files)
+                and not any(input_path.match(x) for x in config.exclude_patterns)
             ):
-                render_path(input_file, relative_file, output_file, config, env, data)
-                rendered_files.add(output_file)
+                render_path(input_path, relative_path, output_path, config, env, data)
+                rendered_files.add(output_path)
+            elif input_path.is_dir() and not output_path in rendered_folders:
+                output_path.mkdir()
+                rendered_folders[output_path] = input_path
+
+    for output_dir, input_dir in rendered_folders.items():
+        shutil.copystat(input_dir, output_dir)
+
+
+def ignore_files_from_copytree(path: str, names: list[str]) -> list[str]:
+    ignores = [n for n in names if (Path(path) / n).is_file()]
 
 
 def generate_output_path(config: Config, relative_path: Path) -> Path:
@@ -72,9 +84,9 @@ def generate_output_path(config: Config, relative_path: Path) -> Path:
     return output_file
 
 
-def init_jinja_env(config: Config, input_paths: t.Sequence[Path]) -> Environment:
+def init_jinja_env(config: Config) -> Environment:
     return Environment(
-        loader=FileSystemLoader(input_paths),
+        loader=FileSystemLoader(config.inputs),
         extensions=config.extensions,
         block_start_string=config.delimiter.block_start,
         block_end_string=config.delimiter.block_end,
@@ -190,14 +202,8 @@ def render_path(
     env: Environment,
     data: dict[str, t.Any],
 ) -> None:
-    output.parent.mkdir(parents=True, exist_ok=True)
-
     if input.suffix == config.jinja_suffix:
         template = env.get_template(str(relative_path))
-
-        # Remove the copied file if the tree has been duplicated
-        if config.copy_tree:
-            output.unlink()
 
         rendered = template.render(data)
 
@@ -210,6 +216,6 @@ def render_path(
             with output.open("w") as f:
                 f.write(rendered)
 
-    elif not config.copy_tree:
+    else:
         print(f"Copy '{input}' -> '{output}'")
         shutil.copy2(input, output)
