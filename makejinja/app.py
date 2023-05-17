@@ -22,16 +22,6 @@ from makejinja.config import Config
 __all__ = ["makejinja"]
 
 
-def makedir(config: Config, input: Path, output: Path) -> None:
-    """Create a directory and copy its permissions and times from the input"""
-
-    print(f"Create '{output}' with metadata from '{input}'")
-    output.mkdir()
-
-    if config.copy_metadata:
-        shutil.copystat(input, output)
-
-
 def makejinja(config: Config):
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/)."""
 
@@ -52,7 +42,7 @@ def makejinja(config: Config):
         process_loader(loader, env, data)
 
     rendered_files: set[Path] = set()
-    rendered_folders: set[Path] = set()
+    rendered_folders: dict[Path, Path] = {}
 
     for input_dir in config.inputs:
         for input_path in sorted(input_dir.glob(config.input_pattern)):
@@ -68,8 +58,15 @@ def makejinja(config: Config):
                 rendered_files.add(output_path)
 
             elif input_path.is_dir() and output_path not in rendered_folders:
-                makedir(config, input_path, output_path)
-                rendered_folders.add(output_path)
+                print(f"Create '{output_path}' with metadata from '{input_path}'")
+                output_path.mkdir()
+                rendered_folders[output_path] = input_path
+
+    # The metadata has to be copied after all files are rendered
+    # Otherwise the mtime will be updated
+    if config.copy_metadata:
+        for output_path, input_path in rendered_folders.items():
+            shutil.copystat(input_path, output_path)
 
 
 def generate_output_path(config: Config, relative_path: Path) -> Path:
