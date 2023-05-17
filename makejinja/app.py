@@ -22,11 +22,13 @@ from makejinja.config import Config
 __all__ = ["makejinja"]
 
 
-def makedir(input: Path, output: Path) -> None:
+def makedir(config: Config, input: Path, output: Path) -> None:
     """Create a directory and copy its permissions and times from the input"""
-    if not output.exists():
-        print(f"Create '{output}' directory using '{input}' attributes")
-        output.mkdir()
+
+    print(f"Create '{output}' with metadata from '{input}'")
+    output.mkdir()
+
+    if config.copy_metadata:
         shutil.copystat(input, output)
 
 
@@ -37,6 +39,7 @@ def makejinja(config: Config):
         sys.path.append(str(path.resolve()))
 
     data = load_data(config)
+
     if config.output.is_dir():
         print(f"Remove '{config.output}' from previous run")
         shutil.rmtree(config.output)
@@ -49,30 +52,24 @@ def makejinja(config: Config):
         process_loader(loader, env, data)
 
     rendered_files: set[Path] = set()
-    rendered_folders: dict[Path, Path] = dict()
+    rendered_folders: set[Path] = set()
 
     for input_dir in config.inputs:
-        for input_path in input_dir.glob(config.input_pattern):
+        for input_path in sorted(input_dir.glob(config.input_pattern)):
             relative_path = input_path.relative_to(input_dir)
             output_path = generate_output_path(config, relative_path)
 
             if (
                 input_path.is_file()
-                and (output_path not in rendered_files)
+                and output_path not in rendered_files
                 and not any(input_path.match(x) for x in config.exclude_patterns)
             ):
                 render_path(input_path, relative_path, output_path, config, env, data)
                 rendered_files.add(output_path)
-            elif input_path.is_dir() and not output_path in rendered_folders:
-                output_path.mkdir()
-                rendered_folders[output_path] = input_path
 
-    for output_dir, input_dir in rendered_folders.items():
-        shutil.copystat(input_dir, output_dir)
-
-
-def ignore_files_from_copytree(path: str, names: list[str]) -> list[str]:
-    ignores = [n for n in names if (Path(path) / n).is_file()]
+            elif input_path.is_dir() and output_path not in rendered_folders:
+                makedir(config, input_path, output_path)
+                rendered_folders.add(output_path)
 
 
 def generate_output_path(config: Config, relative_path: Path) -> Path:
@@ -204,17 +201,19 @@ def render_path(
 ) -> None:
     if input.suffix == config.jinja_suffix:
         template = env.get_template(str(relative_path))
-
         rendered = template.render(data)
 
         # Write the rendered template if it has content
         # Prevents empty macro definitions
         if rendered.strip() == "" and not config.keep_empty:
-            print(f"Skip '{input}'")
+            print(f"Skip empty file '{input}'")
         else:
             print(f"Render '{input}' -> '{output}'")
-            with output.open("w") as f:
-                f.write(rendered)
+            with output.open("w") as fp:
+                fp.write(rendered)
+
+            if config.copy_metadata:
+                shutil.copystat(input, output)
 
     else:
         print(f"Copy '{input}' -> '{output}'")

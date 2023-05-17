@@ -207,6 +207,13 @@ class Config:
             If there is a need to have them available anyway, you can adjust that.
         """,
     )
+    copy_metadata: bool = ts.option(
+        default=False,
+        click={"param_decls": "--copy-metadata"},
+        help="""
+            Copy the file metadata (e.g., created/modified/permissions) from the input file using `shutil.copystat`
+        """,
+    )
     data: list[Path] = ts.option(
         factory=list,
         click={
@@ -274,9 +281,9 @@ OPTION_GROUPS = {
                 "--input-pattern",
                 "--exclude-pattern",
                 "--jinja-suffix",
-                "--copy-tree",
                 "--keep-jinja-suffix",
                 "--keep-empty",
+                "--copy-metadata",
             ],
         },
         {
