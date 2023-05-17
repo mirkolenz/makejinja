@@ -35,33 +35,44 @@ def makejinja(config: Config):
 
     config.output.mkdir(parents=True, exist_ok=True)
 
-    env = init_jinja_env(config)
+    input_paths = config.inputs
+    input_paths.reverse()
+
+    env = init_jinja_env(config, input_paths)
 
     for loader in config.loaders:
         process_loader(loader, env, data)
 
-    files: dict[Path, tuple[Path, Path]] = {}
-    input_directories = [config.input] + config.inputs
+    if config.copy_tree:
+        print(f"Copy file tree '{input_paths[0]}' -> '{config.output}'")
+        shutil.copytree(input_paths[0], config.output)
 
-    for input in input_directories:
-        if config.copy_tree:
-            print(f"Copy file tree '{input}' -> '{config.output}'")
-            shutil.copytree(input, config.output)
+    rendered_files: set[Path] = set()
 
-        for file in input.glob(config.input_pattern):
-            relative_path = file.relative_to(input)
-            if file.is_dir():
-                continue
-            if any([file.match(x) for x in config.exclude_pattern]):
-                continue
-            files[relative_path] = (file, input)
-    for file, input in files.values():
-        render_file(file, input, config, env, data)
+    for input_dir in input_paths:
+        for input_file in input_dir.glob(config.input_pattern):
+            relative_file = input_file.relative_to(input_dir)
+            output_file = generate_output_path(config, relative_file)
+
+            if (
+                input_file.is_file()
+                and (output_file not in rendered_files)
+                and not any(input_file.match(x) for x in config.exclude_patterns)
+            ):
+                render_path(input_file, relative_file, output_file, config, env, data)
+                rendered_files.add(output_file)
 
 
-def init_jinja_env(config: Config) -> Environment:
-    input_paths = [config.input] + config.inputs
-    input_paths.reverse()
+def generate_output_path(config: Config, relative_path: Path) -> Path:
+    output_file = config.output / relative_path
+
+    if relative_path.suffix == config.jinja_suffix and not config.keep_jinja_suffix:
+        output_file = output_file.with_suffix("")
+
+    return output_file
+
+
+def init_jinja_env(config: Config, input_paths: t.Sequence[Path]) -> Environment:
     return Environment(
         loader=FileSystemLoader(input_paths),
         extensions=config.extensions,
@@ -171,34 +182,34 @@ def process_loader(
         data.update(loader.data())
 
 
-def render_file(
-    file: Path, input: Path, config: Config, env: Environment, data: dict[str, t.Any]
-):
-    relative_path = file.relative_to(input)
-    output = config.output / relative_path
+def render_path(
+    input: Path,
+    relative_path: Path,
+    output: Path,
+    config: Config,
+    env: Environment,
+    data: dict[str, t.Any],
+) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
 
-    if relative_path.suffix == config.jinja_suffix:
+    if input.suffix == config.jinja_suffix:
         template = env.get_template(str(relative_path))
 
         # Remove the copied file if the tree has been duplicated
         if config.copy_tree:
             output.unlink()
 
-        if not config.keep_jinja_suffix:
-            output = output.with_suffix("")
-
         rendered = template.render(data)
 
         # Write the rendered template if it has content
         # Prevents empty macro definitions
         if rendered.strip() == "" and not config.keep_empty:
-            print(f"Skip '{file}'")
+            print(f"Skip '{input}'")
         else:
-            print(f"Render '{file}' -> '{output}'")
+            print(f"Render '{input}' -> '{output}'")
             with output.open("w") as f:
                 f.write(rendered)
 
     elif not config.copy_tree:
-        print(f"Copy '{file}' -> '{output}'")
-        shutil.copy2(file, output)
+        print(f"Copy '{input}' -> '{output}'")
+        shutil.copy2(input, output)

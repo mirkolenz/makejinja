@@ -146,11 +146,17 @@ class Whitespace:
 
 @ts.settings(frozen=True)
 class Config:
-    input: Path = ts.option(
-        click={"type": click.Path(exists=True, file_okay=False, path_type=Path)},
+    inputs: list[Path] = ts.option(
+        click={
+            "type": click.Path(exists=True, file_okay=False, path_type=Path),
+            "param_decls": "--input",
+            "required": True,
+        },
         help="""
             Path to a folder containing template files.
             It is passed to Jinja's [FileSystemLoader](https://jinja.palletsprojects.com/en/3.1.x/api/#jinja2.FileSystemLoader) when creating the environment.
+            **Note:** This option may be passed multiple times to pass a list of values.
+            If a template exists in multiple inputs, the last value with be used.
         """,
     )
     output: Path = ts.option(
@@ -169,10 +175,11 @@ class Config:
             **Note:** Do not add a special suffix used by your template files here, instead use the `jinja-suffix` option.
         """,
     )
-    exclude_pattern: list[str] = ts.option(
+    exclude_patterns: list[str] = ts.option(
         factory=list,
+        click={"param_decls": "--exclude-pattern"},
         help="""
-            Glob patterns pattern to exclude files matched. Applied against files discovered by the input glob. 
+            Glob patterns pattern to exclude files matched. Applied against files discovered by the input glob.
             Multiple can be provided.
         """,
     )
@@ -210,19 +217,6 @@ class Config:
             By default, we do not copy such empty files.
             If there is a need to have them available anyway, you can adjust that.
         """,
-    )
-    inputs: list[Path] = ts.option(
-        factory=list,
-        click={
-            "type": click.Path(exists=True, path_type=Path, file_okay=False),
-            "param_decls": "--inputs",
-        },
-        help="""
-                Additional directories to search for templates within. This is useful
-                if you want to combine multiple directories of templates.
-                **Note:** This option may be passed multiple times to pass a list of values.
-                If a template exists in multiple inputs, the last value with be used.
-            """,
     )
     data: list[Path] = ts.option(
         factory=list,
@@ -287,7 +281,6 @@ OPTION_GROUPS = {
             "name": "Input/Output",
             "options": [
                 "--input",
-                "--inputs",
                 "--output",
                 "--input-pattern",
                 "--exclude-pattern",

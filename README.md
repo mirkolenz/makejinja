@@ -48,17 +48,19 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 <!-- echo -e "\n```txt\n$(COLUMNS=120 poetry run makejinja --help)\n```" >> README.md -->
 
 ```txt
-
- Usage: makejinja [OPTIONS]
-
- makejinja can be used to automatically generate files from Jinja templates.
- Instead of passing CLI options, you can also write them to a file called .makejinja.toml in your working directory.
- Note: In this file, options may be named differently. Please refer to the file makejinja/config.py to see their actual
- names. You will also find an example here: makejinja/tests/data/.makejinja.toml.
-
+                                                                                                                        
+ Usage: makejinja [OPTIONS]                                                                                             
+                                                                                                                        
+ makejinja can be used to automatically generate files from Jinja templates.                                            
+ Instead of passing CLI options, you can also write them to a file called .makejinja.toml in your working directory.    
+ Note: In this file, options may be named differently. Please refer to the file makejinja/config.py to see their actual 
+ names. You will also find an example here: makejinja/tests/data/.makejinja.toml.                                       
+                                                                                                                        
 ╭─ Input/Output ───────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ *  --input                DIRECTORY  Path to a folder containing template files. It is passed to Jinja's             │
-│                                      FileSystemLoader when creating the environment.                                 │
+│                                      FileSystemLoader when creating the environment. Note: This option may be passed │
+│                                      multiple times to pass a list of values. If a template exists in multiple       │
+│                                      inputs, the last value with be used.                                            │
 │                                      [required]                                                                      │
 │ *  --output               DIRECTORY  Path to a folder where the rendered templates are stored. makejinja preserves   │
 │                                      the relative paths in the process, meaning that you can even use it on nested   │
@@ -70,6 +72,8 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 │                                      add a special suffix used by your template files here, instead use the          │
 │                                      jinja-suffix option.                                                            │
 │                                      [default: **/*]                                                                 │
+│    --exclude-pattern      TEXT       Glob patterns pattern to exclude files matched. Applied against files           │
+│                                      discovered by the input glob. Multiple can be provided.                         │
 │    --jinja-suffix         TEXT       File ending of Jinja template files. All files with this suffix in input_folder │
 │                                      matched by pattern are passed to the Jinja renderer. Note: Should be provided   │
 │                                      with the leading dot.                                                           │

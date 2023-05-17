@@ -1,10 +1,9 @@
 [makejinja]
-input = "./input_1"
+inputs = ["./input1", "./input2"]
 output = "./output"
 data = ["./config"]
 loaders = ["loader:Loader"]
-inputs = ["./input_2"]
-exclude_pattern = ["*.partial"]
+exclude_patterns = ["*.partial"]
 
 
 [makejinja.delimiter]
