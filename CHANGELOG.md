@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0-beta.1](https://github.com/mirkolenz/makejinja/compare/v1.1.5...v2.0.0-beta.1) (2023-05-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* In this version, `input` has been removed an replaced with `inputs` (allowing to use multiple input folders). We also included a new option `exclude_patterns` to ignore files that would be matched by `input_pattern`. The option `copy_tree` is superseded by the new `copy_metadata` which is compatible with multiple inputs and preserves attributes for rendered files as well. Please adjust your config accordingly, otherwise `makejinja` will break!
+
+### Features
+
+* completely rewrite file handling ([#20](https://github.com/mirkolenz/makejinja/issues/20)) ([97d6a51](https://github.com/mirkolenz/makejinja/commit/97d6a51d268689bd50fa1b4a9a70c099db42bda4))
+
 ## [1.1.5](https://github.com/mirkolenz/makejinja/compare/v1.1.4...v1.1.5) (2023-05-17)
 
 
