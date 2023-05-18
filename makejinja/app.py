@@ -31,7 +31,7 @@ def makejinja(config: Config):
     data = load_data(config)
 
     if config.output.is_dir():
-        print(f"Remove '{config.output}' from previous run")
+        print(f"Remove output '{config.output}'")
         shutil.rmtree(config.output)
 
     config.output.mkdir()
@@ -58,7 +58,7 @@ def makejinja(config: Config):
                 rendered_files.add(output_path)
 
             elif input_path.is_dir() and output_path not in rendered_folders:
-                print(f"Create '{output_path}' directory.")
+                print(f"Create folder '{input_path}' -> '{output_path}'")
                 output_path.mkdir()
                 rendered_folders[output_path] = input_path
 
@@ -66,7 +66,7 @@ def makejinja(config: Config):
     # Otherwise the mtime will be updated
     if config.copy_metadata:
         for output_path, input_path in rendered_folders.items():
-            print(f"Updating '{output_path}' with metadata from '{input_path}'")
+            print(f"Copy metadata '{input_path}' -> '{output_path}'")
             shutil.copystat(input_path, output_path)
 
 
@@ -204,9 +204,9 @@ def render_path(
         # Write the rendered template if it has content
         # Prevents empty macro definitions
         if rendered.strip() == "" and not config.keep_empty:
-            print(f"Skip empty file '{input}'")
+            print(f"Skip empty '{input}'")
         else:
-            print(f"Render '{input}' -> '{output}'")
+            print(f"Render file '{input}' -> '{output}'")
             with output.open("w") as fp:
                 fp.write(rendered)
 
@@ -214,5 +214,5 @@ def render_path(
                 shutil.copystat(input, output)
 
     else:
-        print(f"Copy '{input}' -> '{output}'")
+        print(f"Copy file '{input}' -> '{output}'")
         shutil.copy2(input, output)
