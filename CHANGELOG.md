@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.5](https://github.com/mirkolenz/makejinja/compare/v1.1.4...v1.1.5) (2023-05-17)
+
+
+### Bug Fixes
+
+* trigger ci build ([acd7609](https://github.com/mirkolenz/makejinja/commit/acd7609c4cdfaf546e4d28eee14642a8e9f580e5))
+* try to fix docker image pushing ([6634507](https://github.com/mirkolenz/makejinja/commit/663450742507ba308082d4f7e17b4e71c0f4ee23))
+* update readme ([2445d25](https://github.com/mirkolenz/makejinja/commit/2445d254cc6cde9953ebe8055a1c97640f01527e))
+* use impure nix run for pushing docker ([634f699](https://github.com/mirkolenz/makejinja/commit/634f699d3b68060d1265c47e044f993977028257))
+
 ## [1.1.5-beta.4](https://github.com/mirkolenz/makejinja/compare/v1.1.5-beta.3...v1.1.5-beta.4) (2023-05-09)
 
 

@@ -458,18 +458,18 @@ files = [
 
 [[package]]
 name = "typed-settings"
-version = "23.0.0"
+version = "23.0.1"
 description = "Typed settings based on attrs classes"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typed_settings-23.0.0-py3-none-any.whl", hash = "sha256:37afc76d32473d2c3c78a840a30b0116df0e9addcc0d35b3403d18773d2e4783"},
-    {file = "typed_settings-23.0.0.tar.gz", hash = "sha256:01aa4998ece58ffa965cf9e016dbcc897790d56a3b8c7ce6e5524c44dee828c3"},
+    {file = "typed_settings-23.0.1-py3-none-any.whl", hash = "sha256:5764c0d1be45ab81189a28c9d977cb373f8e458d1b41ff7073ef775659be6aee"},
+    {file = "typed_settings-23.0.1.tar.gz", hash = "sha256:827c224825565349a9503887b7d184d83b5f15ddb1a4eb032f9aff7c572d920e"},
 ]
 
 [package.dependencies]
-attrs = ">=22.1"
+attrs = ">=23.1"
 cattrs = ">=22.2"
 tomli = {version = ">=2", markers = "python_version < \"3.11\""}
 
@@ -486,4 +486,4 @@ test = ["coverage[toml] (>=5.3)", "pytest (>=7.2.0)", "pytest-cov", "rich-click 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "3647d7d0f3f6d10a107c0f4ee3218d16e1b14b730cd8478ab8e92c5892a669f1"
+content-hash = "fb8fcd147535a723968a18f5185df275ec3d93f68a111ad0096a4ca13d8ae716"

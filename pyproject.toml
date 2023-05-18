@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "makejinja"
-version = "1.1.5b4"
+version = "1.1.5"
 description = "Automatically generate files based on Jinja templates. Use it to easily generate complex Home Assistant dashboards!"
 authors = ["Mirko Lenz <mirko@mirkolenz.com>"]
 license = "MIT"
@@ -15,7 +15,7 @@ python = "^3.10"
 jinja2 = "^3.1.2"
 pyyaml = "^6.0"
 rich-click = "^1.6.1"
-typed-settings = "^23.0.0"
+typed-settings = "^23.0.1"
 tomli = { version = "^2.0.1", python = "<3.11" }
 
 [tool.poetry.group.dev.dependencies]
