@@ -146,11 +146,17 @@ class Whitespace:
 
 @ts.settings(frozen=True)
 class Config:
-    input: Path = ts.option(
-        click={"type": click.Path(exists=True, file_okay=False, path_type=Path)},
+    inputs: list[Path] = ts.option(
+        click={
+            "type": click.Path(exists=True, file_okay=False, path_type=Path),
+            "param_decls": "--input",
+            "required": True,
+        },
         help="""
             Path to a folder containing template files.
             It is passed to Jinja's [FileSystemLoader](https://jinja.palletsprojects.com/en/3.1.x/api/#jinja2.FileSystemLoader) when creating the environment.
+            **Note:** This option may be passed multiple times to pass a list of values.
+            If a template exists in multiple inputs, the last value with be used.
         """,
     )
     output: Path = ts.option(
@@ -169,6 +175,14 @@ class Config:
             **Note:** Do not add a special suffix used by your template files here, instead use the `jinja-suffix` option.
         """,
     )
+    exclude_patterns: list[str] = ts.option(
+        factory=list,
+        click={"param_decls": "--exclude-pattern"},
+        help="""
+            Glob patterns pattern to exclude files matched. Applied against files discovered by the input glob.
+            Multiple can be provided.
+        """,
+    )
     jinja_suffix: str = ts.option(
         default=".jinja",
         help="""
@@ -184,17 +198,6 @@ class Config:
             Decide whether the specified `jinja-suffix` is removed from the file after rendering.
         """,
     )
-    copy_tree: bool = ts.option(
-        default=False,
-        click={"param_decls": "--copy-tree"},
-        help="""
-            If your `input_folder` containes additional files besides Jinja templates, you may want to copy them to `output_folder` as well.
-            This operation maintains the metadata of all files and folders, meaning that tools like `rsync` will treat them exactly like the original ones.
-            **Note:** Even if set to `no-copy-tree`, files that are matched by your provided `pattern` within `input_folder` are still copied over.
-            In both cases, a file's metadata is untouched.
-            The main difference is that with `copy-tree`, folders keep their metadata while matched files are copied to newly-created subfolders that differ in their metadata.
-        """,
-    )
     keep_empty: bool = ts.option(
         default=False,
         click={"param_decls": "--keep-empty"},
@@ -202,6 +205,13 @@ class Config:
             Some Jinja template files may be empty after rendering (e.g., if they only contain macros that are imported by other templates).
             By default, we do not copy such empty files.
             If there is a need to have them available anyway, you can adjust that.
+        """,
+    )
+    copy_metadata: bool = ts.option(
+        default=False,
+        click={"param_decls": "--copy-metadata"},
+        help="""
+            Copy the file metadata (e.g., created/modified/permissions) from the input file using `shutil.copystat`
         """,
     )
     data: list[Path] = ts.option(
@@ -269,10 +279,11 @@ OPTION_GROUPS = {
                 "--input",
                 "--output",
                 "--input-pattern",
+                "--exclude-pattern",
                 "--jinja-suffix",
-                "--copy-tree",
                 "--keep-jinja-suffix",
                 "--keep-empty",
+                "--copy-metadata",
             ],
         },
         {

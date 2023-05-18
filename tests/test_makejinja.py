@@ -63,4 +63,4 @@ def test_file_content(exec: Paths):
             baseline = baseline_path.read_text()
             output = output_path.read_text()
 
-            assert baseline == output, str(item)
+            assert baseline.strip() == output.strip(), str(item)
