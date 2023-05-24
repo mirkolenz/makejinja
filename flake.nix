@@ -2,10 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    devenv = {
-      url = "github:cachix/devenv";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     poetry2nix = {
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,15 +11,20 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = inputs@{ nixpkgs, flake-parts, devenv, poetry2nix, nix2container, ... }:
+  outputs = inputs@{ nixpkgs, flake-parts, poetry2nix, nix2container, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ devenv.flakeModule ];
       systems = nixpkgs.lib.systems.flakeExposed;
       perSystem = { pkgs, system, lib, self', ... }:
         let
-          inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication;
+          inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication mkPoetryEnv;
           inherit (nix2container.packages.${system}.nix2container) buildImage;
-          py = pkgs.python311;
+          poetryArgs = {
+            projectDir = ./.;
+            preferWheels = true;
+            python = pkgs.python311;
+          };
+          venv = mkPoetryEnv poetryArgs;
+          makejinja = mkPoetryApplication poetryArgs;
         in
         {
           apps.copyDockerImage = {
@@ -36,12 +37,8 @@
               done
             '');
           };
-          packages = rec {
-            makejinja = mkPoetryApplication {
-              projectDir = ./.;
-              preferWheels = true;
-              python = py;
-            };
+          packages = {
+            inherit makejinja;
             default = makejinja;
             dockerImage = buildImage {
               name = "makejinja";
@@ -50,18 +47,12 @@
                 cmd = [ "--help" ];
               };
             };
-
           };
-          devenv.shells.default = {
-            languages.python = {
-              enable = true;
-              package = py;
-              poetry = {
-                enable = true;
-                activate.enable = true;
-                install.enable = true;
-              };
-            };
+          devShells.default = pkgs.mkShell {
+            shellHook = ''
+              ln -sfn ${venv} .venv
+            '';
+            packages = [ venv ];
           };
         };
     };
