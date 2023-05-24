@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0-beta.2](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2023-05-24)
+
+
+### Features
+
+* add version option ([0585114](https://github.com/mirkolenz/makejinja/commit/058511497517724d6e37bd8e4054a16641476366))
+
 ## [2.0.0-beta.1](https://github.com/mirkolenz/makejinja/compare/v1.1.5...v2.0.0-beta.1) (2023-05-18)
 
 
