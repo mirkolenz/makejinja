@@ -52,7 +52,7 @@
             shellHook = ''
               ln -sfn ${venv} .venv
             '';
-            packages = [ venv ];
+            packages = [ venv pkgs.poetry ];
           };
         };
     };
