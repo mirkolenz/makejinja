@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0-beta.4](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2023-05-25)
+
+
+### Bug Fixes
+
+* update nix flake ([05b9575](https://github.com/mirkolenz/makejinja/commit/05b95756e2682f4acad69f7ebbbcfd75eb945a02))
+
 ## [2.0.0-beta.3](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2023-05-25)
 
 
