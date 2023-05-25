@@ -6,18 +6,13 @@
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix2container = {
-      url = "github:nlewo/nix2container";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
-  outputs = inputs@{ nixpkgs, flake-parts, poetry2nix, nix2container, ... }:
+  outputs = inputs@{ nixpkgs, flake-parts, poetry2nix, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = nixpkgs.lib.systems.flakeExposed;
       perSystem = { pkgs, system, lib, self', ... }:
         let
           inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication mkPoetryEnv;
-          inherit (nix2container.packages.${system}.nix2container) buildImage;
           poetryArgs = {
             projectDir = ./.;
             preferWheels = true;
@@ -31,7 +26,7 @@
               IFS=$'\n' # iterate over newlines
               set -x # echo on
               for DOCKER_TAG in $DOCKER_METADATA_OUTPUT_TAGS; do
-                ${lib.getExe self'.packages.dockerImage.copyTo} "docker://$DOCKER_TAG"
+                ${lib.getExe pkgs.skopeo} --insecure-policy copy "docker-archive:${self'.packages.dockerImage}" "docker://$DOCKER_TAG"
               done
             '');
           };
@@ -42,11 +37,11 @@
             {
               makejinja = app;
               default = app;
-              dockerImage = buildImage {
+              dockerImage = pkgs.dockerTools.buildLayeredImage {
                 name = "makejinja";
                 config = {
-                  entrypoint = [ (lib.getExe app) ];
-                  cmd = [ "--help" ];
+                  Entrypoint = [ (lib.getExe app) ];
+                  Cmd = [ "--help" ];
                 };
               };
             };
