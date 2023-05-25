@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0-beta.3](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2023-05-25)
+
+
+### Bug Fixes
+
+* provide aarch64 docker image ([e983268](https://github.com/mirkolenz/makejinja/commit/e983268df920741921384d4ea4f75f92f79f524e))
+
 ## [2.0.0-beta.2](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2023-05-24)
 
 
