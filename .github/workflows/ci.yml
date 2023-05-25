@@ -33,5 +33,7 @@ jobs:
         with:
           version: ${{ steps.semanticrelease.outputs.version }}
           build-image: false
-      - run: "nix run .#copyDockerImage"
+      - run: |
+          nix run .#copyDockerImage
+          nix run .#copyDockerImage --system aarch64-linux
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
