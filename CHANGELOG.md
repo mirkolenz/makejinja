@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0-beta.5](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2023-05-25)
+
+
+### Bug Fixes
+
+* remove aarch64 docker image due to bugs ([0af11a2](https://github.com/mirkolenz/makejinja/commit/0af11a24c24dc7200253f9864126bda14a9ebf29))
+
 ## [2.0.0-beta.4](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2023-05-25)
 
 
