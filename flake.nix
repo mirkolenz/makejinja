@@ -23,8 +23,6 @@
             preferWheels = true;
             python = pkgs.python311;
           };
-          venv = mkPoetryEnv poetryArgs;
-          makejinja = mkPoetryApplication poetryArgs;
         in
         {
           apps.copyDockerImage = {
@@ -37,23 +35,31 @@
               done
             '');
           };
-          packages = {
-            inherit makejinja;
-            default = makejinja;
-            dockerImage = buildImage {
-              name = "makejinja";
-              config = {
-                entrypoint = [ (lib.getExe makejinja) ];
-                cmd = [ "--help" ];
+          packages =
+            let
+              app = mkPoetryApplication poetryArgs;
+            in
+            {
+              makejinja = app;
+              default = app;
+              dockerImage = buildImage {
+                name = "makejinja";
+                config = {
+                  entrypoint = [ (lib.getExe app) ];
+                  cmd = [ "--help" ];
+                };
               };
             };
-          };
-          devShells.default = pkgs.mkShell {
-            shellHook = ''
-              ln -sfn ${venv} .venv
-            '';
-            packages = [ venv pkgs.poetry ];
-          };
+          devShells.default =
+            let
+              venv = mkPoetryEnv poetryArgs;
+            in
+            pkgs.mkShell {
+              shellHook = ''
+                ln -sfn ${venv} .venv
+              '';
+              packages = [ venv pkgs.poetry ];
+            };
         };
     };
 }
