@@ -37,8 +37,10 @@
             {
               makejinja = app;
               default = app;
-              dockerImage = pkgs.dockerTools.buildLayeredImage {
+              dockerImage = pkgs.dockerTools.buildImage {
                 name = "makejinja";
+                tag = "latest";
+                created = "now";
                 config = {
                   Entrypoint = [ (lib.getExe app) ];
                   Cmd = [ "--help" ];
