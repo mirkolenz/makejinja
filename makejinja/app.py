@@ -49,11 +49,10 @@ def makejinja(config: Config):
             relative_path = input_path.relative_to(input_dir)
             output_path = generate_output_path(config, relative_path)
 
-            if (
-                input_path.is_file()
-                and output_path not in rendered_files
-                and not any(input_path.match(x) for x in config.exclude_patterns)
-            ):
+            if any(input_path.match(x) for x in config.exclude_patterns):
+                print(f"Skip excluded '{input_path}'")
+
+            elif input_path.is_file() and output_path not in rendered_files:
                 render_path(input_path, relative_path, output_path, config, env, data)
                 rendered_files.add(output_path)
 
