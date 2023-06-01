@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0-beta.6](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2023-06-01)
+
+
+### Bug Fixes
+
+* apply exclude patterns to files and folders ([5d80747](https://github.com/mirkolenz/makejinja/commit/5d807474276b107047422f1430bbb890f9cb9d7d))
+
 ## [2.0.0-beta.5](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2023-05-25)
 
 
