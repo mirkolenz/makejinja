@@ -24,16 +24,14 @@
         self',
         ...
       }: let
-        inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication mkPoetryEnv;
+        inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication;
         python = pkgs.python311;
         poetry = pkgs.poetry;
-        poetryArgs = {
+        app = mkPoetryApplication {
           inherit python;
           projectDir = ./.;
           preferWheels = true;
         };
-        app = mkPoetryApplication poetryArgs;
-        venv = mkPoetryEnv poetryArgs;
       in {
         apps.copyDockerImage = {
           type = "app";
@@ -63,10 +61,12 @@
           };
         };
         devShells.default = pkgs.mkShell {
+          packages = [poetry python];
+          POETRY_VIRTUALENVS_IN_PROJECT = true;
           shellHook = ''
-            ln -sfn ${venv} .venv
+            ${lib.getExe poetry} env use ${lib.getExe python}
+            ${lib.getExe poetry} install --all-extras --no-root
           '';
-          packages = [venv poetry];
         };
       };
     };
