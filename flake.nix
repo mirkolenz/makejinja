@@ -25,10 +25,12 @@
         ...
       }: let
         inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication mkPoetryEnv;
+        python = pkgs.python311;
+        poetry = pkgs.poetry;
         poetryArgs = {
+          inherit python;
           projectDir = ./.;
           preferWheels = true;
-          python = pkgs.python311;
         };
         app = mkPoetryApplication poetryArgs;
         venv = mkPoetryEnv poetryArgs;
@@ -55,12 +57,16 @@
               cmd = ["--help"];
             };
           };
+          releaseEnv = pkgs.buildEnv {
+            name = "release-env";
+            paths = [poetry python];
+          };
         };
         devShells.default = pkgs.mkShell {
           shellHook = ''
             ln -sfn ${venv} .venv
           '';
-          packages = [venv pkgs.poetry];
+          packages = [venv poetry];
         };
       };
     };

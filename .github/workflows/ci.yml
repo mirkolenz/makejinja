@@ -11,8 +11,12 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v3
-      - uses: JRMurr/direnv-nix-action@v4.1.0
-      - run: "poetry run pytest"
+      - uses: cachix/install-nix-action@v21
+      - uses: cachix/cachix-action@v12
+        with:
+          name: makejinja
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - run: nix develop -c poetry run pytest
   release:
     runs-on: ubuntu-latest
     needs: test
@@ -23,7 +27,12 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v3
-      - uses: JRMurr/direnv-nix-action@v4.1.0
+      - uses: cachix/install-nix-action@v21
+      - uses: cachix/cachix-action@v12
+        with:
+          name: makejinja
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - run: nix profile install .#releaseEnv
       - uses: cihelper/action-semanticrelease-poetry@v1
         id: semanticrelease
       - uses: pypa/gh-action-pypi-publish@release/v1
@@ -33,6 +42,5 @@ jobs:
         with:
           version: ${{ steps.semanticrelease.outputs.version }}
           build-image: false
-      - run: |
-          nix run .#copyDockerImage
+      - run: nix run .#copyDockerImage
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
