@@ -46,7 +46,7 @@
         packages = {
           makejinja = app;
           default = app;
-          dockerImage = pkgs.dockerTools.buildImage {
+          dockerImage = pkgs.dockerTools.buildLayeredImage {
             name = "makejinja";
             tag = "latest";
             created = "now";
