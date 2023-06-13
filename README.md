@@ -63,14 +63,14 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 <!-- echo -e "\n```txt\n$(COLUMNS=120 poetry run makejinja --help)\n```" >> README.md -->
 
 ```txt
-
- Usage: makejinja [OPTIONS]
-
- makejinja can be used to automatically generate files from Jinja templates.
- Instead of passing CLI options, you can also write them to a file called .makejinja.toml in your working directory.
- Note: In this file, options may be named differently. Please refer to the file makejinja/config.py to see their actual
- names. You will also find an example here: makejinja/tests/data/.makejinja.toml.
-
+                                                                                                                        
+ Usage: makejinja [OPTIONS]                                                                                             
+                                                                                                                        
+ makejinja can be used to automatically generate files from Jinja templates.                                            
+ Instead of passing CLI options, you can also write them to a file called makejinja.toml in your working directory.     
+ Note: In this file, options may be named differently. Please refer to the file makejinja/config.py to see their actual 
+ names. You will also find an example here: makejinja/tests/data/makejinja.toml.                                        
+                                                                                                                        
 ╭─ Input/Output ───────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ *  --input                DIRECTORY  Path to a folder containing template files. It is passed to Jinja's             │
 │                                      FileSystemLoader when creating the environment. Note: This option may be passed │
@@ -81,15 +81,15 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 │                                      the relative paths in the process, meaning that you can even use it on nested   │
 │                                      directories.                                                                    │
 │                                      [required]                                                                      │
-│    --input-pattern        TEXT       Glob pattern to search for files in input_folder. Accepts all pattern supported │
-│                                      by fnmatch. If a file is matched by this pattern and does not end with the      │
-│                                      specified jinja-suffix, it is copied over to the output_folder. Note: Do not    │
-│                                      add a special suffix used by your template files here, instead use the          │
-│                                      jinja-suffix option.                                                            │
+│    --include-pattern      TEXT       Glob patterns to search for files in inputs. Accepts all pattern supported by   │
+│                                      fnmatch. If a file is matched by this pattern and does not end with the         │
+│                                      specified jinja-suffix, it is copied over to the output_folder. Multiple can be │
+│                                      provided. Note: Do not add a special suffix used by your template files here,   │
+│                                      instead use the jinja-suffix option.                                            │
 │                                      [default: **/*]                                                                 │
 │    --exclude-pattern      TEXT       Glob patterns pattern to exclude files matched. Applied against files           │
-│                                      discovered by the input glob. Multiple can be provided.                         │
-│    --jinja-suffix         TEXT       File ending of Jinja template files. All files with this suffix in input_folder │
+│                                      discovered through include_patterns. Multiple can be provided.                  │
+│    --jinja-suffix         TEXT       File ending of Jinja template files. All files with this suffix in inputs       │
 │                                      matched by pattern are passed to the Jinja renderer. Note: Should be provided   │
 │                                      with the leading dot.                                                           │
 │                                      [default: .jinja]                                                               │
@@ -155,6 +155,7 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 │ --prefix-line-comment      TEXT  If given and a string, this will be used as prefix for line based comments.         │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --help      Show this message and exit.                                                                              │
+│ --version      Show the version and exit.                                                                            │
+│ --help         Show this message and exit.                                                                           │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
