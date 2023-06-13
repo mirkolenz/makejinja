@@ -7,12 +7,18 @@
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flocken = {
+      url = "github:mirkolenz/flocken/v1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
+    self,
     nixpkgs,
     flake-parts,
     poetry2nix,
     systems,
+    flocken,
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
@@ -24,34 +30,31 @@
         self',
         ...
       }: let
-        inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication;
         python = pkgs.python311;
         poetry = pkgs.poetry;
-        app = mkPoetryApplication {
-          inherit python;
-          projectDir = ./.;
-          preferWheels = true;
-        };
       in {
-        apps.copyDockerImage = {
+        apps.dockerManifest = {
           type = "app";
-          program = builtins.toString (pkgs.writeShellScript "copyDockerImage" ''
-            IFS=$'\n' # iterate over newlines
-            set -x # echo on
-            for DOCKER_TAG in $DOCKER_METADATA_OUTPUT_TAGS; do
-              ${lib.getExe pkgs.skopeo} --insecure-policy copy "docker-archive:${self'.packages.dockerImage}" "docker://$DOCKER_TAG"
-            done
-          '');
+          program = lib.getExe (flocken.legacyPackages.${system}.mkDockerManifest {
+            branch = builtins.getEnv "GITHUB_REF_NAME";
+            name = "ghcr.io/" + builtins.getEnv "GITHUB_REPOSITORY";
+            version = builtins.getEnv "VERSION";
+            images = with self.packages; [x86_64-linux.docker aarch64-linux.docker];
+          });
         };
         packages = {
-          makejinja = app;
-          default = app;
-          dockerImage = pkgs.dockerTools.buildLayeredImage {
+          default = poetry2nix.legacyPackages.${system}.mkPoetryApplication {
+            inherit python;
+            projectDir = ./.;
+            preferWheels = true;
+          };
+          makejinja = self'.packages.default;
+          docker = pkgs.dockerTools.buildLayeredImage {
             name = "makejinja";
             tag = "latest";
             created = "now";
             config = {
-              entrypoint = [(lib.getExe app)];
+              entrypoint = [(lib.getExe self'.packages.default)];
               cmd = ["--help"];
             };
           };
