@@ -166,12 +166,14 @@ class Config:
             makejinja preserves the relative paths in the process, meaning that you can even use it on nested directories.
         """,
     )
-    input_pattern: str = ts.option(
-        default="**/*",
+    include_patterns: list[str] = ts.option(
+        factory=lambda: ["**/*"],
+        click={"param_decls": "--include-pattern"},
         help="""
-            Glob pattern to search for files in `input_folder`.
+            Glob patterns to search for files in `inputs`.
             Accepts all pattern supported by [`fnmatch`](https://docs.python.org/3/library/fnmatch.html#module-fnmatch).
             If a file is matched by this pattern and does not end with the specified `jinja-suffix`, it is copied over to the `output_folder`.
+            Multiple can be provided.
             **Note:** Do not add a special suffix used by your template files here, instead use the `jinja-suffix` option.
         """,
     )
@@ -179,7 +181,8 @@ class Config:
         factory=list,
         click={"param_decls": "--exclude-pattern"},
         help="""
-            Glob patterns pattern to exclude files matched. Applied against files discovered by the input glob.
+            Glob patterns pattern to exclude files matched.
+            Applied against files discovered through `include_patterns`.
             Multiple can be provided.
         """,
     )
@@ -187,7 +190,7 @@ class Config:
         default=".jinja",
         help="""
             File ending of Jinja template files.
-            All files with this suffix in `input_folder` matched by `pattern` are passed to the Jinja renderer.
+            All files with this suffix in `inputs` matched by `pattern` are passed to the Jinja renderer.
             **Note:** Should be provided *with* the leading dot.
         """,
     )
@@ -278,7 +281,7 @@ OPTION_GROUPS = {
             "options": [
                 "--input",
                 "--output",
-                "--input-pattern",
+                "--include-pattern",
                 "--exclude-pattern",
                 "--jinja-suffix",
                 "--keep-jinja-suffix",

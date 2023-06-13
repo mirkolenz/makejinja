@@ -1,3 +1,4 @@
+import itertools
 import shutil
 import sys
 import typing as t
@@ -44,8 +45,10 @@ def makejinja(config: Config):
     rendered_files: set[Path] = set()
     rendered_folders: dict[Path, Path] = {}
 
-    for input_dir in config.inputs:
-        for input_path in sorted(input_dir.glob(config.input_pattern)):
+    for input_dir, include_pattern in itertools.product(
+        config.inputs, config.include_patterns
+    ):
+        for input_path in sorted(input_dir.glob(include_pattern)):
             relative_path = input_path.relative_to(input_dir)
             output_path = generate_output_path(config, relative_path)
 
