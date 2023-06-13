@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0-beta.7](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2023-06-13)
+
+
+### Bug Fixes
+
+* add multi-arch docker images ([6024633](https://github.com/mirkolenz/makejinja/commit/6024633e84a895eeb9cb2db0860cfa0bd77b7954))
+
 ## [2.0.0-beta.6](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2023-06-01)
 
 
