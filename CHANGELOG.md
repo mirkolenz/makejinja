@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.0-beta.8](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.7...v2.0.0-beta.8) (2023-06-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* The configuration file has been renamed from `.makejinja.toml` to `makejinja.toml`. Please rename your files accordingly.
+* The parameter `input_pattern` has been changed to `include_patterns` which now accepts a list of patterns.
+
+### Features
+
+* remove leading dot from config file ([4742165](https://github.com/mirkolenz/makejinja/commit/4742165ed4e18c67543f5c46411989d752e867f9))
+* rename input_pattern to include_patterns ([21e3e85](https://github.com/mirkolenz/makejinja/commit/21e3e85d91cb0c2c2426bd36137998e36c5140ef))
+
 ## [2.0.0-beta.7](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2023-06-13)
 
 
