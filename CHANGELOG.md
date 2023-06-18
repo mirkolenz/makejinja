@@ -1,5 +1,71 @@
 # Changelog
 
+## [2.0.0-beta.8](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.7...v2.0.0-beta.8) (2023-06-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* The configuration file has been renamed from `.makejinja.toml` to `makejinja.toml`. Please rename your files accordingly.
+* The parameter `input_pattern` has been changed to `include_patterns` which now accepts a list of patterns.
+
+### Features
+
+* remove leading dot from config file ([4742165](https://github.com/mirkolenz/makejinja/commit/4742165ed4e18c67543f5c46411989d752e867f9))
+* rename input_pattern to include_patterns ([21e3e85](https://github.com/mirkolenz/makejinja/commit/21e3e85d91cb0c2c2426bd36137998e36c5140ef))
+
+## [2.0.0-beta.7](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2023-06-13)
+
+
+### Bug Fixes
+
+* add multi-arch docker images ([6024633](https://github.com/mirkolenz/makejinja/commit/6024633e84a895eeb9cb2db0860cfa0bd77b7954))
+
+## [2.0.0-beta.6](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2023-06-01)
+
+
+### Bug Fixes
+
+* apply exclude patterns to files and folders ([5d80747](https://github.com/mirkolenz/makejinja/commit/5d807474276b107047422f1430bbb890f9cb9d7d))
+
+## [2.0.0-beta.5](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2023-05-25)
+
+
+### Bug Fixes
+
+* remove aarch64 docker image due to bugs ([0af11a2](https://github.com/mirkolenz/makejinja/commit/0af11a24c24dc7200253f9864126bda14a9ebf29))
+
+## [2.0.0-beta.4](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2023-05-25)
+
+
+### Bug Fixes
+
+* update nix flake ([05b9575](https://github.com/mirkolenz/makejinja/commit/05b95756e2682f4acad69f7ebbbcfd75eb945a02))
+
+## [2.0.0-beta.3](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2023-05-25)
+
+
+### Bug Fixes
+
+* provide aarch64 docker image ([e983268](https://github.com/mirkolenz/makejinja/commit/e983268df920741921384d4ea4f75f92f79f524e))
+
+## [2.0.0-beta.2](https://github.com/mirkolenz/makejinja/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2023-05-24)
+
+
+### Features
+
+* add version option ([0585114](https://github.com/mirkolenz/makejinja/commit/058511497517724d6e37bd8e4054a16641476366))
+
+## [2.0.0-beta.1](https://github.com/mirkolenz/makejinja/compare/v1.1.5...v2.0.0-beta.1) (2023-05-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* In this version, `input` has been removed an replaced with `inputs` (allowing to use multiple input folders). We also included a new option `exclude_patterns` to ignore files that would be matched by `input_pattern`. The option `copy_tree` is superseded by the new `copy_metadata` which is compatible with multiple inputs and preserves attributes for rendered files as well. Please adjust your config accordingly, otherwise `makejinja` will break!
+
+### Features
+
+* completely rewrite file handling ([#20](https://github.com/mirkolenz/makejinja/issues/20)) ([97d6a51](https://github.com/mirkolenz/makejinja/commit/97d6a51d268689bd50fa1b4a9a70c099db42bda4))
+
 ## [1.1.5](https://github.com/mirkolenz/makejinja/compare/v1.1.4...v1.1.5) (2023-05-17)
 
 

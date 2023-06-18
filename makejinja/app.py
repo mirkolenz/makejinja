@@ -1,3 +1,4 @@
+import itertools
 import shutil
 import sys
 import typing as t
@@ -29,29 +30,60 @@ def makejinja(config: Config):
         sys.path.append(str(path.resolve()))
 
     data = load_data(config)
+
+    if config.output.is_dir():
+        print(f"Remove output '{config.output}'")
+        shutil.rmtree(config.output)
+
+    config.output.mkdir()
+
     env = init_jinja_env(config)
 
     for loader in config.loaders:
         process_loader(loader, env, data)
 
-    if config.output.is_dir():
-        print(f"Remove '{config.output}' from previous run")
-        shutil.rmtree(config.output)
+    rendered_files: set[Path] = set()
+    rendered_folders: dict[Path, Path] = {}
 
-    if config.copy_tree:
-        print(f"Copy file tree '{config.input}' -> '{config.output}'")
-        shutil.copytree(config.input, config.output)
+    for input_dir, include_pattern in itertools.product(
+        config.inputs, config.include_patterns
+    ):
+        for input_path in sorted(input_dir.glob(include_pattern)):
+            relative_path = input_path.relative_to(input_dir)
+            output_path = generate_output_path(config, relative_path)
 
-    config.output.mkdir(parents=True, exist_ok=True)
+            if any(input_path.match(x) for x in config.exclude_patterns):
+                print(f"Skip excluded '{input_path}'")
 
-    for input in config.input.glob(config.input_pattern):
-        if not input.is_dir():
-            render_file(input, config, env, data)
+            elif input_path.is_file() and output_path not in rendered_files:
+                render_path(input_path, relative_path, output_path, config, env, data)
+                rendered_files.add(output_path)
+
+            elif input_path.is_dir() and output_path not in rendered_folders:
+                print(f"Create folder '{input_path}' -> '{output_path}'")
+                output_path.mkdir()
+                rendered_folders[output_path] = input_path
+
+    # The metadata has to be copied after all files are rendered
+    # Otherwise the mtime will be updated
+    if config.copy_metadata:
+        for output_path, input_path in rendered_folders.items():
+            print(f"Copy metadata '{input_path}' -> '{output_path}'")
+            shutil.copystat(input_path, output_path)
+
+
+def generate_output_path(config: Config, relative_path: Path) -> Path:
+    output_file = config.output / relative_path
+
+    if relative_path.suffix == config.jinja_suffix and not config.keep_jinja_suffix:
+        output_file = output_file.with_suffix("")
+
+    return output_file
 
 
 def init_jinja_env(config: Config) -> Environment:
     return Environment(
-        loader=FileSystemLoader(config.input),
+        loader=FileSystemLoader(config.inputs),
         extensions=config.extensions,
         block_start_string=config.delimiter.block_start,
         block_end_string=config.delimiter.block_end,
@@ -159,32 +191,30 @@ def process_loader(
         data.update(loader.data())
 
 
-def render_file(input: Path, config: Config, env: Environment, data: dict[str, t.Any]):
-    relative_path = input.relative_to(config.input)
-    output = config.output / relative_path
-    output.parent.mkdir(parents=True, exist_ok=True)
-
-    if relative_path.suffix == config.jinja_suffix:
+def render_path(
+    input: Path,
+    relative_path: Path,
+    output: Path,
+    config: Config,
+    env: Environment,
+    data: dict[str, t.Any],
+) -> None:
+    if input.suffix == config.jinja_suffix:
         template = env.get_template(str(relative_path))
-
-        # Remove the copied file if the tree has been duplicated
-        if config.copy_tree:
-            output.unlink()
-
-        if not config.keep_jinja_suffix:
-            output = output.with_suffix("")
-
         rendered = template.render(data)
 
         # Write the rendered template if it has content
         # Prevents empty macro definitions
         if rendered.strip() == "" and not config.keep_empty:
-            print(f"Skip '{input}'")
+            print(f"Skip empty '{input}'")
         else:
-            print(f"Render '{input}' -> '{output}'")
-            with output.open("w") as f:
-                f.write(rendered)
+            print(f"Render file '{input}' -> '{output}'")
+            with output.open("w") as fp:
+                fp.write(rendered)
 
-    elif not config.copy_tree:
-        print(f"Copy '{input}' -> '{output}'")
+            if config.copy_metadata:
+                shutil.copystat(input, output)
+
+    else:
+        print(f"Copy file '{input}' -> '{output}'")
         shutil.copy2(input, output)

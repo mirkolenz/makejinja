@@ -63,46 +63,44 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 <!-- echo -e "\n```txt\n$(COLUMNS=120 poetry run makejinja --help)\n```" >> README.md -->
 
 ```txt
-
- Usage: makejinja [OPTIONS]
-
- makejinja can be used to automatically generate files from Jinja templates.
- Instead of passing CLI options, you can also write them to a file called .makejinja.toml in your working directory.
- Note: In this file, options may be named differently. Please refer to the file makejinja/config.py to see their actual
- names. You will also find an example here: makejinja/tests/data/.makejinja.toml.
-
+                                                                                                                        
+ Usage: makejinja [OPTIONS]                                                                                             
+                                                                                                                        
+ makejinja can be used to automatically generate files from Jinja templates.                                            
+ Instead of passing CLI options, you can also write them to a file called makejinja.toml in your working directory.     
+ Note: In this file, options may be named differently. Please refer to the file makejinja/config.py to see their actual 
+ names. You will also find an example here: makejinja/tests/data/makejinja.toml.                                        
+                                                                                                                        
 ╭─ Input/Output ───────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ *  --input                DIRECTORY  Path to a folder containing template files. It is passed to Jinja's             │
-│                                      FileSystemLoader when creating the environment.                                 │
+│                                      FileSystemLoader when creating the environment. Note: This option may be passed │
+│                                      multiple times to pass a list of values. If a template exists in multiple       │
+│                                      inputs, the last value with be used.                                            │
 │                                      [required]                                                                      │
 │ *  --output               DIRECTORY  Path to a folder where the rendered templates are stored. makejinja preserves   │
 │                                      the relative paths in the process, meaning that you can even use it on nested   │
 │                                      directories.                                                                    │
 │                                      [required]                                                                      │
-│    --input-pattern        TEXT       Glob pattern to search for files in input_folder. Accepts all pattern supported │
-│                                      by fnmatch. If a file is matched by this pattern and does not end with the      │
-│                                      specified jinja-suffix, it is copied over to the output_folder. Note: Do not    │
-│                                      add a special suffix used by your template files here, instead use the          │
-│                                      jinja-suffix option.                                                            │
+│    --include-pattern      TEXT       Glob patterns to search for files in inputs. Accepts all pattern supported by   │
+│                                      fnmatch. If a file is matched by this pattern and does not end with the         │
+│                                      specified jinja-suffix, it is copied over to the output_folder. Multiple can be │
+│                                      provided. Note: Do not add a special suffix used by your template files here,   │
+│                                      instead use the jinja-suffix option.                                            │
 │                                      [default: **/*]                                                                 │
-│    --jinja-suffix         TEXT       File ending of Jinja template files. All files with this suffix in input_folder │
+│    --exclude-pattern      TEXT       Glob patterns pattern to exclude files matched. Applied against files           │
+│                                      discovered through include_patterns. Multiple can be provided.                  │
+│    --jinja-suffix         TEXT       File ending of Jinja template files. All files with this suffix in inputs       │
 │                                      matched by pattern are passed to the Jinja renderer. Note: Should be provided   │
 │                                      with the leading dot.                                                           │
 │                                      [default: .jinja]                                                               │
-│    --copy-tree                       If your input_folder containes additional files besides Jinja templates, you    │
-│                                      may want to copy them to output_folder as well. This operation maintains the    │
-│                                      metadata of all files and folders, meaning that tools like rsync will treat     │
-│                                      them exactly like the original ones. Note: Even if set to no-copy-tree, files   │
-│                                      that are matched by your provided pattern within input_folder are still copied  │
-│                                      over. In both cases, a file's metadata is untouched. The main difference is     │
-│                                      that with copy-tree, folders keep their metadata while matched files are copied │
-│                                      to newly-created subfolders that differ in their metadata.                      │
 │    --keep-jinja-suffix               Decide whether the specified jinja-suffix is removed from the file after        │
 │                                      rendering.                                                                      │
 │    --keep-empty                      Some Jinja template files may be empty after rendering (e.g., if they only      │
 │                                      contain macros that are imported by other templates). By default, we do not     │
 │                                      copy such empty files. If there is a need to have them available anyway, you    │
 │                                      can adjust that.                                                                │
+│    --copy-metadata                   Copy the file metadata (e.g., created/modified/permissions) from the input file │
+│                                      using shutil.copystat                                                           │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Jinja Environment ──────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ --data           PATH       Load variables from yaml/yml/toml files for use in your Jinja templates. The defintions  │
@@ -157,6 +155,7 @@ To get an overview of the remaining options, we advise you to run `makejinja --h
 │ --prefix-line-comment      TEXT  If given and a string, this will be used as prefix for line based comments.         │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --help      Show this message and exit.                                                                              │
+│ --version      Show the version and exit.                                                                            │
+│ --help         Show this message and exit.                                                                           │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```

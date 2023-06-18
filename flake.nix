@@ -1,68 +1,76 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    devenv = {
-      url = "github:cachix/devenv";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    systems.url = "github:nix-systems/default";
     poetry2nix = {
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix2container = {
-      url = "github:nlewo/nix2container";
+    flocken = {
+      url = "github:mirkolenz/flocken/v1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = inputs@{ nixpkgs, flake-parts, devenv, poetry2nix, nix2container, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ devenv.flakeModule ];
-      systems = nixpkgs.lib.systems.flakeExposed;
-      perSystem = { pkgs, system, lib, self', ... }:
-        let
-          inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication;
-          inherit (nix2container.packages.${system}.nix2container) buildImage;
-          py = pkgs.python311;
-        in
-        {
-          apps.copyDockerImage = {
-            type = "app";
-            program = builtins.toString (pkgs.writeShellScript "copyDockerImage" ''
-              IFS=$'\n' # iterate over newlines
-              set -x # echo on
-              for DOCKER_TAG in $DOCKER_METADATA_OUTPUT_TAGS; do
-                ${lib.getExe self'.packages.dockerImage.copyTo} "docker://$DOCKER_TAG"
-              done
-            '');
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    flake-parts,
+    poetry2nix,
+    systems,
+    flocken,
+    ...
+  }:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = import systems;
+      perSystem = {
+        pkgs,
+        system,
+        lib,
+        self',
+        ...
+      }: let
+        python = pkgs.python311;
+        poetry = pkgs.poetry;
+      in {
+        apps.dockerManifest = {
+          type = "app";
+          program = lib.getExe (flocken.legacyPackages.${system}.mkDockerManifest {
+            branch = builtins.getEnv "GITHUB_REF_NAME";
+            name = "ghcr.io/" + builtins.getEnv "GITHUB_REPOSITORY";
+            version = builtins.getEnv "VERSION";
+            images = with self.packages; [x86_64-linux.docker aarch64-linux.docker];
+          });
+        };
+        packages = {
+          default = poetry2nix.legacyPackages.${system}.mkPoetryApplication {
+            inherit python;
+            projectDir = ./.;
+            preferWheels = true;
           };
-          packages = rec {
-            makejinja = mkPoetryApplication {
-              projectDir = ./.;
-              preferWheels = true;
-              python = py;
+          makejinja = self'.packages.default;
+          docker = pkgs.dockerTools.buildLayeredImage {
+            name = "makejinja";
+            tag = "latest";
+            created = "now";
+            config = {
+              entrypoint = [(lib.getExe self'.packages.default)];
+              cmd = ["--help"];
             };
-            default = makejinja;
-            dockerImage = buildImage {
-              name = "makejinja";
-              config = {
-                entrypoint = [ (lib.getExe makejinja) ];
-                cmd = [ "--help" ];
-              };
-            };
-
           };
-          devenv.shells.default = {
-            languages.python = {
-              enable = true;
-              package = py;
-              poetry = {
-                enable = true;
-                activate.enable = true;
-                install.enable = true;
-              };
-            };
+          releaseEnv = pkgs.buildEnv {
+            name = "release-env";
+            paths = [poetry python];
           };
         };
+        devShells.default = pkgs.mkShell {
+          packages = [poetry python];
+          POETRY_VIRTUALENVS_IN_PROJECT = true;
+          shellHook = ''
+            ${lib.getExe poetry} env use ${lib.getExe python}
+            ${lib.getExe poetry} install --all-extras --no-root
+          '';
+        };
+      };
     };
 }
