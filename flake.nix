@@ -3,10 +3,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
-    poetry2nix = {
-      url = "github:nix-community/poetry2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flocken = {
       url = "github:mirkolenz/flocken/v1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,7 +12,6 @@
     self,
     nixpkgs,
     flake-parts,
-    poetry2nix,
     systems,
     flocken,
     ...
@@ -43,7 +38,7 @@
           });
         };
         packages = {
-          default = poetry2nix.legacyPackages.${system}.mkPoetryApplication {
+          default = pkgs.poetry2nix.mkPoetryApplication {
             inherit python;
             projectDir = ./.;
             preferWheels = true;
