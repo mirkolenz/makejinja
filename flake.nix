@@ -50,7 +50,7 @@
             created = "now";
             config = {
               entrypoint = [(lib.getExe self'.packages.default)];
-              cmd = ["--help"];
+              cmd = [];
             };
           };
           releaseEnv = pkgs.buildEnv {
