@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/mirkolenz/makejinja/compare/v2.0.0...v2.0.1) (2023-09-30)
+
+
+### Bug Fixes
+
+* bump deps ([193f396](https://github.com/mirkolenz/makejinja/commit/193f396a233d77cf1390622819990563f3055162))
+* remove default command from docker image ([c562377](https://github.com/mirkolenz/makejinja/commit/c5623773947d602f7892bef5c8723a5f03da5c4e))
+
 ## [2.0.0](https://github.com/mirkolenz/makejinja/compare/v1.1.5...v2.0.0) (2023-06-18)
 
 
