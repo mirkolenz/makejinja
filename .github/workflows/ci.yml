@@ -11,7 +11,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v5
+      - uses: DeterminateSystems/nix-installer-action@v6
       - uses: DeterminateSystems/magic-nix-cache-action@v2
       - run: nix develop -c poetry run pytest
   release:
@@ -27,7 +27,7 @@ jobs:
       - uses: docker/setup-qemu-action@v3
         with:
           platforms: arm64
-      - uses: DeterminateSystems/nix-installer-action@v5
+      - uses: DeterminateSystems/nix-installer-action@v6
         with:
           extra-conf: |
             extra-platforms = aarch64-linux
