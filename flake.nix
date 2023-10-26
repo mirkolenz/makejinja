@@ -68,11 +68,14 @@
           updateReadme = pkgs.writeShellApplication {
             name = "update-readme";
             text = ''
+              # remove everything after the manpage code block
               ${lib.getExe pkgs.gnused} -i '/```manpage/q' README.md
+              # update the manpage code block
               {
                 COLUMNS=120 ${lib.getExe poetry} run python -m makejinja --help
                 echo '```'
               } >> README.md
+              # remove trailing whitespace
               ${lib.getExe pkgs.gnused} -i 's/[[:space:]]*$//' README.md
             '';
           };
