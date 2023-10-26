@@ -5,20 +5,15 @@ import typing as t
 from inspect import signature
 from pathlib import Path
 
+import tomllib
 import yaml
 from jinja2 import Environment, FileSystemLoader
 from jinja2.environment import load_extensions
 from jinja2.utils import import_string
 from rich import print
 
-from makejinja.loader import AbstractLoader
-
-try:
-    import tomllib
-except ModuleNotFoundError:
-    import tomli as tomllib
-
 from makejinja.config import Config
+from makejinja.loader import AbstractLoader
 
 __all__ = ["makejinja"]
 

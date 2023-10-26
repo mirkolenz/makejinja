@@ -11,12 +11,11 @@ repository = "https://github.com/mirkolenz/makejinja"
 makejinja = "makejinja.cli:makejinja_cli"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 jinja2 = "^3.1"
 pyyaml = "^6.0"
 rich-click = "^1.7"
 typed-settings = "^23.0"
-tomli = { version = "^2.0", python = "<3.11" }
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4"
