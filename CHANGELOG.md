@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/mirkolenz/makejinja/compare/v2.0.1...v2.0.2) (2023-10-26)
+
+
+### Bug Fixes
+
+* use poetry2nix again after upstream fixes ([3b7dac0](https://github.com/mirkolenz/makejinja/commit/3b7dac03faf7418d0eb78cd5ed3f3f970235b0cb))
+
 ## [2.0.1](https://github.com/mirkolenz/makejinja/compare/v2.0.0...v2.0.1) (2023-09-30)
 
 
