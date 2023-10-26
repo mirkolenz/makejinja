@@ -1,4 +1,5 @@
 import itertools
+import json
 import shutil
 import sys
 import typing as t
@@ -118,10 +119,16 @@ def from_toml(path: Path) -> dict[str, t.Any]:
         return tomllib.load(fp)
 
 
+def from_json(path: Path) -> dict[str, t.Any]:
+    with path.open("rb") as fp:
+        return json.load(fp)
+
+
 DATA_LOADERS: dict[str, t.Callable[[Path], dict[str, t.Any]]] = {
     ".yaml": from_yaml,
     ".yml": from_yaml,
     ".toml": from_toml,
+    ".json": from_json,
 }
 
 
@@ -147,6 +154,8 @@ def load_data(config: Config) -> dict[str, t.Any]:
     for path in collect_files(config.data):
         if loader := DATA_LOADERS.get(path.suffix):
             data |= loader(path)
+        else:
+            print(f"Skip unsupported data '{path}'")
 
     return data
 

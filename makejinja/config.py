@@ -224,7 +224,7 @@ class Config:
             "param_decls": "--data",
         },
         help="""
-                Load variables from yaml/yml/toml files for use in your Jinja templates.
+                Load variables from yaml/yml/toml/json files for use in your Jinja templates.
                 The defintions are passed to Jinja's `render` function.
                 Can either be a file or a folder containg files.
                 **Note:** This option may be passed multiple times to pass a list of values.
