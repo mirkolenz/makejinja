@@ -65,9 +65,20 @@
             name = "release-env";
             paths = [poetry python];
           };
+          updateReadme = pkgs.writeShellApplication {
+            name = "update-readme";
+            text = ''
+              ${lib.getExe pkgs.gnused} -i '/```helpme/q' README.md
+              {
+                COLUMNS=120 ${lib.getExe poetry} run python -m makejinja --help
+                echo '```'
+              } >> README.md
+              ${lib.getExe pkgs.gnused} -i 's/[[:space:]]*$//' README.md
+            '';
+          };
         };
         devShells.default = pkgs.mkShell {
-          packages = [poetry python];
+          packages = [poetry python self'.packages.updateReadme];
           POETRY_VIRTUALENVS_IN_PROJECT = true;
           shellHook = ''
             ${lib.getExe poetry} env use ${lib.getExe python}
