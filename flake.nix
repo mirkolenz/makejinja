@@ -1,10 +1,14 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
     flocken = {
       url = "github:mirkolenz/flocken/v2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    poetry2nix = {
+      url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -14,6 +18,7 @@
     flake-parts,
     systems,
     flocken,
+    poetry2nix,
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
@@ -28,16 +33,9 @@
         python = pkgs.python311;
         poetry = pkgs.poetry;
       in {
-        apps.dockerManifest = {
-          type = "app";
-          program = lib.getExe (flocken.legacyPackages.${system}.mkDockerManifest {
-            github = {
-              enable = true;
-              token = builtins.getEnv "GH_TOKEN";
-            };
-            version = builtins.getEnv "VERSION";
-            images = with self.packages; [x86_64-linux.docker aarch64-linux.docker];
-          });
+        _module.args.pkgs = import nixpkgs {
+          inherit system;
+          overlays = [poetry2nix.overlay];
         };
         packages = {
           default = pkgs.poetry2nix.mkPoetryApplication {
@@ -54,6 +52,14 @@
               entrypoint = [(lib.getExe self'.packages.default)];
               cmd = [];
             };
+          };
+          dockerManifest = flocken.legacyPackages.${system}.mkDockerManifest {
+            github = {
+              enable = true;
+              token = builtins.getEnv "GH_TOKEN";
+            };
+            version = builtins.getEnv "VERSION";
+            images = with self.packages; [x86_64-linux.docker aarch64-linux.docker];
           };
           releaseEnv = pkgs.buildEnv {
             name = "release-env";
