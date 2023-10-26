@@ -60,7 +60,7 @@ In its default configuration, makejinja searches the input folder recursively fo
 Also, we copy all contents (except raw template files) of the input folder to the output folder and remove the `.jinja` ending during the render process.
 To get an overview of the remaining options, we advise you to run `makejinja --help`:
 
-```helpme
+```manpage
 
  Usage: python -m makejinja [OPTIONS]
 

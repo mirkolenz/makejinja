@@ -68,7 +68,7 @@
           updateReadme = pkgs.writeShellApplication {
             name = "update-readme";
             text = ''
-              ${lib.getExe pkgs.gnused} -i '/```helpme/q' README.md
+              ${lib.getExe pkgs.gnused} -i '/```manpage/q' README.md
               {
                 COLUMNS=120 ${lib.getExe poetry} run python -m makejinja --help
                 echo '```'
