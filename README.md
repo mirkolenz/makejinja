@@ -1,14 +1,23 @@
+<p align="center">
+  <img width="256px" src="./logo.png" />
+</p>
+<p align="center">
+  <a href="#usage">Usage</a> |
+  <a href="./tests/data">Home Assistant Example</a> |
+  <a href="https://jinja.palletsprojects.com/en/3.1.x/templates">Template Reference</a>
+</p>
+<p align="center">
+  makejinja is a CLI tool and Python library to automatically generate files from templates.
+</p>
+
 # makejinja
 
-makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
+makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates).
 This allows you to load variables from external files or create repeating patterns via loops.
 It is conceptually similar to [gomplate](https://github.com/hairyhenderson/gomplate), but is built on Python and Jinja instead of Go.
 A use case for this tool is generating config files for [Home Assistant](https://www.home-assistant.io/):
 Using the same language that the built-in templates use, you can greatly simplify your configuration.
-
-## Home Assistant Example
-
-[A concrete example for Home Assistant can be found in the tests directory.](./tests/data)
+An [example for Home Assistant](./tests/data) can be found in the tests directory.
 
 ## Features
 
