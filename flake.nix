@@ -58,18 +58,10 @@
             name = "release-env";
             paths = [poetry python];
           };
-          updateReadme = pkgs.writeShellApplication {
-            name = "update-readme";
+          manpage = pkgs.writeShellApplication {
+            name = "manpage";
             text = ''
-              # remove everything after the manpage code block
-              ${lib.getExe pkgs.gnused} -i '/```manpage/q' README.md
-              # update the manpage code block
-              {
-                COLUMNS=120 ${lib.getExe poetry} run python -m makejinja --help
-                echo '```'
-              } >> README.md
-              # remove trailing whitespace
-              ${lib.getExe pkgs.gnused} -i 's/[[:space:]]*$//' README.md
+              COLUMNS=120 ${lib.getExe poetry} run python -m makejinja --help > ./docs/manpage.txt
             '';
           };
         };
@@ -82,7 +74,7 @@
           images = with self.packages; [x86_64-linux.docker aarch64-linux.docker];
         };
         devShells.default = pkgs.mkShell {
-          packages = [poetry python self'.packages.updateReadme];
+          packages = [poetry python];
           POETRY_VIRTUALENVS_IN_PROJECT = true;
           shellHook = ''
             ${lib.getExe poetry} env use ${lib.getExe python}
