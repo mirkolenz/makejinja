@@ -61,7 +61,7 @@
           manpage = pkgs.writeShellApplication {
             name = "manpage";
             text = ''
-              COLUMNS=120 ${lib.getExe poetry} run python -m makejinja --help > ./docs/manpage.txt
+              COLUMNS=120 ${lib.getExe self'.packages.default} --help > ./docs/manpage.txt
             '';
           };
         };
