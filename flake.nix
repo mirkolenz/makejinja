@@ -32,28 +32,18 @@
       }: let
         python = pkgs.python311;
         poetry = pkgs.poetry;
-        poetryArgs = {
-          inherit python;
-          projectDir = ./.;
-          preferWheels = true;
-        };
       in {
         _module.args.pkgs = import nixpkgs {
           inherit system;
           overlays = [poetry2nix.overlay];
         };
-        # https://msfjarvis.dev/posts/writing-your-own-nix-flake-checks/
-        # https://github.com/nix-community/poetry2nix/blob/master/tests/env/default.nix
-        checks.default = let
-          env = pkgs.poetry2nix.mkPoetryEnv poetryArgs;
-        in
-          pkgs.runCommand "pytest" {} ''
-            mkdir "$out" && cd "$out"
-            ln -s ${self}/* .
-            ${lib.getExe' env "pytest"}
-          '';
         packages = {
-          default = pkgs.poetry2nix.mkPoetryApplication poetryArgs;
+          default = pkgs.poetry2nix.mkPoetryApplication {
+            inherit python;
+            projectDir = ./.;
+            preferWheels = true;
+            checkPhase = "pytest";
+          };
           makejinja = self'.packages.default;
           docker = pkgs.dockerTools.buildLayeredImage {
             name = "makejinja";
