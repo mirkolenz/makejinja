@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD033 MD041 -->
 <p align="center">
-  <img width="256px" src="./docs/logo.png" />
+  <img width="256px" src="./assets/logo.png" />
 </p>
 <p align="center">
   <a href="./docs/install.md">Installation</a> |

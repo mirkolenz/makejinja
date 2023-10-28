@@ -52,11 +52,10 @@
 #   Hide                            Hide the subsequent commands from the output
 #   Show                            Show the subsequent commands in the output
 
-Output docs/demo.gif
+Output ./assets/demo.gif
 
 Require "makejinja"
 
-Set Shell "bash"
 Set TypingSpeed 100ms
 # Set FontSize 32
 # Set Width 1200

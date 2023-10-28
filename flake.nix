@@ -58,17 +58,12 @@
             name = "release-env";
             paths = [poetry python];
           };
-          manpage = pkgs.writeShellApplication {
-            name = "manpage";
-            text = ''
-              COLUMNS=120 ${lib.getExe self'.packages.default} --help > ./docs/manpage.txt
-            '';
-          };
-          vhs = pkgs.writeShellApplication {
+          updateDocs = pkgs.writeShellApplication {
             name = "vhs";
             runtimeInputs = [self'.packages.default];
             text = ''
-              ${lib.getExe pkgs.vhs} "$@"
+              COLUMNS=120 makejinja --help > ./docs/manpage.txt
+              ${lib.getExe pkgs.vhs} ./assets/demo.tape
             '';
           };
         };
@@ -81,7 +76,7 @@
           images = with self.packages; [x86_64-linux.docker aarch64-linux.docker];
         };
         devShells.default = pkgs.mkShell {
-          packages = [poetry python];
+          packages = [poetry python pkgs.vhs];
           POETRY_VIRTUALENVS_IN_PROJECT = true;
           shellHook = ''
             ${lib.getExe poetry} env use ${lib.getExe python}
