@@ -64,6 +64,13 @@
               COLUMNS=120 ${lib.getExe self'.packages.default} --help > ./docs/manpage.txt
             '';
           };
+          vhs = pkgs.writeShellApplication {
+            name = "vhs";
+            runtimeInputs = [self'.packages.default];
+            text = ''
+              ${lib.getExe pkgs.vhs} "$@"
+            '';
+          };
         };
         legacyPackages.dockerManifest = flocken.legacyPackages.${system}.mkDockerManifest {
           github = {
