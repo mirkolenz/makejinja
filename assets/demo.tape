@@ -57,10 +57,12 @@ Output ./assets/demo.gif
 Require "makejinja"
 
 Set TypingSpeed 100ms
-# Set FontSize 32
-# Set Width 1200
-# Set Height 600
 
-Type "makejinja --help" Sleep 500ms  Enter
+Type "cat assets/input/demo.txt.jinja" Sleep 1
+Enter Sleep 5
 
-Sleep 5s
+Type "makejinja --input assets/input --output assets/output" Sleep 1
+Enter Sleep 2
+
+Type "cat assets/output/demo.txt" Sleep 1
+Enter Sleep 15

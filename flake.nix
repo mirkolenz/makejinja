@@ -63,6 +63,7 @@
             runtimeInputs = [self'.packages.default];
             text = ''
               COLUMNS=120 makejinja --help > ./docs/manpage.txt
+              rm -rf ./assets/output
               ${lib.getExe pkgs.vhs} ./assets/demo.tape
             '';
           };
