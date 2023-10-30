@@ -35,7 +35,7 @@
       in {
         _module.args.pkgs = import nixpkgs {
           inherit system;
-          overlays = [poetry2nix.overlay];
+          overlays = [poetry2nix.overlays.default];
         };
         packages = {
           default = pkgs.poetry2nix.mkPoetryApplication {
