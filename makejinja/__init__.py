@@ -1,3 +1,7 @@
+"""
+.. include:: ../README.md
+"""
+
 from . import config, loader
 from .app import makejinja
 

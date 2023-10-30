@@ -228,3 +228,4 @@ poetry.toml
 .direnv/
 .devenv/
 /result
+/public/

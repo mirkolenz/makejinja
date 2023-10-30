@@ -21,6 +21,9 @@ typed-settings = "^23.0"
 pytest = "^7.4"
 pytest-cov = "^4.1"
 
+[tool.poetry.group.docs.dependencies]
+pdoc = "^14.1"
+
 [tool.pytest.ini_options]
 addopts = "--cov makejinja --cov-report term-missing -vv"
 

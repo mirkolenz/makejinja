@@ -67,6 +67,22 @@
               ${lib.getExe pkgs.vhs} ./assets/demo.tape
             '';
           };
+          docs = let
+            env = pkgs.poetry2nix.mkPoetryEnv {
+              inherit python;
+              projectDir = ./.;
+              preferWheels = true;
+              groups = ["docs"];
+              checkGroups = [];
+            };
+          in
+            pkgs.writeShellApplication {
+              name = "docs";
+              text = ''
+                ${lib.getExe' env "pdoc"} -d google -t pdoc-template --math -o ./public/ makejinja
+                cp -rf ./assets ./public/
+              '';
+            };
         };
         legacyPackages.dockerManifest = flocken.legacyPackages.${system}.mkDockerManifest {
           github = {
