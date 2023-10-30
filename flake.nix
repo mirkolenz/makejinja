@@ -58,8 +58,8 @@
             name = "release-env";
             paths = [poetry python];
           };
-          updateDocs = pkgs.writeShellApplication {
-            name = "vhs";
+          updateAssets = pkgs.writeShellApplication {
+            name = "update-assets";
             runtimeInputs = [self'.packages.default];
             text = ''
               COLUMNS=120 makejinja --help > ./docs/manpage.txt
