@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/mirkolenz/makejinja/compare/v2.0.2...v2.1.0) (2023-10-30)
+
+
+### Features
+
+* add data handler for json files ([d18f514](https://github.com/mirkolenz/makejinja/commit/d18f514a0722fbbea3886d538deec45470207d68))
+
+
+### Bug Fixes
+
+* require at least python 3.11 and drop tomli ([ebdeb64](https://github.com/mirkolenz/makejinja/commit/ebdeb64c765eefcb250c541c46167059af0c154e))
+
 ## [2.0.2](https://github.com/mirkolenz/makejinja/compare/v2.0.1...v2.0.2) (2023-10-26)
 
 
