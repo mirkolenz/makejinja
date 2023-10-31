@@ -62,7 +62,11 @@
             name = "update-assets";
             runtimeInputs = [self'.packages.default];
             text = ''
-              COLUMNS=120 makejinja --help > ./docs/manpage.txt
+              {
+                echo '```txt'
+                COLUMNS=120 makejinja --help
+                echo '```'
+              } > ./docs/manpage.md
               # rm -rf ./assets/demo-out
               # ${lib.getExe pkgs.vhs} ./assets/demo.tape
             '';

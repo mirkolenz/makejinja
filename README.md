@@ -4,7 +4,7 @@
 </p>
 <p align="center">
   <a href="./docs/install.md">Installation</a> |
-  <a href="./docs/manpage.txt">Usage</a> |
+  <a href="./docs/manpage.md">Usage</a> |
   <a href="./tests/data">Example</a> |
   <a href="https://jinja.palletsprojects.com/en/3.1.x/templates">Templating</a>
 </p>
@@ -40,4 +40,4 @@ Please refer to the [installation instructions](./docs/install.md) for details.
 
 In its default configuration, makejinja searches the input folder recursively for files ending in `.jinja`.
 It then renders these files and writes them to the output folder, preserving the directory structure.
-The [manpage](./docs/manpage.txt) contains a detailed description of all options and can also be accessed via `makejinja --help`.
+The [manpage](./docs/manpage.md) contains a detailed description of all options and can also be accessed via `makejinja --help`.
