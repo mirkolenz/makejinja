@@ -67,6 +67,10 @@
                 COLUMNS=120 makejinja --help
                 echo '```'
               } > ./docs/manpage.md
+              # remove everything before the first ---
+              # ${lib.getExe pkgs.gnused} '1,/^---$/d' ./README.md > ./docs/index.md
+              # remove everyting before the first header
+              # ${lib.getExe pkgs.gnused} '1,/^# /d' ./README.md > ./docs/index.md
               # rm -rf ./assets/demo-out
               # ${lib.getExe pkgs.vhs} ./assets/demo.tape
             '';
