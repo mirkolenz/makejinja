@@ -1,3 +1,7 @@
+"""
+.. include:: ../docs/manpage.md
+"""
+
 from pathlib import Path
 
 import rich_click as click
@@ -7,19 +11,19 @@ from makejinja.config import OPTION_GROUPS, Config
 
 from .app import makejinja
 
-__all__ = ["makejinja_cli"]
+__all__: list[str] = []
 
 click.rich_click.USE_MARKDOWN = True
 click.rich_click.OPTION_GROUPS = OPTION_GROUPS
 
-_loader = ts.default_loaders(
+_ts_loaders = ts.default_loaders(
     appname="makejinja", config_files=(Path("makejinja.toml"),)
 )
 
 
 @click.command("makejinja")
 @click.version_option()
-@ts.click_options(Config, _loader)
+@ts.click_options(Config, _ts_loaders)
 def makejinja_cli(config: Config):
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
 
