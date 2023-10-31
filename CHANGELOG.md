@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/mirkolenz/makejinja/compare/v2.1.0...v2.1.1) (2023-10-31)
+
+
+### Bug Fixes
+
+* expose cli module in main init ([ed429a0](https://github.com/mirkolenz/makejinja/commit/ed429a0b61814bbd35a7ab36014e556c65dec597))
+
 ## [2.1.0](https://github.com/mirkolenz/makejinja/compare/v2.0.2...v2.1.0) (2023-10-30)
 
 
