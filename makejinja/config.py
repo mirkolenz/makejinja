@@ -253,10 +253,11 @@ class Config:
         click={
             "type": click.Path(exists=True, file_okay=False, path_type=Path),
             "param_decls": "--import-path",
+            "show_default": "current working directory",
         },
         help="""
             In order to load custom loaders or Jinja extensions, the PYTHONPATH variable needs to be patched.
-            By default, makejinja will look for modules in your current directory, but you may change that.
+            The default value works for most use cases, but you may load other paths as well.
         """,
     )
     extensions: tuple[str, ...] = ts.option(

@@ -53,9 +53,9 @@
 │                             (your.custom.Loader) or with a colon as object delimiter (your.custom:Loader). Note:     │
 │                             This option may be passed multiple times to pass a list of values.                       │
 │ --import-path    DIRECTORY  In order to load custom loaders or Jinja extensions, the PYTHONPATH variable needs to be │
-│                             patched. By default, makejinja will look for modules in your current directory, but you  │
-│                             may change that.                                                                         │
-│                             [default: .]                                                                             │
+│                             patched. The default value works for most use cases, but you may load other paths as     │
+│                             well.                                                                                    │
+│                             [default: (current working directory)]                                                   │
 │ --extension      TEXT       List of Jinja extensions to use as strings of import paths. An overview of the built-in  │
 │                             ones can be found on the project website. Note: This option may be passed multiple times │
 │                             to pass a list of values.                                                                │
