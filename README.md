@@ -12,6 +12,8 @@
   makejinja is a CLI tool and Python library to automatically generate files from templates.
 </p>
 
+---
+
 # makejinja
 
 makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates).
