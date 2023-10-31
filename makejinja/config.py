@@ -146,7 +146,7 @@ class Whitespace:
 
 @ts.settings(frozen=True)
 class Config:
-    inputs: list[Path] = ts.option(
+    inputs: tuple[Path, ...] = ts.option(
         click={
             "type": click.Path(exists=True, file_okay=False, path_type=Path),
             "param_decls": "--input",
@@ -166,8 +166,8 @@ class Config:
             makejinja preserves the relative paths in the process, meaning that you can even use it on nested directories.
         """,
     )
-    include_patterns: list[str] = ts.option(
-        factory=lambda: ["**/*"],
+    include_patterns: tuple[str, ...] = ts.option(
+        default=("**/*",),
         click={"param_decls": "--include-pattern"},
         help="""
             Glob patterns to search for files in `inputs`.
@@ -177,8 +177,8 @@ class Config:
             **Note:** Do not add a special suffix used by your template files here, instead use the `jinja-suffix` option.
         """,
     )
-    exclude_patterns: list[str] = ts.option(
-        factory=list,
+    exclude_patterns: tuple[str, ...] = ts.option(
+        default=tuple(),
         click={"param_decls": "--exclude-pattern"},
         help="""
             Glob patterns pattern to exclude files matched.
@@ -217,8 +217,8 @@ class Config:
             Copy the file metadata (e.g., created/modified/permissions) from the input file using `shutil.copystat`
         """,
     )
-    data: list[Path] = ts.option(
-        factory=list,
+    data: tuple[Path, ...] = ts.option(
+        default=tuple(),
         click={
             "type": click.Path(exists=True, path_type=Path),
             "param_decls": "--data",
@@ -231,8 +231,8 @@ class Config:
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
             """,
     )
-    loaders: list[str] = ts.option(
-        factory=list,
+    loaders: tuple[str, ...] = ts.option(
+        default=tuple(),
         click={
             "param_decls": "--loader",
         },
@@ -248,8 +248,8 @@ class Config:
             **Note:** This option may be passed multiple times to pass a list of values.
         """,
     )
-    import_paths: list[Path] = ts.option(
-        factory=lambda: [Path(".")],
+    import_paths: tuple[Path, ...] = ts.option(
+        default=(Path("."),),
         click={
             "type": click.Path(exists=True, file_okay=False, path_type=Path),
             "param_decls": "--import-path",
@@ -259,8 +259,8 @@ class Config:
             By default, makejinja will look for modules in your current directory, but you may change that.
         """,
     )
-    extensions: list[str] = ts.option(
-        factory=list,
+    extensions: tuple[str, ...] = ts.option(
+        default=tuple(),
         click={"param_decls": "--extension"},
         help="""
             List of Jinja extensions to use as strings of import paths.
@@ -268,10 +268,10 @@ class Config:
             **Note:** This option may be passed multiple times to pass a list of values.
         """,
     )
-    delimiter: Delimiter = ts.option(factory=Delimiter)
-    prefix: Prefix = ts.option(factory=Prefix)
-    whitespace: Whitespace = ts.option(factory=Whitespace)
-    internal: Internal = ts.option(factory=Internal)
+    delimiter: Delimiter = Delimiter()
+    prefix: Prefix = Prefix()
+    whitespace: Whitespace = Whitespace()
+    internal: Internal = Internal()
 
 
 OPTION_GROUPS = {
