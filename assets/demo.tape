@@ -58,11 +58,11 @@ Require "makejinja"
 
 Set TypingSpeed 100ms
 
-Type "cat assets/input/demo.txt.jinja" Sleep 1
+Type "cat assets/demo-in/lipsum.txt.jinja" Sleep 1
 Enter Sleep 5
 
-Type "makejinja --input assets/input --output assets/output" Sleep 1
+Type "makejinja --input assets/demo-in --output assets/demo-out" Sleep 1
 Enter Sleep 2
 
-Type "cat assets/output/demo.txt" Sleep 1
+Type "cat assets/demo-out/lipsum.txt" Sleep 1
 Enter Sleep 15
