@@ -87,7 +87,9 @@
             pkgs.writeShellApplication {
               name = "docs";
               text = ''
-                ${lib.getExe' env "pdoc"} -d google -t pdoc-template --math -o ./public/ makejinja
+                ${lib.getExe' env "pdoc"} -d google -t pdoc-template --math \
+                  --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \
+                  -o ./public/ makejinja
                 cp -rf ./assets ./public/
               '';
             };
