@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/mirkolenz/makejinja/compare/v2.1.4...v2.2.0) (2023-11-03)
+
+
+### Features
+
+* allow customization of undefined behavior ([fd84618](https://github.com/mirkolenz/makejinja/commit/fd846189f4e9702c5f08dc344abb3dff062b1a5d))
+
 ## [2.1.4](https://github.com/mirkolenz/makejinja/compare/v2.1.3...v2.1.4) (2023-11-03)
 
 
