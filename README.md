@@ -3,8 +3,7 @@
   <img width="256px" src="./assets/logo.png" />
 </p>
 <p align="center">
-  <a href="./docs/install.md">Installation</a> |
-  <a href="./docs/manpage.md">Usage</a> |
+  <a href="https://mirkolenz.github.io/makejinja">Docs</a> |
   <a href="./tests/data">Example</a> |
   <a href="https://jinja.palletsprojects.com/en/3.1.x/templates">Templating</a>
 </p>
@@ -34,12 +33,43 @@ An [example for Home Assistant](./tests/data) can be found in the tests director
 - Modify _all_ init options for the Jinja environment.
 - Write custom **Python loaders** that implement a subset of our fully typed [abstract loader class](./makejinja/loader.py)
 
-## Installation and Usage
+## Installation
 
 The tool is written in Python and can be installed via pip, nix, and docker.
 It can be used as a CLI tool or as a Python library.
 Please refer to the [installation instructions](./docs/install.md) for details.
 
+### PIP
+
+makejinja is available via `pip` and can be installed via
+
+`pip install makejinja`
+
+Beware that depending on other packages installed on your system via pip, there may be incompatibilities.
+Thus, we advise leveraging [`pipx`](https://github.com/pypa/pipx) instead:
+
+`pipx install makejinja`
+
+You can then directly invoke the app as follows:
+
+`makejinja --input ./data/input --output ./data/output`
+
+### Nix
+
+If you use the `nix` package manager, you can add this repository as an input to your flake and use `makejinja.packages.${system}.default`.
+You can also run it directly
+
+`nix run github:mirkolenz/makejinja -- --input ./data/input --output ./data/output`
+
+### Docker
+
+We automatically publish an image at `ghcr.io/mirkolenz/makejinja`.
+To use it, mount a folder to the container and pass the options as the command.
+
+`docker run --rm -v $(pwd)/data:/data ghcr.io/mirkolenz/makejinja:latest --input /data/input --output /data/output`
+
+## Usage in Terminal / Command Line
+
 In its default configuration, makejinja searches the input folder recursively for files ending in `.jinja`.
 It then renders these files and writes them to the output folder, preserving the directory structure.
-The [manpage](./docs/manpage.md) contains a detailed description of all options and can also be accessed via `makejinja --help`.
+Our [documentation](https://mirkolenz.github.io/makejinja/cli.html) contains a detailed description of all options and can also be accessed via `makejinja --help`.

@@ -1,5 +1,5 @@
 """
-.. include:: ../docs/manpage.md
+.. include:: ../manpage.md
 """
 
 from pathlib import Path

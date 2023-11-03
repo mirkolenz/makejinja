@@ -32,18 +32,23 @@
       }: let
         python = pkgs.python311;
         poetry = pkgs.poetry;
+        poetryAppArgs = {
+          inherit python;
+          projectDir = ./.;
+          preferWheels = true;
+        };
       in {
         _module.args.pkgs = import nixpkgs {
           inherit system;
           overlays = [poetry2nix.overlays.default];
         };
         packages = {
-          default = pkgs.poetry2nix.mkPoetryApplication {
-            inherit python;
-            projectDir = ./.;
-            preferWheels = true;
-            checkPhase = "pytest";
-          };
+          default = pkgs.poetry2nix.mkPoetryApplication (
+            poetryAppArgs
+            // {
+              checkPhase = "pytest";
+            }
+          );
           makejinja = self'.packages.default;
           docker = pkgs.dockerTools.buildLayeredImage {
             name = "makejinja";
@@ -58,40 +63,39 @@
             name = "release-env";
             paths = [poetry python];
           };
-          updateAssets = pkgs.writeShellApplication {
-            name = "update-assets";
-            runtimeInputs = [self'.packages.default];
-            text = ''
-              {
-                echo '```txt'
-                COLUMNS=120 makejinja --help
-                echo '```'
-              } > ./docs/manpage.md
-              # remove everything before the first ---
-              # ${lib.getExe pkgs.gnused} '1,/^---$/d' ./README.md > ./docs/index.md
-              # remove everyting before the first header
-              # ${lib.getExe pkgs.gnused} '1,/^# /d' ./README.md > ./docs/index.md
-              # rm -rf ./assets/demo-out
-              # ${lib.getExe pkgs.vhs} ./assets/demo.tape
-            '';
-          };
           docs = let
-            env = pkgs.poetry2nix.mkPoetryEnv {
-              inherit python;
-              projectDir = ./.;
-              preferWheels = true;
-              groups = ["docs"];
-              checkGroups = [];
-            };
+            app = pkgs.poetry2nix.mkPoetryApplication (
+              poetryAppArgs
+              // {
+                groups = ["docs"];
+              }
+            );
+            env = app.dependencyEnv;
           in
-            pkgs.writeShellApplication {
-              name = "docs";
-              text = ''
+            pkgs.stdenv.mkDerivation {
+              name = "makejinja-docs";
+              src = ./.;
+              # ${lib.getExe pkgs.vhs} ./assets/demo.tape
+              buildPhase = ''
+                mkdir -p "$out"
+                {
+                  echo '```txt'
+                  COLUMNS=120 ${lib.getExe app} --help
+                  echo '```'
+                } > ./manpage.md
+                # remove everything before the first ---
+                # ${lib.getExe pkgs.gnused} -i '1,/^---$/d' ./README.md
+                # remove everyting before the first header
+                ${lib.getExe pkgs.gnused} -i '1,/^# /d' ./README.md
+
                 ${lib.getExe' env "pdoc"} -d google -t pdoc-template --math \
                   --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \
-                  -o ./public/ makejinja
-                cp -rf ./assets ./public/
+                  -o "$out" ./makejinja
+
+                mkdir "$out/assets"
+                cp -rf ./assets/*.png "$out/assets/"
               '';
+              dontInstall = true;
             };
         };
         legacyPackages.dockerManifest = flocken.legacyPackages.${system}.mkDockerManifest {
