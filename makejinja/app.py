@@ -94,12 +94,12 @@ def init_jinja_env(config: Config) -> Environment:
         newline_sequence=config.whitespace.newline_sequence,  # type: ignore
         keep_trailing_newline=config.whitespace.keep_trailing_newline,
         optimized=config.internal.optimized,
-        # finalize: t.Optional[t.Callable[..., t.Any]] = None,
         undefined=config.undefined.value,
+        finalize=None,
         autoescape=config.internal.autoescape,
         cache_size=config.internal.cache_size,
         auto_reload=config.internal.auto_reload,
-        # bytecode_cache: t.Optional["BytecodeCache"] = None,
+        bytecode_cache=None,
         enable_async=config.internal.enable_async,
     )
 
