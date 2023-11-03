@@ -6,6 +6,39 @@ authors = ["Mirko Lenz <mirko@mirkolenz.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/mirkolenz/makejinja"
+homepage = "https://mirkolenz.github.io/makejinja/"
+keywords = [
+    "jinja2",
+    "home-assistant",
+    "hassio",
+    "dashboard",
+    "lovelace",
+    "template",
+    "generator",
+    "cli",
+    "tool",
+    "library",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: File Formats",
+    "Topic :: Home Automation",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Software Distribution",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
 
 [tool.poetry.scripts]
 makejinja = "makejinja.cli:makejinja_cli"
