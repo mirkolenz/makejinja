@@ -1,8 +1,17 @@
 import typing as t
+from enum import Enum
 from pathlib import Path
 
 import rich_click as click
 import typed_settings as ts
+from jinja2 import (
+    ChainableUndefined,
+    DebugUndefined,
+    StrictUndefined,
+)
+from jinja2 import (
+    Undefined as DefaultUndefined,
+)
 from jinja2.defaults import (
     BLOCK_END_STRING,
     BLOCK_START_STRING,
@@ -16,7 +25,14 @@ from jinja2.defaults import (
     VARIABLE_START_STRING,
 )
 
-__all__ = ["Config", "Delimiter", "Internal", "Prefix", "Whitespace"]
+__all__ = ["Config", "Delimiter", "Internal", "Prefix", "Whitespace", "Undefined"]
+
+
+class Undefined(Enum):
+    default = DefaultUndefined
+    chainable = ChainableUndefined
+    debug = DebugUndefined
+    strict = StrictUndefined
 
 
 @ts.settings(frozen=True)
@@ -269,6 +285,16 @@ class Config:
             **Note:** This option may be passed multiple times to pass a list of values.
         """,
     )
+    undefined: Undefined = ts.option(
+        default=Undefined.default,
+        help=(
+            """
+            Whenever the template engine is unable to look up a name or access an attribute one of those objects is created and returned.
+            Some operations on undefined values are then allowed, others fail.
+            The closest to regular Python behavior is `strict` which disallows all operations beside testing if it is an undefined object.
+        """
+        ),
+    )
     delimiter: Delimiter = Delimiter()
     prefix: Prefix = Prefix()
     whitespace: Whitespace = Whitespace()
@@ -297,6 +323,7 @@ OPTION_GROUPS = {
                 "--loader",
                 "--import-path",
                 "--extension",
+                "--undefined",
             ],
         },
         {

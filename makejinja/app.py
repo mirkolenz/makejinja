@@ -94,8 +94,8 @@ def init_jinja_env(config: Config) -> Environment:
         newline_sequence=config.whitespace.newline_sequence,  # type: ignore
         keep_trailing_newline=config.whitespace.keep_trailing_newline,
         optimized=config.internal.optimized,
-        # undefined: t.Type[Undefined] = Undefined,
         # finalize: t.Optional[t.Callable[..., t.Any]] = None,
+        undefined=config.undefined.value,
         autoescape=config.internal.autoescape,
         cache_size=config.internal.cache_size,
         auto_reload=config.internal.auto_reload,
