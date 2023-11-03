@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.4](https://github.com/mirkolenz/makejinja/compare/v2.1.3...v2.1.4) (2023-11-03)
+
+
+### Bug Fixes
+
+* update description of project ([2f4e405](https://github.com/mirkolenz/makejinja/commit/2f4e40563350d4eb12912db9bdb0e19b4231a791))
+
 ## [2.1.3](https://github.com/mirkolenz/makejinja/compare/v2.1.2...v2.1.3) (2023-11-03)
 
 
