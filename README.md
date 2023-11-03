@@ -8,7 +8,8 @@
   <a href="https://jinja.palletsprojects.com/en/3.1.x/templates">Templating</a>
 </p>
 <p align="center">
-  makejinja is a CLI tool and Python library to automatically generate files from templates.
+  makejinja is a CLI tool and Python library to automatically generate files from Jinja2 templates.
+  Use it to easily generate complex Home Assistant dashboards!
 </p>
 
 ---
