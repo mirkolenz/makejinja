@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/mirkolenz/makejinja/compare/v2.1.1...v2.1.2) (2023-11-03)
+
+
+### Bug Fixes
+
+* trigger release ([fd6579d](https://github.com/mirkolenz/makejinja/commit/fd6579d7650889843f10699999bce2cef4c18f53))
+
 ## [2.1.1](https://github.com/mirkolenz/makejinja/compare/v2.1.0...v2.1.1) (2023-10-31)
 
 
