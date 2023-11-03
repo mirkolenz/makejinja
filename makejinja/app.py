@@ -2,11 +2,11 @@ import itertools
 import json
 import shutil
 import sys
+import tomllib
 import typing as t
 from inspect import signature
 from pathlib import Path
 
-import tomllib
 import yaml
 from jinja2 import Environment, FileSystemLoader
 from jinja2.environment import load_extensions
