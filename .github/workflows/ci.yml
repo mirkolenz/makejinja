@@ -20,12 +20,35 @@ jobs:
     runs-on: ubuntu-latest
     needs: check
     if: ${{ github.repository_owner == 'mirkolenz' && github.event_name == 'push' }}
+    outputs:
+      version: ${{ steps.semanticrelease.outputs.version }}
+      released: ${{ steps.semanticrelease.outputs.released }}
+      git-head: ${{ steps.semanticrelease.outputs.git-head }}
     permissions:
-      id-token: write
       contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v6
+      - uses: DeterminateSystems/magic-nix-cache-action@v2
+      - run: nix profile install .#releaseEnv
+      - uses: cihelper/action-semanticrelease-poetry@v1
+        id: semanticrelease
+      - uses: actions/upload-artifact@v3
+        if: ${{ steps.semanticrelease.outputs.released == 'true' }}
+        with:
+          name: poetry-build
+          path: ./dist
+  deploy-docker:
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.release.outputs.released == 'true' }}
+    permissions:
+      contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.git-head }}
       - uses: docker/setup-qemu-action@v3
         with:
           platforms: arm64
@@ -34,13 +57,52 @@ jobs:
           extra-conf: |
             extra-platforms = aarch64-linux
       - uses: DeterminateSystems/magic-nix-cache-action@v2
-      - run: nix profile install .#releaseEnv
-      - uses: cihelper/action-semanticrelease-poetry@v1
-        id: semanticrelease
-      - uses: pypa/gh-action-pypi-publish@release/v1
-        if: ${{ steps.semanticrelease.outputs.released == 'true' }}
       - run: nix run .#dockerManifest --impure
-        if: ${{ steps.semanticrelease.outputs.released == 'true' }}
         env:
-          VERSION: ${{ steps.semanticrelease.outputs.version }}
+          VERSION: ${{ needs.release.outputs.version }}
           GH_TOKEN: ${{ github.token }}
+  deploy-pypi:
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.release.outputs.released == 'true' }}
+    environment:
+      name: release
+      url: https://pypi.org/project/makejinja/${{needs.release.outputs.version}}/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: poetry-build
+          path: ./dist
+      - uses: DeterminateSystems/nix-installer-action@v6
+      - uses: DeterminateSystems/magic-nix-cache-action@v2
+      - uses: pypa/gh-action-pypi-publish@release/v1
+  build-docs:
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.release.outputs.released == 'true' && github.ref_name == 'main' }}
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v3
+      - uses: DeterminateSystems/nix-installer-action@v6
+      - uses: DeterminateSystems/magic-nix-cache-action@v2
+      - run: nix run .#docs
+      - uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./result
+  deploy-docs:
+    runs-on: ubuntu-latest
+    needs: build-docs
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/deploy-pages@v2
+        id: deploy
