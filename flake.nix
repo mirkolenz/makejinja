@@ -107,7 +107,7 @@
           POETRY_VIRTUALENVS_IN_PROJECT = true;
           shellHook = ''
             ${lib.getExe poetry} env use ${lib.getExe python}
-            ${lib.getExe poetry} install --all-extras --no-root
+            ${lib.getExe poetry} install --sync --all-extras --no-root
           '';
         };
       };
