@@ -7,6 +7,7 @@ license = "MIT"
 readme = "README.md"
 repository = "https://github.com/mirkolenz/makejinja"
 homepage = "https://mirkolenz.github.io/makejinja/"
+documentation = "https://mirkolenz.github.io/makejinja/makejinja/cli.html"
 keywords = [
     "jinja2",
     "home-assistant",
