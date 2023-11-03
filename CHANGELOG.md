@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.3](https://github.com/mirkolenz/makejinja/compare/v2.1.2...v2.1.3) (2023-11-03)
+
+
+### Bug Fixes
+
+* use correct ref for building docs ([b7e30f7](https://github.com/mirkolenz/makejinja/commit/b7e30f773c2bd18e29333ba654ee7a3cdc85e07d))
+
 ## [2.1.2](https://github.com/mirkolenz/makejinja/compare/v2.1.1...v2.1.2) (2023-11-03)
 
 
