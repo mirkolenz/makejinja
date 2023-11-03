@@ -38,7 +38,6 @@ An [example for Home Assistant](./tests/data) can be found in the tests director
 
 The tool is written in Python and can be installed via pip, nix, and docker.
 It can be used as a CLI tool or as a Python library.
-Please refer to the [installation instructions](./docs/install.md) for details.
 
 ### PIP
 
