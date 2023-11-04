@@ -164,8 +164,7 @@ class Config:
     inputs: tuple[Path, ...] = ts.option(
         click={
             "type": click.Path(exists=True, file_okay=False, path_type=Path),
-            "param_decls": "--input",
-            "required": True,
+            "param_decls": ("--input", "-i"),
         },
         help="""
             Path to a folder containing template files.
@@ -175,7 +174,10 @@ class Config:
         """,
     )
     output: Path = ts.option(
-        click={"type": click.Path(file_okay=False, writable=True, path_type=Path)},
+        click={
+            "type": click.Path(file_okay=False, writable=True, path_type=Path),
+            "param_decls": ("--output", "-o"),
+        },
         help="""
             Path to a folder where the rendered templates are stored.
             makejinja preserves the relative paths in the process, meaning that you can even use it on nested directories.
@@ -183,7 +185,7 @@ class Config:
     )
     include_patterns: tuple[str, ...] = ts.option(
         default=("**/*",),
-        click={"param_decls": "--include-pattern"},
+        click={"param_decls": ("--include-pattern", "--include", "-I")},
         help="""
             Glob patterns to search for files in `inputs`.
             Accepts all pattern supported by [`fnmatch`](https://docs.python.org/3/library/fnmatch.html#module-fnmatch).
@@ -194,7 +196,7 @@ class Config:
     )
     exclude_patterns: tuple[str, ...] = ts.option(
         default=tuple(),
-        click={"param_decls": "--exclude-pattern"},
+        click={"param_decls": ("--exclude-pattern", "--exclude", "-E")},
         help="""
             Glob patterns pattern to exclude files matched.
             Applied against files discovered through `include_patterns`.
@@ -227,7 +229,7 @@ class Config:
     )
     copy_metadata: bool = ts.option(
         default=False,
-        click={"param_decls": "--copy-metadata"},
+        click={"param_decls": ("--copy-metadata", "-m")},
         help="""
             Copy the file metadata (e.g., created/modified/permissions) from the input file using `shutil.copystat`
         """,
@@ -236,7 +238,7 @@ class Config:
         default=tuple(),
         click={
             "type": click.Path(exists=True, path_type=Path),
-            "param_decls": "--data",
+            "param_decls": ("--data", "-d"),
         },
         help="""
                 Load variables from yaml/yml/toml/json files for use in your Jinja templates.
@@ -249,7 +251,7 @@ class Config:
     loaders: tuple[str, ...] = ts.option(
         default=tuple(),
         click={
-            "param_decls": "--loader",
+            "param_decls": ("--loader", "-l"),
         },
         help="""
             Use custom Python code to adjust the used Jinja environment to your needs.
@@ -277,7 +279,7 @@ class Config:
     )
     extensions: tuple[str, ...] = ts.option(
         default=tuple(),
-        click={"param_decls": "--extension"},
+        click={"param_decls": ("--extension", "-e")},
         help="""
             List of Jinja extensions to use as strings of import paths.
             An overview of the built-in ones can be found on the [project website](https://jinja.palletsprojects.com/en/3.1.x/extensions/).
