@@ -1,5 +1,6 @@
 import itertools
 import json
+import os
 import shutil
 import sys
 import tomllib
@@ -111,6 +112,7 @@ def init_jinja_env(config: Config, data: Data) -> Environment:
     )
 
     env.globals.update(data)
+    env.globals["env"] = os.environ
 
     return env
 
