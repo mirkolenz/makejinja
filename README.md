@@ -3,7 +3,7 @@
   <img width="256px" src="./assets/logo.png" />
 </p>
 <p align="center">
-  <a heef="https://pypi.org/project/makejinja/">PyPI</a> |
+  <a href="https://pypi.org/project/makejinja/">PyPI</a> |
   <a href="https://mirkolenz.github.io/makejinja">Docs</a> |
   <a href="./tests/data">Example</a> |
   <a href="https://jinja.palletsprojects.com/en/3.1.x/templates">Templating</a>
