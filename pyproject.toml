@@ -63,7 +63,7 @@ addopts = "--cov makejinja --cov-report term-missing -vv"
 
 [tool.ruff]
 target-version = "py311"
-select = ["B", "E", "F", "W"]
+select = ["E", "W", "F", "B", "UP"]
 ignore = ["E501"]
 
 [tool.ruff.pydocstyle]

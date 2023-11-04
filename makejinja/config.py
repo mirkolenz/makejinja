@@ -1,4 +1,3 @@
-import typing as t
 from enum import Enum
 from pathlib import Path
 
@@ -62,14 +61,14 @@ class Delimiter:
 
 @ts.settings(frozen=True)
 class Prefix:
-    line_statement: t.Optional[str] = ts.option(
+    line_statement: str | None = ts.option(
         default=LINE_STATEMENT_PREFIX,
         help=(
             "If given and a string, this will be used as prefix for line based"
             " statements."
         ),
     )
-    line_comment: t.Optional[str] = ts.option(
+    line_comment: str | None = ts.option(
         default=LINE_COMMENT_PREFIX,
         help=(
             "If given and a string, this will be used as prefix for line based"

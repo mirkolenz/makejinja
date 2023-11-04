@@ -132,7 +132,7 @@ DATA_LOADERS: dict[str, t.Callable[[Path], dict[str, t.Any]]] = {
 }
 
 
-def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> t.List[Path]:
+def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> list[Path]:
     files = []
 
     for path in paths:
@@ -163,7 +163,7 @@ def load_data(config: Config) -> dict[str, t.Any]:
 def process_loader(
     loader_name: str, env: Environment, data: t.MutableMapping[str, t.Any]
 ):
-    cls: t.Type[AbstractLoader] = import_string(loader_name)
+    cls: type[AbstractLoader] = import_string(loader_name)
     sig_params = signature(cls).parameters
     params: dict[str, t.Any] = {}
 

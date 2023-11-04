@@ -19,7 +19,7 @@ __all__ = [
     "Data",
 ]
 
-Extensions = t.Sequence[t.Type[Extension]]
+Extensions = t.Sequence[type[Extension]]
 Filter = t.Callable[[t.Any], t.Any]
 Filters = t.Sequence[Filter]
 Global = t.Callable[..., t.Any]
