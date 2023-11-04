@@ -216,11 +216,17 @@ def process_loader(loader_name: str, env: Environment, data: Data):
 
     loader = cls(**params)
 
-    if hasattr(loader, "extensions"):
-        load_extensions(env, loader.extensions())
-
     if hasattr(loader, "globals"):
         env.globals.update({func.__name__: func for func in loader.globals()})
+
+    if hasattr(loader, "functions"):
+        env.globals.update({func.__name__: func for func in loader.functions()})
+
+    if hasattr(loader, "data"):
+        env.globals.update(loader.data())
+
+    if hasattr(loader, "extensions"):
+        load_extensions(env, loader.extensions())
 
     if hasattr(loader, "filters"):
         env.filters.update({func.__name__: func for func in loader.filters()})
@@ -230,9 +236,6 @@ def process_loader(loader_name: str, env: Environment, data: Data):
 
     if hasattr(loader, "policies"):
         env.policies.update(loader.policies())
-
-    if hasattr(loader, "data"):
-        data.update(loader.data())
 
 
 def render_path(

@@ -3,27 +3,27 @@ import typing as t
 from jinja2 import Environment
 from jinja2.ext import Extension
 
-__all__ = [
+__all__ = (
     "AbstractLoader",
     "Environment",
     "Extension",
     "Extensions",
     "Filter",
     "Filters",
-    "Global",
-    "Globals",
+    "Function",
+    "Functions",
     "Test",
     "Tests",
     "Policies",
     "MutableData",
     "Data",
-]
+)
 
 Extensions = t.Sequence[type[Extension]]
 Filter = t.Callable[[t.Any], t.Any]
 Filters = t.Sequence[Filter]
-Global = t.Callable[..., t.Any]
-Globals = t.Sequence[Global]
+Function = t.Callable[..., t.Any]
+Functions = t.Sequence[Function]
 Test = t.Callable[..., t.Any]
 Tests = t.Sequence[Test]
 Policies = t.Mapping[str, t.Any]
@@ -35,10 +35,13 @@ class AbstractLoader:
     def __init__(self, *, env: Environment, data: MutableData) -> None:
         pass
 
-    def filters(self) -> Filters:
+    def functions(self) -> Functions:
         return []
 
-    def globals(self) -> Globals:
+    def data(self) -> Data:
+        return {}
+
+    def filters(self) -> Filters:
         return []
 
     def tests(self) -> Tests:
@@ -47,8 +50,9 @@ class AbstractLoader:
     def policies(self) -> Policies:
         return {}
 
-    def data(self) -> Data:
-        return {}
-
     def extensions(self) -> Extensions:
+        return []
+
+    # Deprecated: Use functions() and data() instead
+    def globals(self) -> Functions:
         return []
