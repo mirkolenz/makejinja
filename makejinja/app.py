@@ -155,6 +155,28 @@ def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> list[Path]:
     return files
 
 
+def dict_nested_set(data: MutableData, dotted_key: str, value: t.Any) -> None:
+    """Given `foo`, 'key1.key2.key3', 'something', set foo['key1']['key2']['key3'] = 'something'
+
+    Source: https://stackoverflow.com/a/57561744
+    """
+
+    # Start off pointing at the original dictionary that was passed in.
+    here = data
+
+    # Turn the string of key names into a list of strings.
+    keys = dotted_key.split(".")
+
+    # For every key *before* the last one, we concentrate on navigating through the dictionary.
+    for key in keys[:-1]:
+        # Try to find here[key]. If it doesn't exist, create it with an empty dictionary. Then,
+        # update our `here` pointer to refer to the thing we just found (or created).
+        here = here.setdefault(key, {})
+
+    # Finally, set the final key to the given value
+    here[keys[-1]] = value
+
+
 def load_data(config: Config) -> dict[str, t.Any]:
     data: dict[str, t.Any] = {}
 
@@ -167,6 +189,9 @@ def load_data(config: Config) -> dict[str, t.Any]:
         else:
             if not config.quiet:
                 print(f"Skip unsupported data '{path}'")
+
+    for key, value in config.data_vars:
+        dict_nested_set(data, key, value)
 
     return data
 

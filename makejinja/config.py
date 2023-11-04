@@ -1,6 +1,8 @@
+from collections.abc import Mapping
 from enum import Enum
 from pathlib import Path
 
+import immutables
 import rich_click as click
 import typed_settings as ts
 from jinja2 import (
@@ -25,6 +27,7 @@ from jinja2.defaults import (
 )
 
 __all__ = ["Config", "Delimiter", "Internal", "Prefix", "Whitespace", "Undefined"]
+frozendict = immutables.Map
 
 
 class Undefined(Enum):
@@ -248,6 +251,19 @@ class Config:
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
             """,
     )
+    data_vars: Mapping[str, str] = ts.option(
+        default=frozendict(),
+        click={
+            "param_decls": ("--data-var", "-D"),
+            "help": """
+                Load variables from the command line for use in your Jinja templates.
+                The definitions are applied after loading the data from files.
+                When using dotted keys (e.g., `foo.bar=42`), the value is converted to a nested dictionary.
+                Consequently, you can override values loaded from files.
+                **Note:** This option may be passed multiple times.
+            """,
+        },
+    )
     loaders: tuple[str, ...] = ts.option(
         default=tuple(),
         click={
@@ -328,6 +344,7 @@ OPTION_GROUPS = {
             "name": "Jinja Environment",
             "options": [
                 "--data",
+                "--data-var",
                 "--loader",
                 "--import-path",
                 "--extension",
