@@ -64,9 +64,7 @@ addopts = "--cov makejinja --cov-report term-missing -vv"
 [tool.ruff]
 target-version = "py311"
 select = ["B", "E", "F", "W"]
-
-[tool.ruff.per-file-ignores]
-"makejinja/config.py" = ["E501"]
+ignore = ["E501"]
 
 [tool.ruff.pydocstyle]
 convention = "google"
