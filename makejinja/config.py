@@ -245,7 +245,7 @@ class Config:
         },
         help="""
                 Load variables from yaml/yml/toml/json files for use in your Jinja templates.
-                The defintions are passed to Jinja's `render` function.
+                The defintions are passed to Jinja as globals.
                 Can either be a file or a folder containg files.
                 **Note:** This option may be passed multiple times to pass a list of values.
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.

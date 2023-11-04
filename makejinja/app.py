@@ -14,7 +14,7 @@ from jinja2.utils import import_string
 from rich import print
 
 from makejinja.config import Config
-from makejinja.loader import AbstractLoader
+from makejinja.loader import AbstractLoader, Data, MutableData
 
 __all__ = ["makejinja"]
 
@@ -35,7 +35,7 @@ def makejinja(config: Config):
 
     config.output.mkdir()
 
-    env = init_jinja_env(config)
+    env = init_jinja_env(config, data)
 
     for loader in config.loaders:
         process_loader(loader, env, data)
@@ -55,7 +55,7 @@ def makejinja(config: Config):
                     print(f"Skip excluded '{input_path}'")
 
             elif input_path.is_file() and output_path not in rendered_files:
-                render_path(input_path, relative_path, output_path, config, env, data)
+                render_path(input_path, relative_path, output_path, config, env)
                 rendered_files.add(output_path)
 
             elif input_path.is_dir() and output_path not in rendered_folders:
@@ -84,8 +84,8 @@ def generate_output_path(config: Config, relative_path: Path) -> Path:
     return output_file
 
 
-def init_jinja_env(config: Config) -> Environment:
-    return Environment(
+def init_jinja_env(config: Config, data: Data) -> Environment:
+    env = Environment(
         loader=FileSystemLoader(config.inputs),
         extensions=config.extensions,
         block_start_string=config.delimiter.block_start,
@@ -109,6 +109,10 @@ def init_jinja_env(config: Config) -> Environment:
         bytecode_cache=None,
         enable_async=config.internal.enable_async,
     )
+
+    env.globals.update(data)
+
+    return env
 
 
 def from_yaml(path: Path) -> dict[str, t.Any]:
@@ -196,9 +200,7 @@ def load_data(config: Config) -> dict[str, t.Any]:
     return data
 
 
-def process_loader(
-    loader_name: str, env: Environment, data: t.MutableMapping[str, t.Any]
-):
+def process_loader(loader_name: str, env: Environment, data: Data):
     cls: type[AbstractLoader] = import_string(loader_name)
     sig_params = signature(cls).parameters
     params: dict[str, t.Any] = {}
@@ -237,11 +239,10 @@ def render_path(
     output: Path,
     config: Config,
     env: Environment,
-    data: dict[str, t.Any],
 ) -> None:
     if input.suffix == config.jinja_suffix:
         template = env.get_template(str(relative_path))
-        rendered = template.render(data)
+        rendered = template.render()
 
         # Write the rendered template if it has content
         # Prevents empty macro definitions
