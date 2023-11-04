@@ -1,6 +1,7 @@
 on:
   pull_request:
   push:
+    branches: [main, beta]
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -16,6 +17,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: check
+    if: ${{ github.repository_owner == 'mirkolenz' && github.event_name == 'push' }}
     environment:
       name: release
       url: https://github.com/mirkolenz/makejinja/releases/tag/${{ steps.semanticrelease.outputs.git-tag }}
