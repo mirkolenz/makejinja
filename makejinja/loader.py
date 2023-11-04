@@ -32,7 +32,7 @@ Data = t.Mapping[str, t.Any]
 
 
 class AbstractLoader:
-    def __init__(self, *, env: Environment, data: MutableData) -> None:
+    def __init__(self, *, env: Environment, data: Data) -> None:
         pass
 
     def functions(self) -> Functions:
