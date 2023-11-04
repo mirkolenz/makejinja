@@ -28,7 +28,9 @@ def makejinja(config: Config):
     data = load_data(config)
 
     if config.output.is_dir():
-        print(f"Remove output '{config.output}'")
+        if not config.quiet:
+            print(f"Remove output '{config.output}'")
+
         shutil.rmtree(config.output)
 
     config.output.mkdir()
@@ -49,14 +51,17 @@ def makejinja(config: Config):
             output_path = generate_output_path(config, relative_path)
 
             if any(input_path.match(x) for x in config.exclude_patterns):
-                print(f"Skip excluded '{input_path}'")
+                if not config.quiet:
+                    print(f"Skip excluded '{input_path}'")
 
             elif input_path.is_file() and output_path not in rendered_files:
                 render_path(input_path, relative_path, output_path, config, env, data)
                 rendered_files.add(output_path)
 
             elif input_path.is_dir() and output_path not in rendered_folders:
-                print(f"Create folder '{input_path}' -> '{output_path}'")
+                if not config.quiet:
+                    print(f"Create folder '{input_path}' -> '{output_path}'")
+
                 output_path.mkdir()
                 rendered_folders[output_path] = input_path
 
@@ -64,7 +69,9 @@ def makejinja(config: Config):
     # Otherwise the mtime will be updated
     if config.copy_metadata:
         for output_path, input_path in rendered_folders.items():
-            print(f"Copy metadata '{input_path}' -> '{output_path}'")
+            if not config.quiet:
+                print(f"Copy metadata '{input_path}' -> '{output_path}'")
+
             shutil.copystat(input_path, output_path)
 
 
@@ -153,9 +160,13 @@ def load_data(config: Config) -> dict[str, t.Any]:
 
     for path in collect_files(config.data):
         if loader := DATA_LOADERS.get(path.suffix):
+            if not config.quiet:
+                print(f"Load data '{path}'")
+
             data |= loader(path)
         else:
-            print(f"Skip unsupported data '{path}'")
+            if not config.quiet:
+                print(f"Skip unsupported data '{path}'")
 
     return data
 
@@ -210,9 +221,12 @@ def render_path(
         # Write the rendered template if it has content
         # Prevents empty macro definitions
         if rendered.strip() == "" and not config.keep_empty:
-            print(f"Skip empty '{input}'")
+            if not config.quiet:
+                print(f"Skip empty '{input}'")
         else:
-            print(f"Render file '{input}' -> '{output}'")
+            if not config.quiet:
+                print(f"Render file '{input}' -> '{output}'")
+
             with output.open("w") as fp:
                 fp.write(rendered)
 
@@ -220,5 +234,7 @@ def render_path(
                 shutil.copystat(input, output)
 
     else:
-        print(f"Copy file '{input}' -> '{output}'")
+        if not config.quiet:
+            print(f"Copy file '{input}' -> '{output}'")
+
         shutil.copy2(input, output)

@@ -296,6 +296,13 @@ class Config:
         """
         ),
     )
+    quiet: bool = ts.option(
+        default=False,
+        click={"param_decls": ("--quiet", "-q")},
+        help="""
+            Print no information about the rendering process.
+        """,
+    )
     delimiter: Delimiter = Delimiter()
     prefix: Prefix = Prefix()
     whitespace: Whitespace = Whitespace()
