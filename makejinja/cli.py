@@ -21,8 +21,8 @@ _ts_loaders = ts.default_loaders(
 )
 
 
-@click.command("makejinja")
-@click.version_option()
+@click.command("makejinja", context_settings={"help_option_names": ("--help", "-h")})
+@click.version_option(None, "--version", "-v")
 @ts.click_options(Config, _ts_loaders)
 def makejinja_cli(config: Config):
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
