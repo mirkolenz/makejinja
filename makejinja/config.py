@@ -319,6 +319,13 @@ class Config:
             Whether to remove the output folder if it exists.
         """,
     )
+    force: bool = ts.option(
+        default=False,
+        click={"param_decls": ("--force", "-f")},
+        help="""
+            Whether to overwrite existing files in the output folder.
+        """,
+    )
     quiet: bool = ts.option(
         default=False,
         click={"param_decls": ("--quiet", "-q")},
@@ -346,6 +353,7 @@ OPTION_GROUPS = {
                 "--keep-empty",
                 "--copy-metadata",
                 "--clean",
+                "--force",
             ],
         },
         {

@@ -34,7 +34,6 @@ def makejinja(config: Config):
         shutil.rmtree(config.output)
 
     config.output.mkdir(exist_ok=True, parents=True)
-    # TODO: Check if file exists in output before rendering, add option for this behavior
 
     env = init_jinja_env(config, data)
 
@@ -301,7 +300,10 @@ def render_path(
     config: Config,
     env: Environment,
 ) -> None:
-    if input.suffix == config.jinja_suffix:
+    if output.exists() and not config.force:
+        if not config.quiet:
+            print(f"Skip existing '{output}'")
+    elif input.suffix == config.jinja_suffix:
         template = env.get_template(template_name)
         rendered = template.render()
 
