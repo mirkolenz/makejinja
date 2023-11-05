@@ -33,7 +33,8 @@ def makejinja(config: Config):
 
         shutil.rmtree(config.output)
 
-    config.output.mkdir(exist_ok=True, parents=True)
+    if not single_input_output_file(config):
+        config.output.mkdir(exist_ok=True, parents=True)
 
     env = init_jinja_env(config, data)
 
@@ -64,6 +65,16 @@ def makejinja(config: Config):
                 print(f"Copy metadata '{input_path}' -> '{output_path}'")
 
             shutil.copystat(input_path, output_path)
+
+
+def single_input_output_file(config: Config) -> bool:
+    """Check if the user provided a single input and a single output"""
+    return (
+        len(config.inputs) == 1
+        and config.inputs[0].is_file()
+        and (config.output.suffix != "" or config.output.is_file())
+        and not config.output.is_dir()
+    )
 
 
 def handle_input_file(
@@ -115,6 +126,9 @@ def handle_input_folder(
 
 
 def generate_output_path(config: Config, relative_path: Path) -> Path:
+    if single_input_output_file(config):
+        return config.output
+
     output_file = config.output / relative_path
 
     if relative_path.suffix == config.jinja_suffix and not config.keep_jinja_suffix:

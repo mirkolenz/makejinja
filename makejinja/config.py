@@ -178,7 +178,7 @@ class Config:
     )
     output: Path = ts.option(
         click={
-            "type": click.Path(file_okay=False, path_type=Path),
+            "type": click.Path(path_type=Path),
             "param_decls": ("--output", "-o"),
         },
         help="""
