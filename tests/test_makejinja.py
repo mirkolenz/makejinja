@@ -29,7 +29,7 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
         # Need to import it AFTER chdir
         from makejinja.cli import makejinja_cli
 
-        res = runner.invoke(
+        runner.invoke(
             makejinja_cli,
             [
                 # Override it here to use our tmp_path
@@ -37,9 +37,6 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
                 str(output_path),
             ],
         )
-
-    # For logging wrong config options
-    print(res.stdout)
 
     return Paths(input_path, baseline_path, output_path)
 
