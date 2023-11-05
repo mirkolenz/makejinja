@@ -56,13 +56,17 @@ Output ./assets/demo.gif
 
 Require "makejinja"
 
+Hide
+Type "cd assets && clear" Enter
+Show
+
 Set TypingSpeed 100ms
 
-Type "cat assets/demo-in/lipsum.txt.jinja" Sleep 1
+Type "cat demo.txt.jinja" Sleep 1
 Enter Sleep 5
 
-Type "makejinja --input assets/demo-in --output assets/demo-out" Sleep 1
+Type "makejinja -i demo.txt.jinja -o ." Sleep 1
 Enter Sleep 2
 
-Type "cat assets/demo-out/lipsum.txt" Sleep 1
+Type "cat demo.txt" Sleep 1
 Enter Sleep 15
