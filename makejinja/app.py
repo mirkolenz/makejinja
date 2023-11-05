@@ -1,4 +1,3 @@
-import itertools
 import json
 import os
 import shutil
@@ -9,7 +8,7 @@ from inspect import signature
 from pathlib import Path
 
 import yaml
-from jinja2 import ChoiceLoader, DictLoader, Environment, FileSystemLoader
+from jinja2 import BaseLoader, ChoiceLoader, DictLoader, Environment, FileSystemLoader
 from jinja2.environment import load_extensions
 from jinja2.utils import import_string
 from rich import print
@@ -37,44 +36,26 @@ def makejinja(config: Config):
     config.output.mkdir(exist_ok=True, parents=True)
     # TODO: Check if file exists in output before rendering, add option for this behavior
 
-    input_files = tuple(path for path in config.inputs if path.is_file())
-    input_folders = tuple(path for path in config.inputs if path.is_dir())
-
-    env = init_jinja_env(config, input_files, input_folders, data)
+    env = init_jinja_env(config, data)
 
     for loader in config.loaders:
         process_loader(loader, env, data)
 
+    # Save rendered files to avoid duplicate work
+    # Even if two files are in two separate folders, they will have the same template name (i.e., relative path)
+    # and thus only the first one will be rendered every time
     rendered_files: set[Path] = set()
+
+    # Save rendered folders to later copy metadata
     rendered_folders: dict[Path, Path] = {}
 
-    for input_file in sorted(input_files):
-        relative_path = Path(input_file.name)
-        output_path = generate_output_path(config, relative_path)
-        render_path(input_file, str(relative_path), output_path, config, env)
-        rendered_files.add(output_path)
-
-    for input_folder, include_pattern in itertools.product(
-        input_folders, config.include_patterns
-    ):
-        for input_path in sorted(input_folder.glob(include_pattern)):
-            relative_path = input_path.relative_to(input_folder)
-            output_path = generate_output_path(config, relative_path)
-
-            if any(input_path.match(x) for x in config.exclude_patterns):
-                if not config.quiet:
-                    print(f"Skip excluded '{input_path}'")
-
-            elif input_path.is_file() and output_path not in rendered_files:
-                render_path(input_path, str(relative_path), output_path, config, env)
-                rendered_files.add(output_path)
-
-            elif input_path.is_dir() and output_path not in rendered_folders:
-                if not config.quiet:
-                    print(f"Create folder '{input_path}' -> '{output_path}'")
-
-                output_path.mkdir()
-                rendered_folders[output_path] = input_path
+    for user_input_path in config.inputs:
+        if user_input_path.is_file():
+            handle_input_file(user_input_path, config, env, rendered_files)
+        elif user_input_path.is_dir():
+            handle_input_folder(
+                user_input_path, config, env, rendered_files, rendered_folders
+            )
 
     # The metadata has to be copied after all files are rendered
     # Otherwise the mtime will be updated
@@ -84,6 +65,54 @@ def makejinja(config: Config):
                 print(f"Copy metadata '{input_path}' -> '{output_path}'")
 
             shutil.copystat(input_path, output_path)
+
+
+def handle_input_file(
+    input_path: Path,
+    config: Config,
+    env: Environment,
+    rendered_files: t.MutableSet[Path],
+) -> None:
+    relative_path = Path(input_path.name)
+    output_path = generate_output_path(config, relative_path)
+
+    if output_path not in rendered_files:
+        render_path(input_path, str(relative_path), output_path, config, env)
+
+    rendered_files.add(output_path)
+
+
+def handle_input_folder(
+    user_input_path: Path,
+    config: Config,
+    env: Environment,
+    rendered_files: t.MutableSet[Path],
+    rendered_folders: t.MutableMapping[Path, Path],
+) -> None:
+    input_paths = (
+        input_path
+        for include_pattern in config.include_patterns
+        for input_path in sorted(user_input_path.glob(include_pattern))
+    )
+
+    for input_path in input_paths:
+        relative_path = input_path.relative_to(user_input_path)
+        output_path = generate_output_path(config, relative_path)
+
+        if any(input_path.match(x) for x in config.exclude_patterns):
+            if not config.quiet:
+                print(f"Skip excluded '{input_path}'")
+
+        elif input_path.is_file() and output_path not in rendered_files:
+            render_path(input_path, str(relative_path), output_path, config, env)
+            rendered_files.add(output_path)
+
+        elif input_path.is_dir() and output_path not in rendered_folders:
+            if not config.quiet:
+                print(f"Create folder '{input_path}' -> '{output_path}'")
+
+            output_path.mkdir()
+            rendered_folders[output_path] = input_path
 
 
 def generate_output_path(config: Config, relative_path: Path) -> Path:
@@ -97,21 +126,24 @@ def generate_output_path(config: Config, relative_path: Path) -> Path:
 
 def init_jinja_env(
     config: Config,
-    input_files: t.Sequence[Path],
-    input_folders: t.Sequence[Path],
     data: Data,
 ) -> Environment:
-    input_files_content: dict[str, str] = {
-        file.name: file.read_text() for file in input_files
-    }
+    # If the user-provided ordering of the inputs shall be respected, use this snippet
+    # loaders: list[BaseLoader] = []
+    # for path in config.inputs:
+    #     if path.is_dir():
+    #         loaders.append(FileSystemLoader(path))
+    #     elif path.is_file():
+    #         loaders.append(DictLoader({path.name: path.read_text()}))
+
+    file_loader = DictLoader(
+        {path.name: path.read_text() for path in config.inputs if path.is_file()}
+    )
+    folder_loader = FileSystemLoader([path for path in config.inputs if path.is_dir()])
+    loaders: list[BaseLoader] = [file_loader, folder_loader]
 
     env = Environment(
-        loader=ChoiceLoader(
-            (
-                DictLoader(input_files_content),
-                FileSystemLoader(input_folders),
-            )
-        ),
+        loader=ChoiceLoader(loaders),
         extensions=config.extensions,
         block_start_string=config.delimiter.block_start,
         block_end_string=config.delimiter.block_end,
