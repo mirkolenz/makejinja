@@ -27,7 +27,7 @@ def makejinja(config: Config):
 
     data = load_data(config)
 
-    if config.output.is_dir() and config.clean_output:
+    if config.output.is_dir() and config.clean:
         if not config.quiet:
             print(f"Remove output '{config.output}'")
 

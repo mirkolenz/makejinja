@@ -206,13 +206,6 @@ class Config:
             Multiple can be provided.
         """,
     )
-    clean_output: bool = ts.option(
-        default=False,
-        click={"param_decls": ("--clean-output",)},
-        help="""
-            Whether to remove the output folder if it exists.
-        """,
-    )
     jinja_suffix: str = ts.option(
         default=".jinja",
         help="""
@@ -319,6 +312,13 @@ class Config:
         """
         ),
     )
+    clean: bool = ts.option(
+        default=False,
+        click={"param_decls": ("--clean", "-c")},
+        help="""
+            Whether to remove the output folder if it exists.
+        """,
+    )
     quiet: bool = ts.option(
         default=False,
         click={"param_decls": ("--quiet", "-q")},
@@ -345,7 +345,7 @@ OPTION_GROUPS = {
                 "--keep-jinja-suffix",
                 "--keep-empty",
                 "--copy-metadata",
-                "--clean-output",
+                "--clean",
             ],
         },
         {
