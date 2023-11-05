@@ -211,6 +211,7 @@ class Config:
         help="""
             File ending of Jinja template files.
             All files with this suffix in `inputs` matched by `pattern` are passed to the Jinja renderer.
+            This suffix is not enforced for individual files passed to `inputs`.
             **Note:** Should be provided *with* the leading dot.
         """,
     )

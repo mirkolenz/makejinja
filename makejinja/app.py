@@ -87,7 +87,14 @@ def handle_input_file(
     output_path = generate_output_path(config, relative_path)
 
     if output_path not in rendered_files:
-        render_path(input_path, str(relative_path), output_path, config, env)
+        render_path(
+            input_path,
+            str(relative_path),
+            output_path,
+            config,
+            env,
+            enforce_jinja_suffix=False,
+        )
 
     rendered_files.add(output_path)
 
@@ -114,7 +121,14 @@ def handle_input_folder(
                 print(f"Skip excluded '{input_path}'")
 
         elif input_path.is_file() and output_path not in rendered_files:
-            render_path(input_path, str(relative_path), output_path, config, env)
+            render_path(
+                input_path,
+                str(relative_path),
+                output_path,
+                config,
+                env,
+                enforce_jinja_suffix=True,
+            )
             rendered_files.add(output_path)
 
         elif input_path.is_dir() and output_path not in rendered_folders:
@@ -313,11 +327,13 @@ def render_path(
     output: Path,
     config: Config,
     env: Environment,
+    enforce_jinja_suffix: bool,
 ) -> None:
     if output.exists() and not config.force:
         if not config.quiet:
             print(f"Skip existing '{output}'")
-    elif input.suffix == config.jinja_suffix:
+
+    elif input.suffix == config.jinja_suffix or not enforce_jinja_suffix:
         template = env.get_template(template_name)
         rendered = template.render()
 
