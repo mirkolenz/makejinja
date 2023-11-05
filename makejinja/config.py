@@ -166,11 +166,11 @@ class Whitespace:
 class Config:
     inputs: tuple[Path, ...] = ts.option(
         click={
-            "type": click.Path(exists=True, file_okay=False, path_type=Path),
+            "type": click.Path(exists=True, path_type=Path),
             "param_decls": ("--input", "-i"),
         },
         help="""
-            Path to a folder containing template files.
+            Path to a folder containing template files or a single template file.
             It is passed to Jinja's [FileSystemLoader](https://jinja.palletsprojects.com/en/3.1.x/api/#jinja2.FileSystemLoader) when creating the environment.
             **Note:** This option may be passed multiple times to pass a list of values.
             If a template exists in multiple inputs, the last value with be used.

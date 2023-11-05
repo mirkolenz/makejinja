@@ -9,7 +9,7 @@ from inspect import signature
 from pathlib import Path
 
 import yaml
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import ChoiceLoader, DictLoader, Environment, FileSystemLoader
 from jinja2.environment import load_extensions
 from jinja2.utils import import_string
 from rich import print
@@ -37,7 +37,10 @@ def makejinja(config: Config):
     config.output.mkdir(exist_ok=True, parents=True)
     # TODO: Check if file exists in output before rendering, add option for this behavior
 
-    env = init_jinja_env(config, data)
+    input_files = tuple(path for path in config.inputs if path.is_file())
+    input_folders = tuple(path for path in config.inputs if path.is_dir())
+
+    env = init_jinja_env(config, input_files, input_folders, data)
 
     for loader in config.loaders:
         process_loader(loader, env, data)
@@ -45,11 +48,17 @@ def makejinja(config: Config):
     rendered_files: set[Path] = set()
     rendered_folders: dict[Path, Path] = {}
 
-    for input_dir, include_pattern in itertools.product(
-        config.inputs, config.include_patterns
+    for input_file in sorted(input_files):
+        relative_path = Path(input_file.name)
+        output_path = generate_output_path(config, relative_path)
+        render_path(input_file, str(relative_path), output_path, config, env)
+        rendered_files.add(output_path)
+
+    for input_folder, include_pattern in itertools.product(
+        input_folders, config.include_patterns
     ):
-        for input_path in sorted(input_dir.glob(include_pattern)):
-            relative_path = input_path.relative_to(input_dir)
+        for input_path in sorted(input_folder.glob(include_pattern)):
+            relative_path = input_path.relative_to(input_folder)
             output_path = generate_output_path(config, relative_path)
 
             if any(input_path.match(x) for x in config.exclude_patterns):
@@ -57,7 +66,7 @@ def makejinja(config: Config):
                     print(f"Skip excluded '{input_path}'")
 
             elif input_path.is_file() and output_path not in rendered_files:
-                render_path(input_path, relative_path, output_path, config, env)
+                render_path(input_path, str(relative_path), output_path, config, env)
                 rendered_files.add(output_path)
 
             elif input_path.is_dir() and output_path not in rendered_folders:
@@ -86,9 +95,23 @@ def generate_output_path(config: Config, relative_path: Path) -> Path:
     return output_file
 
 
-def init_jinja_env(config: Config, data: Data) -> Environment:
+def init_jinja_env(
+    config: Config,
+    input_files: t.Sequence[Path],
+    input_folders: t.Sequence[Path],
+    data: Data,
+) -> Environment:
+    input_files_content: dict[str, str] = {
+        file.name: file.read_text() for file in input_files
+    }
+
     env = Environment(
-        loader=FileSystemLoader(config.inputs),
+        loader=ChoiceLoader(
+            (
+                DictLoader(input_files_content),
+                FileSystemLoader(input_folders),
+            )
+        ),
         extensions=config.extensions,
         block_start_string=config.delimiter.block_start,
         block_end_string=config.delimiter.block_end,
@@ -241,13 +264,13 @@ def process_loader(loader_name: str, env: Environment, data: Data):
 
 def render_path(
     input: Path,
-    relative_path: Path,
+    template_name: str,
     output: Path,
     config: Config,
     env: Environment,
 ) -> None:
     if input.suffix == config.jinja_suffix:
-        template = env.get_template(str(relative_path))
+        template = env.get_template(template_name)
         rendered = template.render()
 
         # Write the rendered template if it has content
