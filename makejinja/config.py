@@ -178,7 +178,7 @@ class Config:
     )
     output: Path = ts.option(
         click={
-            "type": click.Path(file_okay=False, writable=True, path_type=Path),
+            "type": click.Path(file_okay=False, path_type=Path),
             "param_decls": ("--output", "-o"),
         },
         help="""
@@ -204,6 +204,13 @@ class Config:
             Glob patterns pattern to exclude files matched.
             Applied against files discovered through `include_patterns`.
             Multiple can be provided.
+        """,
+    )
+    clean_output: bool = ts.option(
+        default=False,
+        click={"param_decls": ("--clean-output",)},
+        help="""
+            Whether to remove the output folder if it exists.
         """,
     )
     jinja_suffix: str = ts.option(
@@ -338,6 +345,7 @@ OPTION_GROUPS = {
                 "--keep-jinja-suffix",
                 "--keep-empty",
                 "--copy-metadata",
+                "--clean-output",
             ],
         },
         {

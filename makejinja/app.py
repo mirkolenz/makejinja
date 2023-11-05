@@ -28,13 +28,14 @@ def makejinja(config: Config):
 
     data = load_data(config)
 
-    if config.output.is_dir():
+    if config.output.is_dir() and config.clean_output:
         if not config.quiet:
             print(f"Remove output '{config.output}'")
 
         shutil.rmtree(config.output)
 
-    config.output.mkdir()
+    config.output.mkdir(exist_ok=True, parents=True)
+    # TODO: Check if file exists in output before rendering, add option for this behavior
 
     env = init_jinja_env(config, data)
 
