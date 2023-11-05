@@ -93,7 +93,7 @@
                   -o "$out" ./makejinja
 
                 mkdir "$out/assets"
-                cp -rf ./assets/*.png "$out/assets/"
+                cp -rf ./assets/{*.png,*.gif} "$out/assets/"
               '';
               dontInstall = true;
             };
