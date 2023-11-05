@@ -36,6 +36,8 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
                 "--output",
                 str(output_path),
             ],
+            catch_exceptions=False,
+            color=True,
         )
 
     return Paths(input_path, baseline_path, output_path)
