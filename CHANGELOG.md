@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.3.0](https://github.com/mirkolenz/makejinja/compare/v2.2.0...v2.3.0) (2023-11-06)
+
+
+### Features
+
+* add flag to pass key-value options via cli ([c59e76f](https://github.com/mirkolenz/makejinja/commit/c59e76fa966cdf2cfca9b39ab5ea15cddc15e030))
+* add force option to enable overwriting ([a9adedc](https://github.com/mirkolenz/makejinja/commit/a9adedcee0ddbcad3fd5e6ab0db55e31c7622f08))
+* add quiet option to silence output ([78b6b44](https://github.com/mirkolenz/makejinja/commit/78b6b448d91973f0619807098cf6216fca4414fd))
+* add shorthand values for cli options ([dd033c2](https://github.com/mirkolenz/makejinja/commit/dd033c2e841d5ab5e780722ba338e4e8ffbe04ee))
+* allow files to be passed as inputs ([b78fa4b](https://github.com/mirkolenz/makejinja/commit/b78fa4bc63c1cecf2db69782df1476189f8d50f5))
+* allow output to be a file in certain cases ([c85763f](https://github.com/mirkolenz/makejinja/commit/c85763f95394f378b9b72a76b8179565dbc62858))
+* optimize data handling (update globals) ([1016fe9](https://github.com/mirkolenz/makejinja/commit/1016fe94d510b7cf4dae99760ab923800a85ce10))
+* pass os.environ to globals ([c9f646c](https://github.com/mirkolenz/makejinja/commit/c9f646c6571b95b5dbe6b3746c1b48a03db1744f))
+* require using a flag to remove the output directory ([f0b288d](https://github.com/mirkolenz/makejinja/commit/f0b288d3fc15fcf23455f3b8434a0a2c87aed5a9))
+* update loader to better support globals ([c38b564](https://github.com/mirkolenz/makejinja/commit/c38b564b4ccbd4543975e18fa4e0f1cc1eec3d10))
+
+
+### Bug Fixes
+
+* add shorthand options for version/help ([e4f1cf0](https://github.com/mirkolenz/makejinja/commit/e4f1cf01c24ab121a9dfa6c01869db1f278c835d))
+* do not enforce jinja suffix for input files ([152d220](https://github.com/mirkolenz/makejinja/commit/152d220b4b8d274c6ea638731ed50adfa65ba92c))
+* pass immutable data to loader ([1351f2c](https://github.com/mirkolenz/makejinja/commit/1351f2c4a39af7b082fbd8c0c0e7cc804569aa6a))
+* rename clean-output to clean ([523556c](https://github.com/mirkolenz/makejinja/commit/523556cc3d63afa9008037db2990a37e222bff7f))
+* update cli option groups ([380d0db](https://github.com/mirkolenz/makejinja/commit/380d0db3218ba3d41460f68bb6e2aa1f672b168e))
+
 ## [2.2.0](https://github.com/mirkolenz/makejinja/compare/v2.1.4...v2.2.0) (2023-11-03)
 
 
