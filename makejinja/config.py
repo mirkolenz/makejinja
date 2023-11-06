@@ -353,8 +353,6 @@ OPTION_GROUPS = {
                 "--keep-jinja-suffix",
                 "--keep-empty",
                 "--copy-metadata",
-                "--clean",
-                "--force",
             ],
         },
         {
