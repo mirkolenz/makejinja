@@ -1,4 +1,4 @@
-from collections.abc import Callable, Mapping, MutableMapping, Sequence
+from collections import abc
 from typing import Any
 
 from jinja2 import Environment
@@ -20,16 +20,16 @@ __all__ = (
     "Data",
 )
 
-Extensions = Sequence[type[Extension]]
-Filter = Callable[[Any], Any]
-Filters = Sequence[Filter]
-Function = Callable[..., Any]
-Functions = Sequence[Function]
-Test = Callable[..., Any]
-Tests = Sequence[Test]
-Policies = Mapping[str, Any]
-MutableData = MutableMapping[str, Any]
-Data = Mapping[str, Any]
+Extensions = abc.Sequence[type[Extension]]
+Filter = abc.Callable[[Any], Any]
+Filters = abc.Sequence[Filter]
+Function = abc.Callable[..., Any]
+Functions = abc.Sequence[Function]
+Test = abc.Callable[..., Any]
+Tests = abc.Sequence[Test]
+Policies = abc.Mapping[str, Any]
+MutableData = abc.MutableMapping[str, Any]
+Data = abc.Mapping[str, Any]
 
 
 class AbstractLoader:

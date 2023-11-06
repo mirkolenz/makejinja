@@ -1,4 +1,4 @@
-from collections.abc import Mapping
+from collections import abc
 from enum import Enum
 from pathlib import Path
 
@@ -252,7 +252,7 @@ class Config:
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
             """,
     )
-    data_vars: Mapping[str, str] = ts.option(
+    data_vars: abc.Mapping[str, str] = ts.option(
         default=frozendict(),
         click={
             "param_decls": ("--data-var", "-D"),

@@ -3,7 +3,7 @@ import os
 import shutil
 import sys
 import tomllib
-from collections.abc import Callable, Iterable, MutableMapping, MutableSet
+from collections import abc
 from inspect import signature
 from pathlib import Path
 from typing import Any
@@ -82,7 +82,7 @@ def handle_input_file(
     input_path: Path,
     config: Config,
     env: Environment,
-    rendered_files: MutableSet[Path],
+    rendered_files: abc.MutableSet[Path],
 ) -> None:
     relative_path = Path(input_path.name)
     output_path = generate_output_path(config, relative_path)
@@ -104,8 +104,8 @@ def handle_input_folder(
     user_input_path: Path,
     config: Config,
     env: Environment,
-    rendered_files: MutableSet[Path],
-    rendered_folders: MutableMapping[Path, Path],
+    rendered_files: abc.MutableSet[Path],
+    rendered_folders: abc.MutableMapping[Path, Path],
 ) -> None:
     input_paths = (
         input_path
@@ -221,7 +221,7 @@ def from_json(path: Path) -> dict[str, Any]:
         return json.load(fp)
 
 
-DATA_LOADERS: dict[str, Callable[[Path], dict[str, Any]]] = {
+DATA_LOADERS: dict[str, abc.Callable[[Path], dict[str, Any]]] = {
     ".yaml": from_yaml,
     ".yml": from_yaml,
     ".toml": from_toml,
@@ -229,7 +229,7 @@ DATA_LOADERS: dict[str, Callable[[Path], dict[str, Any]]] = {
 }
 
 
-def collect_files(paths: Iterable[Path], pattern: str = "**/*") -> list[Path]:
+def collect_files(paths: abc.Iterable[Path], pattern: str = "**/*") -> list[Path]:
     files = []
 
     for path in paths:
