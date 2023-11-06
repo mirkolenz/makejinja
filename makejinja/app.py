@@ -3,9 +3,10 @@ import os
 import shutil
 import sys
 import tomllib
-import typing as t
+from collections.abc import Callable, Iterable, MutableMapping, MutableSet
 from inspect import signature
 from pathlib import Path
+from typing import Any
 
 import yaml
 from jinja2 import BaseLoader, ChoiceLoader, DictLoader, Environment, FileSystemLoader
@@ -81,7 +82,7 @@ def handle_input_file(
     input_path: Path,
     config: Config,
     env: Environment,
-    rendered_files: t.MutableSet[Path],
+    rendered_files: MutableSet[Path],
 ) -> None:
     relative_path = Path(input_path.name)
     output_path = generate_output_path(config, relative_path)
@@ -103,8 +104,8 @@ def handle_input_folder(
     user_input_path: Path,
     config: Config,
     env: Environment,
-    rendered_files: t.MutableSet[Path],
-    rendered_folders: t.MutableMapping[Path, Path],
+    rendered_files: MutableSet[Path],
+    rendered_folders: MutableMapping[Path, Path],
 ) -> None:
     input_paths = (
         input_path
@@ -200,7 +201,7 @@ def init_jinja_env(
     return env
 
 
-def from_yaml(path: Path) -> dict[str, t.Any]:
+def from_yaml(path: Path) -> dict[str, Any]:
     data = {}
 
     with path.open("rb") as fp:
@@ -210,17 +211,17 @@ def from_yaml(path: Path) -> dict[str, t.Any]:
     return data
 
 
-def from_toml(path: Path) -> dict[str, t.Any]:
+def from_toml(path: Path) -> dict[str, Any]:
     with path.open("rb") as fp:
         return tomllib.load(fp)
 
 
-def from_json(path: Path) -> dict[str, t.Any]:
+def from_json(path: Path) -> dict[str, Any]:
     with path.open("rb") as fp:
         return json.load(fp)
 
 
-DATA_LOADERS: dict[str, t.Callable[[Path], dict[str, t.Any]]] = {
+DATA_LOADERS: dict[str, Callable[[Path], dict[str, Any]]] = {
     ".yaml": from_yaml,
     ".yml": from_yaml,
     ".toml": from_toml,
@@ -228,7 +229,7 @@ DATA_LOADERS: dict[str, t.Callable[[Path], dict[str, t.Any]]] = {
 }
 
 
-def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> list[Path]:
+def collect_files(paths: Iterable[Path], pattern: str = "**/*") -> list[Path]:
     files = []
 
     for path in paths:
@@ -244,7 +245,7 @@ def collect_files(paths: t.Iterable[Path], pattern: str = "**/*") -> list[Path]:
     return files
 
 
-def dict_nested_set(data: MutableData, dotted_key: str, value: t.Any) -> None:
+def dict_nested_set(data: MutableData, dotted_key: str, value: Any) -> None:
     """Given `foo`, 'key1.key2.key3', 'something', set foo['key1']['key2']['key3'] = 'something'
 
     Source: https://stackoverflow.com/a/57561744
@@ -266,8 +267,8 @@ def dict_nested_set(data: MutableData, dotted_key: str, value: t.Any) -> None:
     here[keys[-1]] = value
 
 
-def load_data(config: Config) -> dict[str, t.Any]:
-    data: dict[str, t.Any] = {}
+def load_data(config: Config) -> dict[str, Any]:
+    data: dict[str, Any] = {}
 
     for path in collect_files(config.data):
         if loader := DATA_LOADERS.get(path.suffix):
@@ -288,7 +289,7 @@ def load_data(config: Config) -> dict[str, t.Any]:
 def process_loader(loader_name: str, env: Environment, data: Data):
     cls: type[AbstractLoader] = import_string(loader_name)
     sig_params = signature(cls).parameters
-    params: dict[str, t.Any] = {}
+    params: dict[str, Any] = {}
 
     if sig_params.get("env"):
         params["env"] = env

@@ -1,4 +1,4 @@
-import typing as t
+from collections.abc import Mapping
 from urllib.parse import quote
 
 
@@ -6,7 +6,7 @@ def hassurl(value: str) -> str:
     return quote(value).replace("_", "-")
 
 
-def getlang(value: str | t.Mapping[str, str], lang: str, default_lang: str = "en"):
+def getlang(value: str | Mapping[str, str], lang: str, default_lang: str = "en"):
     if isinstance(value, str):
         return value
     else:

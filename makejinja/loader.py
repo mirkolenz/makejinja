@@ -1,4 +1,5 @@
-import typing as t
+from collections.abc import Callable, Mapping, MutableMapping, Sequence
+from typing import Any
 
 from jinja2 import Environment
 from jinja2.ext import Extension
@@ -19,16 +20,16 @@ __all__ = (
     "Data",
 )
 
-Extensions = t.Sequence[type[Extension]]
-Filter = t.Callable[[t.Any], t.Any]
-Filters = t.Sequence[Filter]
-Function = t.Callable[..., t.Any]
-Functions = t.Sequence[Function]
-Test = t.Callable[..., t.Any]
-Tests = t.Sequence[Test]
-Policies = t.Mapping[str, t.Any]
-MutableData = t.MutableMapping[str, t.Any]
-Data = t.Mapping[str, t.Any]
+Extensions = Sequence[type[Extension]]
+Filter = Callable[[Any], Any]
+Filters = Sequence[Filter]
+Function = Callable[..., Any]
+Functions = Sequence[Function]
+Test = Callable[..., Any]
+Tests = Sequence[Test]
+Policies = Mapping[str, Any]
+MutableData = MutableMapping[str, Any]
+Data = Mapping[str, Any]
 
 
 class AbstractLoader:
