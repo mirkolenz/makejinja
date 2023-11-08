@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/mirkolenz/makejinja/compare/v2.3.0...v2.3.1) (2023-11-08)
+
+
+### Bug Fixes
+
+* update links in readme ([8dfe58e](https://github.com/mirkolenz/makejinja/commit/8dfe58e2c58872d70a5b93d0b3a34d473a3382a8))
+
 ## [2.3.0](https://github.com/mirkolenz/makejinja/compare/v2.2.0...v2.3.0) (2023-11-06)
 
 
