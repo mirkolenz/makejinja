@@ -75,18 +75,22 @@
             pkgs.stdenv.mkDerivation {
               name = "makejinja-docs";
               src = ./.;
-              # ${lib.getExe pkgs.vhs} ./assets/demo.tape
               buildPhase = ''
                 mkdir -p "$out"
+
                 {
                   echo '```txt'
                   COLUMNS=120 ${lib.getExe app} --help
                   echo '```'
                 } > ./manpage.md
+
                 # remove everything before the first ---
                 # ${lib.getExe pkgs.gnused} -i '1,/^---$/d' ./README.md
                 # remove everyting before the first header
                 ${lib.getExe pkgs.gnused} -i '1,/^# /d' ./README.md
+
+                ${lib.getExe pkgs.asciinema-scenario} ./assets/demo.scenario > ./assets/demo.cast
+                  ${lib.getExe pkgs.asciinema-agg} ./assets/demo.cast ./assets/demo.gif
 
                 ${lib.getExe' env "pdoc"} -d google -t pdoc-template --math \
                   --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \

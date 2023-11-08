@@ -1,3 +1,0 @@
-Word 1: Lorem
-Word 2: Ipsum
-Word 3: Dolor

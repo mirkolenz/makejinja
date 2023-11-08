@@ -1,4 +1,6 @@
 """
+![Screencast demo](../assets/demo.gif)
+
 .. include:: ../README.md
 
 ## Usage as a Library
