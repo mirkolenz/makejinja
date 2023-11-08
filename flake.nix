@@ -71,6 +71,7 @@
               }
             );
             env = app.dependencyEnv;
+            font = pkgs.jetbrains-mono;
           in
             pkgs.stdenv.mkDerivation {
               name = "makejinja-docs";
@@ -90,7 +91,11 @@
                 ${lib.getExe pkgs.gnused} -i '1,/^# /d' ./README.md
 
                 ${lib.getExe pkgs.asciinema-scenario} ./assets/demo.scenario > ./assets/demo.cast
-                  ${lib.getExe pkgs.asciinema-agg} ./assets/demo.cast ./assets/demo.gif
+                ${lib.getExe pkgs.asciinema-agg} \
+                  --font-dir "${font}/share/fonts/truetype" \
+                  --font-family "JetBrains Mono" \
+                  --theme monokai \
+                  ./assets/demo.cast ./assets/demo.gif
 
                 ${lib.getExe' env "pdoc"} -d google -t pdoc-template --math \
                   --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \
