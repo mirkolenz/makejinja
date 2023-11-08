@@ -1,12 +1,12 @@
 $ cat demo.txt.jinja
-  1 {% for word in ["lorem", "ipsum", "dolor"] %}
-  2 Word {{loop.index}}: {{word | capitalize}}
-  3 {% endfor %}
+  {% for word in ["lorem", "ipsum", "dolor"] %}
+  Word {{loop.index}}: {{word | capitalize}}
+  {% endfor %}
 
 $ makejinja -i demo.txt.jinja -o .
   Render file 'demo.txt.jinja' -> 'demo.txt'
 
 $ cat demo.txt
-  1 Word 1: Lorem
-  2 Word 2: Ipsum
-  3 Word 3: Dolor
+  Word 1: Lorem
+  Word 2: Ipsum
+  Word 3: Dolor
