@@ -1,4 +1,6 @@
 """
+**[🌟 GitHub Project 🌟](https://github.com/mirkolenz/makejinja)**
+
 ![Screencast demo](../assets/demo.gif)
 
 .. include:: ../README.md
