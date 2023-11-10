@@ -510,13 +510,13 @@ dev = ["flake8", "flake8-docstrings", "mypy", "packaging", "pre-commit", "pytest
 
 [[package]]
 name = "typed-settings"
-version = "23.1.0"
+version = "23.1.1"
 description = "Typed settings based on attrs classes"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "typed_settings-23.1.0-py3-none-any.whl", hash = "sha256:52fbc588e1c0fc46f3cc2138142a5d7a47240344c74fa0ac5bd54153b5771a71"},
-    {file = "typed_settings-23.1.0.tar.gz", hash = "sha256:0723af25785ab5e9df02394c64a7e6475243c87b586fbf02679ccb05977ca6e1"},
+    {file = "typed_settings-23.1.1-py3-none-any.whl", hash = "sha256:a39b73135579f16fcbb5d860e32b1c4e64730d98159632222c8a194790d8b45f"},
+    {file = "typed_settings-23.1.1.tar.gz", hash = "sha256:d1eb16899d1d567209f930d20fed3eceaeb723525c287de255edf8a454505fd5"},
 ]
 
 [package.dependencies]
