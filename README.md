@@ -57,7 +57,7 @@ You can then directly invoke the app as follows:
 
 ### Nix
 
-If you use the `nix` package manager, you can add this repository as an input to your flake and use `makejinja.packages.${system}.default`.
+If you use the `nix` package manager, you can add this repository as an input to your flake and use `makejinja.packages.${system}.default` or apply the overlay `makejinja.overlays.default`.
 You can also run it directly
 
 `nix run github:mirkolenz/makejinja -- -i ./input -o ./output`
