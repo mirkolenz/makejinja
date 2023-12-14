@@ -33,7 +33,7 @@ jobs:
       - run: nix profile install .#releaseEnv
       - uses: cihelper/action-semanticrelease-poetry@v1
         id: semanticrelease
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
         with:
           name: poetry-build
