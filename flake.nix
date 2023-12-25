@@ -93,7 +93,7 @@
 
                 # remove everything before the first ---
                 # ${lib.getExe pkgs.gnused} -i '1,/^---$/d' ./README.md
-                # remove everyting before the first header
+                # remove everything before the first header
                 ${lib.getExe pkgs.gnused} -i '1,/^# /d' ./README.md
 
                 ${lib.getExe pkgs.asciinema-scenario} ./assets/demo.scenario > ./assets/demo.cast

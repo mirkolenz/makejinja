@@ -548,7 +548,7 @@
 
 ### Bug Fixes
 
-* improve compatability with python 3.9 ([30919e8](https://github.com/mirkolenz/makejinja/commit/30919e83e11fbc368b8d97d498dab7ae2e766671))
+* improve compatibility with python 3.9 ([30919e8](https://github.com/mirkolenz/makejinja/commit/30919e83e11fbc368b8d97d498dab7ae2e766671))
 
 ## v0.2.0 (2022-12-11)
 

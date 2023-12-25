@@ -246,8 +246,8 @@ class Config:
         },
         help="""
                 Load variables from yaml/yml/toml/json files for use in your Jinja templates.
-                The defintions are passed to Jinja as globals.
-                Can either be a file or a folder containg files.
+                The definitions are passed to Jinja as globals.
+                Can either be a file or a folder containing files.
                 **Note:** This option may be passed multiple times to pass a list of values.
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
             """,
@@ -274,9 +274,9 @@ class Config:
             Use custom Python code to adjust the used Jinja environment to your needs.
             The specified Python file should export a **class** containing a subset of the following functions:
             `filters`, `globals`, `data`, and `extensions`.
-            In addition, you may add an `__init__` function that recives two positional arguments:
+            In addition, you may add an `__init__` function that receives two positional arguments:
             the created Jinja environment and the data parsed from the files supplied to makejinja's `data` option.
-            This allows you to apply aribtrary logic to makejinja.
+            This allows you to apply arbitrary logic to makejinja.
             An import path can be specified either in dotted notation (`your.custom.Loader`)
             or with a colon as object delimiter (`your.custom:Loader`).
             **Note:** This option may be passed multiple times to pass a list of values.
