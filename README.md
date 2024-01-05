@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD033 MD041 -->
 <p align="center">
-  <img width="256px" src="https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png" />
+  <img width="256px" alt="makejinja logo" src="https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png" />
 </p>
 <p align="center">
   <a href="https://pypi.org/project/makejinja/">PyPI</a> |
