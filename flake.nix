@@ -48,6 +48,9 @@
         overlayAttrs = {
           inherit (self'.packages) makejinja;
         };
+        checks = {
+          inherit (self'.packages) makejinja;
+        };
         packages = {
           default = pkgs.poetry2nix.mkPoetryApplication (
             poetryAppArgs
