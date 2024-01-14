@@ -32,7 +32,7 @@ jobs:
       - run: nix profile install .#releaseEnv
       - uses: cihelper/action-semanticrelease-poetry@v1
         id: semanticrelease
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
         with:
           name: poetry-build
@@ -73,7 +73,7 @@ jobs:
       name: release
       url: https://pypi.org/project/makejinja/${{needs.release.outputs.version}}/
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: poetry-build
           path: ./dist
@@ -94,7 +94,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v9
       - uses: DeterminateSystems/magic-nix-cache-action@v2
       - run: nix build .#docs
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: ./result
   deploy-docs:
@@ -107,5 +107,5 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - uses: actions/deploy-pages@v3
+      - uses: actions/deploy-pages@v4
         id: deploy
