@@ -280,7 +280,7 @@ def load_data(config: Config) -> dict[str, Any]:
             if not config.quiet:
                 print(f"Skip unsupported data '{path}'")
 
-    for key, value in config.data_vars:
+    for key, value in config.data_vars.items():
         dict_nested_set(data, key, value)
 
     return data
