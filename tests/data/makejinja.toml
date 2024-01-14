@@ -4,6 +4,7 @@ output = "./output"
 data = ["./config"]
 loaders = ["loader:Loader"]
 exclude_patterns = ["*.partial"]
+data_vars = { "areas.kitchen.name.en" = "Cuisine" }
 
 
 [makejinja.delimiter]

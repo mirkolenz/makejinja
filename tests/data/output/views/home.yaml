@@ -50,7 +50,7 @@
       show_names: false
       entities:
         - climate.living_room
-- title: Kitchen
+- title: Cuisine
   path: kitchen
   icon: mdi:chef-hat
   cards:
