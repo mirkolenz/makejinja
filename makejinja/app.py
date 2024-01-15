@@ -58,10 +58,17 @@ def makejinja(config: Config):
                 user_input_path, config, env, rendered_files, rendered_folders
             )
 
-    # The metadata has to be copied after all files are rendered
-    # Otherwise the mtime will be updated
-    if config.copy_metadata:
-        for output_path, input_path in rendered_folders.items():
+    # Start with the deepest folder and work our way up, otherwise the statistics could be modified after copying
+    for output_path, input_path in sorted(
+        rendered_folders.items(), key=lambda x: x[0], reverse=True
+    ):
+        if not config.keep_empty and not any(output_path.iterdir()):
+            if not config.quiet:
+                print(f"Remove empty '{output_path}'")
+
+            shutil.rmtree(output_path)
+
+        elif config.copy_metadata:
             if not config.quiet:
                 print(f"Copy metadata '{input_path}' -> '{output_path}'")
 
