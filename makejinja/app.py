@@ -45,9 +45,11 @@ def makejinja(config: Config):
     # Save rendered files to avoid duplicate work
     # Even if two files are in two separate folders, they will have the same template name (i.e., relative path)
     # and thus only the first one will be rendered every time
-    rendered_files: set[Path] = set()
+    # Key: output_path, Value: input_path
+    rendered_files: dict[Path, Path] = {}
 
     # Save rendered folders to later copy metadata
+    # Key: output_path, Value: input_path
     rendered_folders: dict[Path, Path] = {}
 
     for user_input_path in config.inputs:
@@ -89,7 +91,7 @@ def handle_input_file(
     input_path: Path,
     config: Config,
     env: Environment,
-    rendered_files: abc.MutableSet[Path],
+    rendered_files: abc.MutableMapping[Path, Path],
 ) -> None:
     relative_path = Path(input_path.name)
     output_path = generate_output_path(config, relative_path)
@@ -104,14 +106,14 @@ def handle_input_file(
             enforce_jinja_suffix=False,
         )
 
-    rendered_files.add(output_path)
+    rendered_files[output_path] = input_path
 
 
 def handle_input_folder(
     user_input_path: Path,
     config: Config,
     env: Environment,
-    rendered_files: abc.MutableSet[Path],
+    rendered_files: abc.MutableMapping[Path, Path],
     rendered_folders: abc.MutableMapping[Path, Path],
 ) -> None:
     input_paths = (
@@ -137,7 +139,7 @@ def handle_input_folder(
                 env,
                 enforce_jinja_suffix=True,
             )
-            rendered_files.add(output_path)
+            rendered_files[output_path] = input_path
 
         elif input_path.is_dir() and output_path not in rendered_folders:
             if not config.quiet:
