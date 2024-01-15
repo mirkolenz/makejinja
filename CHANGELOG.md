@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.4](https://github.com/mirkolenz/makejinja/compare/v2.3.3...v2.3.4) (2024-01-15)
+
+
+### Bug Fixes
+
+* remove empty directories if --no-keep-empty ([a586e8f](https://github.com/mirkolenz/makejinja/commit/a586e8f6026d814b5a393bfa004ccf77f19eea9a))
+
 ## [2.3.3](https://github.com/mirkolenz/makejinja/compare/v2.3.2...v2.3.3) (2024-01-14)
 
 
