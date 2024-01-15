@@ -31,6 +31,7 @@ def makejinja_cli(config: Config):
     **Note**: In this file, options may be named differently.
     Please refer to the file [`makejinja/config.py`](https://github.com/mirkolenz/makejinja/blob/main/makejinja/config.py) to see their actual names.
     You will also find an example here: [`makejinja/tests/data/makejinja.toml`](https://github.com/mirkolenz/makejinja/blob/main/tests/data/makejinja.toml).
+    To override its location, you can set the environment variable `MAKEJINJA_SETTINGS` to the path of your config file.
     """
 
     makejinja(config)
