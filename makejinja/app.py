@@ -60,6 +60,13 @@ def makejinja(config: Config):
                 user_input_path, config, env, rendered_files, rendered_folders
             )
 
+    postprocess_rendered_folders(config, rendered_folders)
+
+
+def postprocess_rendered_folders(
+    config: Config,
+    rendered_folders: abc.Mapping[Path, Path],
+) -> None:
     # Start with the deepest folder and work our way up, otherwise the statistics could be modified after copying
     for output_path, input_path in sorted(
         rendered_folders.items(), key=lambda x: x[0], reverse=True
