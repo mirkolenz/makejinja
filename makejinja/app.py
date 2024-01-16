@@ -148,12 +148,9 @@ def handle_input_dir(
             )
             rendered_files[output_path] = input_path
 
-        elif input_path.is_dir() and output_path not in rendered_folders:
-            if not config.quiet:
-                print(f"Create folder '{input_path}' -> '{output_path}'")
-
-            output_path.mkdir()
-            rendered_folders[output_path] = input_path
+        elif input_path.is_dir() and output_path not in rendered_dirs:
+            render_dir(input_path, output_path, config)
+            rendered_dirs[output_path] = input_path
 
 
 def generate_output_path(config: Config, relative_path: Path) -> Path:
@@ -336,6 +333,17 @@ def process_loader(loader_name: str, env: Environment, data: Data):
 
     if hasattr(loader, "policies"):
         env.policies.update(loader.policies())
+
+
+def render_dir(input: Path, output: Path, config: Config) -> None:
+    if output.exists() and not config.force:
+        if not config.quiet:
+            print(f"Skip existing dir '{output}'")
+    else:
+        if not config.quiet:
+            print(f"Create dir '{input}' -> '{output}'")
+
+        output.mkdir(exist_ok=True)
 
 
 def render_file(
