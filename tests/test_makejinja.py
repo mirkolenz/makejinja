@@ -43,16 +43,16 @@ def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
     return Paths(input_path, baseline_path, output_path)
 
 
-def _folder_content(path: Path) -> set[Path]:
+def _dir_content(path: Path) -> set[Path]:
     return {item.relative_to(path) for item in path.rglob("*")}
 
 
-def test_folder_content(exec: Paths):
-    assert _folder_content(exec.baseline) == _folder_content(exec.output)
+def test_dir_content(exec: Paths):
+    assert _dir_content(exec.baseline) == _dir_content(exec.output)
 
 
 def test_file_content(exec: Paths):
-    paths = _folder_content(exec.baseline)
+    paths = _dir_content(exec.baseline)
 
     for item in paths:
         baseline_path = exec.baseline / item

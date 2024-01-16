@@ -170,7 +170,7 @@ class Config:
             "param_decls": ("--input", "-i"),
         },
         help="""
-            Path to a folder containing template files or a single template file.
+            Path to a directory containing template files or a single template file.
             It is passed to Jinja's [FileSystemLoader](https://jinja.palletsprojects.com/en/3.1.x/api/#jinja2.FileSystemLoader) when creating the environment.
             **Note:** This option may be passed multiple times to pass a list of values.
             If a template exists in multiple inputs, the last value with be used.
@@ -182,7 +182,7 @@ class Config:
             "param_decls": ("--output", "-o"),
         },
         help="""
-            Path to a folder where the rendered templates are stored.
+            Path to a directory where the rendered templates are stored.
             makejinja preserves the relative paths in the process, meaning that you can even use it on nested directories.
         """,
     )
@@ -192,7 +192,7 @@ class Config:
         help="""
             Glob patterns to search for files in `inputs`.
             Accepts all pattern supported by [`fnmatch`](https://docs.python.org/3/library/fnmatch.html#module-fnmatch).
-            If a file is matched by this pattern and does not end with the specified `jinja-suffix`, it is copied over to the `output_folder`.
+            If a file is matched by this pattern and does not end with the specified `jinja-suffix`, it is copied over to `output`.
             Multiple can be provided.
             **Note:** Do not add a special suffix used by your template files here, instead use the `jinja-suffix` option.
         """,
@@ -247,7 +247,7 @@ class Config:
         help="""
                 Load variables from yaml/yml/toml/json files for use in your Jinja templates.
                 The definitions are passed to Jinja as globals.
-                Can either be a file or a folder containing files.
+                Can either be a file or a directory containing files.
                 **Note:** This option may be passed multiple times to pass a list of values.
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
             """,
@@ -317,14 +317,14 @@ class Config:
         default=False,
         click={"param_decls": ("--clean", "-c")},
         help="""
-            Whether to remove the output folder if it exists.
+            Whether to remove the output directory if it exists.
         """,
     )
     force: bool = ts.option(
         default=False,
         click={"param_decls": ("--force", "-f")},
         help="""
-            Whether to overwrite existing files in the output folder.
+            Whether to overwrite existing files in the output directory.
         """,
     )
     quiet: bool = ts.option(

@@ -26,7 +26,7 @@ An [example for Home Assistant](https://github.com/mirkolenz/makejinja/tree/main
 
 ## Features
 
-- Recursively convert nested directories containing template files. One can even specify a pattern to specify relevant files in a folder.
+- Recursively convert nested directories containing template files. One can even specify a pattern to specify relevant files in a directory.
 - Load data files containing variables to use in your Jinja templates from YAML, TOML, and Python files.
 - Use custom functions in your Jinja templates by loading custom filters and/or globals.
 - Easily load bundled as well as custom Jinja extensions.
@@ -65,12 +65,12 @@ You can also run it directly
 ### Docker
 
 We automatically publish an image at `ghcr.io/mirkolenz/makejinja`.
-To use it, mount a folder to the container and pass the options as the command.
+To use it, mount a directory to the container and pass the options as the command.
 
 `docker run --rm -v $(pwd)/data:/data ghcr.io/mirkolenz/makejinja:latest -i /data/input -o /data/output`
 
 ## Usage in Terminal / Command Line
 
-In its default configuration, makejinja searches the input folder recursively for files ending in `.jinja`.
-It then renders these files and writes them to the output folder, preserving the directory structure.
+In its default configuration, makejinja searches the input directory recursively for files ending in `.jinja`.
+It then renders these files and writes them to the output directory, preserving the directory structure.
 Our [documentation](https://mirkolenz.github.io/makejinja/makejinja/cli.html) contains a detailed description of all options and can also be accessed via `makejinja --help`.

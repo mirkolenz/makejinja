@@ -43,43 +43,43 @@ def makejinja(config: Config):
         process_loader(loader, env, data)
 
     # Save rendered files to avoid duplicate work
-    # Even if two files are in two separate folders, they will have the same template name (i.e., relative path)
+    # Even if two files are in two separate dirs, they will have the same template name (i.e., relative path)
     # and thus only the first one will be rendered every time
     # Key: output_path, Value: input_path
     rendered_files: dict[Path, Path] = {}
 
-    # Save rendered folders to later copy metadata
+    # Save rendered dirs to later copy metadata
     # Key: output_path, Value: input_path
-    rendered_folders: dict[Path, Path] = {}
+    rendered_dirs: dict[Path, Path] = {}
 
     for user_input_path in config.inputs:
         if user_input_path.is_file():
             handle_input_file(user_input_path, config, env, rendered_files)
         elif user_input_path.is_dir():
-            handle_input_folder(
-                user_input_path, config, env, rendered_files, rendered_folders
+            handle_input_dir(
+                user_input_path, config, env, rendered_files, rendered_dirs
             )
 
-    postprocess_rendered_folders(config, rendered_folders)
+    postprocess_rendered_dirs(config, rendered_dirs)
 
 
-def postprocess_rendered_folders(
+def postprocess_rendered_dirs(
     config: Config,
-    rendered_folders: abc.Mapping[Path, Path],
+    rendered_dirs: abc.Mapping[Path, Path],
 ) -> None:
-    # Start with the deepest folder and work our way up, otherwise the statistics could be modified after copying
+    # Start with the deepest directory and work our way up, otherwise the statistics could be modified after copying
     for output_path, input_path in sorted(
-        rendered_folders.items(), key=lambda x: x[0], reverse=True
+        rendered_dirs.items(), key=lambda x: x[0], reverse=True
     ):
         if not config.keep_empty and not any(output_path.iterdir()):
             if not config.quiet:
-                print(f"Remove empty '{output_path}'")
+                print(f"Remove empty dir '{output_path}'")
 
             shutil.rmtree(output_path)
 
         elif config.copy_metadata:
             if not config.quiet:
-                print(f"Copy metadata '{input_path}' -> '{output_path}'")
+                print(f"Copy dir metadata '{input_path}' -> '{output_path}'")
 
             shutil.copystat(input_path, output_path)
 
@@ -116,12 +116,12 @@ def handle_input_file(
     rendered_files[output_path] = input_path
 
 
-def handle_input_folder(
+def handle_input_dir(
     user_input_path: Path,
     config: Config,
     env: Environment,
     rendered_files: abc.MutableMapping[Path, Path],
-    rendered_folders: abc.MutableMapping[Path, Path],
+    rendered_dirs: abc.MutableMapping[Path, Path],
 ) -> None:
     input_paths = (
         input_path
@@ -135,7 +135,7 @@ def handle_input_folder(
 
         if any(input_path.match(x) for x in config.exclude_patterns):
             if not config.quiet:
-                print(f"Skip excluded '{input_path}'")
+                print(f"Skip excluded path '{input_path}'")
 
         elif input_path.is_file() and output_path not in rendered_files:
             render_path(
@@ -183,8 +183,8 @@ def init_jinja_env(
     file_loader = DictLoader(
         {path.name: path.read_text() for path in config.inputs if path.is_file()}
     )
-    folder_loader = FileSystemLoader([path for path in config.inputs if path.is_dir()])
-    loaders: list[BaseLoader] = [file_loader, folder_loader]
+    dir_loader = FileSystemLoader([path for path in config.inputs if path.is_dir()])
+    loaders: list[BaseLoader] = [file_loader, dir_loader]
 
     env = Environment(
         loader=ChoiceLoader(loaders),
@@ -348,7 +348,7 @@ def render_path(
 ) -> None:
     if output.exists() and not config.force:
         if not config.quiet:
-            print(f"Skip existing '{output}'")
+            print(f"Skip existing file '{output}'")
 
     elif input.suffix == config.jinja_suffix or not enforce_jinja_suffix:
         template = env.get_template(template_name)
@@ -358,7 +358,7 @@ def render_path(
         # Prevents empty macro definitions
         if rendered.strip() == "" and not config.keep_empty:
             if not config.quiet:
-                print(f"Skip empty '{input}'")
+                print(f"Skip empty file '{input}'")
         else:
             if not config.quiet:
                 print(f"Render file '{input}' -> '{output}'")
