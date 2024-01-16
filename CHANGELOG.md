@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.5](https://github.com/mirkolenz/makejinja/compare/v2.3.4...v2.3.5) (2024-01-16)
+
+
+### Bug Fixes
+
+* apply config.force to directories as well ([#98](https://github.com/mirkolenz/makejinja/issues/98)) ([04b2521](https://github.com/mirkolenz/makejinja/commit/04b2521b1840e97bfccfc4f58b8eb3202f2038b3))
+
 ## [2.3.4](https://github.com/mirkolenz/makejinja/compare/v2.3.3...v2.3.4) (2024-01-15)
 
 

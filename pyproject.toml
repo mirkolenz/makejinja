@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "makejinja"
-version = "2.3.4"
+version = "2.3.5"
 description = "makejinja is a CLI tool and Python library to automatically generate files from Jinja2 templates. Use it to easily generate complex Home Assistant dashboards!"
 authors = ["Mirko Lenz <mirko@mirkolenz.com>"]
 license = "MIT"
