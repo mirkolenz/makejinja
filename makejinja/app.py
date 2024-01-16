@@ -104,7 +104,7 @@ def handle_input_file(
     output_path = generate_output_path(config, relative_path)
 
     if output_path not in rendered_files:
-        render_path(
+        render_file(
             input_path,
             str(relative_path),
             output_path,
@@ -138,7 +138,7 @@ def handle_input_dir(
                 print(f"Skip excluded path '{input_path}'")
 
         elif input_path.is_file() and output_path not in rendered_files:
-            render_path(
+            render_file(
                 input_path,
                 str(relative_path),
                 output_path,
@@ -338,7 +338,7 @@ def process_loader(loader_name: str, env: Environment, data: Data):
         env.policies.update(loader.policies())
 
 
-def render_path(
+def render_file(
     input: Path,
     template_name: str,
     output: Path,
