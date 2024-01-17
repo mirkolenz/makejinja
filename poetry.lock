@@ -512,13 +512,13 @@ dev = ["flake8", "flake8-docstrings", "mypy", "packaging", "pre-commit", "pytest
 
 [[package]]
 name = "typed-settings"
-version = "23.1.1"
+version = "24.0.0"
 description = "Typed settings based on attrs classes"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "typed_settings-23.1.1-py3-none-any.whl", hash = "sha256:a39b73135579f16fcbb5d860e32b1c4e64730d98159632222c8a194790d8b45f"},
-    {file = "typed_settings-23.1.1.tar.gz", hash = "sha256:d1eb16899d1d567209f930d20fed3eceaeb723525c287de255edf8a454505fd5"},
+    {file = "typed_settings-24.0.0-py3-none-any.whl", hash = "sha256:8c6a8eb050b436d0f5faca22fec247f7adabe17af6d04c4b4436fdceab6f2739"},
+    {file = "typed_settings-24.0.0.tar.gz", hash = "sha256:1cd9ad1345b107d40350b566288f30092fa342651e545d4ec24c4087ec921665"},
 ]
 
 [package.dependencies]
@@ -532,12 +532,12 @@ attrs = ["attrs (>=23.1)"]
 cattrs = ["cattrs (>=22.2)"]
 click = ["click (>=7)"]
 dev = ["nox", "pip-audit", "typed-settings[docs,lint,test]"]
-docs = ["furo (>=2022.12.7)", "myst-parser (>=1.0)", "sphinx (>=6.1)", "sphinx-copybutton (>=0.5.1)", "typed-settings[all]"]
+docs = ["furo (>=2023.9)", "myst-parser (>=2.0)", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)", "typed-settings[all]"]
 jinja = ["jinja2"]
 lint = ["black", "mypy", "ruff", "typed-settings[all]", "types-toml"]
 option-groups = ["click (>=7)", "click-option-group"]
 pydantic = ["pydantic (>=2)"]
-test = ["coverage[toml] (>=5.3)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "sybil", "typed-settings[all]", "typing-extensions"]
+test = ["coverage[toml] (>=5.3)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "sybil (>=6)", "typed-settings[all]", "typing-extensions"]
 
 [[package]]
 name = "typing-extensions"
@@ -553,4 +553,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "02eb7b02219f30faacc0a83b560de4717126fbac194fcd0bbd75236e316418a8"
+content-hash = "9a5badd5dcdb0d9d46d611605c6b24b79c62956f8c4c716dccb2a9aef5fc5d03"
