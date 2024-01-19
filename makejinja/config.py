@@ -18,7 +18,6 @@ from jinja2.defaults import (
     BLOCK_START_STRING,
     COMMENT_END_STRING,
     COMMENT_START_STRING,
-    KEEP_TRAILING_NEWLINE,
     LINE_COMMENT_PREFIX,
     LINE_STATEMENT_PREFIX,
     NEWLINE_SEQUENCE,
@@ -153,8 +152,8 @@ class Whitespace:
         """,
     )
     keep_trailing_newline: bool = ts.option(
-        default=KEEP_TRAILING_NEWLINE,
-        click={"param_decls": "--keep-trailing-newline"},
+        default=True,
+        click={"param_decls": "--keep-trailing-newline/--strip-trailing-newline"},
         help="""
             Preserve the trailing newline when rendering templates.
             The default is `False`, which causes a single newline, if present, to be stripped from the end of the template.
@@ -219,7 +218,7 @@ class Config:
         default=False,
         click={"param_decls": "--keep-jinja-suffix"},
         help="""
-            Decide whether the specified `jinja-suffix` is removed from the file after rendering.
+            Decide whether the specified `jinja-suffix` is removed from the file name after rendering.
         """,
     )
     keep_empty: bool = ts.option(
