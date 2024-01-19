@@ -1,4 +1,5 @@
 from collections import abc
+from pathlib import Path
 from typing import Any
 
 from jinja2 import Environment
@@ -18,6 +19,8 @@ __all__ = (
     "Policies",
     "MutableData",
     "Data",
+    "Exclusion",
+    "Exclusions",
 )
 
 Extensions = abc.Sequence[type[Extension]]
@@ -30,6 +33,8 @@ Tests = abc.Sequence[Test]
 Policies = abc.Mapping[str, Any]
 MutableData = abc.MutableMapping[str, Any]
 Data = abc.Mapping[str, Any]
+Exclusion = abc.Callable[[Path], bool]
+Exclusions = abc.Sequence[Exclusion]
 
 
 class AbstractLoader:
@@ -52,6 +57,9 @@ class AbstractLoader:
         return {}
 
     def extensions(self) -> Extensions:
+        return []
+
+    def exclusions(self) -> Exclusions:
         return []
 
     # Deprecated: Use functions() and data() instead

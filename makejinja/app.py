@@ -15,7 +15,7 @@ from jinja2.utils import import_string
 from rich import print
 
 from makejinja.config import Config
-from makejinja.loader import AbstractLoader, Data, MutableData
+from makejinja.loader import AbstractLoader, Data, Exclusion, MutableData
 
 __all__ = ["makejinja"]
 
@@ -38,9 +38,16 @@ def makejinja(config: Config):
         config.output.mkdir(exist_ok=True, parents=True)
 
     env = init_jinja_env(config, data)
+    loaders: list[AbstractLoader] = []
 
-    for loader in config.loaders:
-        process_loader(loader, env, data)
+    for loader_name in config.loaders:
+        loaders.append(process_loader(loader_name, env, data))
+
+    exclude_funcs: list[Exclusion] = []
+
+    for loader in loaders:
+        if hasattr(loader, "exclusions"):
+            exclude_funcs.extend(loader.exclusions())
 
     # Save rendered files to avoid duplicate work
     # Even if two files are in two separate dirs, they will have the same template name (i.e., relative path)
@@ -57,7 +64,12 @@ def makejinja(config: Config):
             handle_input_file(user_input_path, config, env, rendered_files)
         elif user_input_path.is_dir():
             handle_input_dir(
-                user_input_path, config, env, rendered_files, rendered_dirs
+                user_input_path,
+                config,
+                env,
+                rendered_files,
+                rendered_dirs,
+                exclude_funcs,
             )
 
     postprocess_rendered_dirs(config, rendered_dirs)
@@ -122,6 +134,7 @@ def handle_input_dir(
     env: Environment,
     rendered_files: abc.MutableMapping[Path, Path],
     rendered_dirs: abc.MutableMapping[Path, Path],
+    exclude_funcs: abc.Sequence[abc.Callable[[Path], bool]],
 ) -> None:
     input_paths = (
         input_path
@@ -133,7 +146,13 @@ def handle_input_dir(
         relative_path = input_path.relative_to(user_input_path)
         output_path = generate_output_path(config, relative_path)
 
-        if any(input_path.match(x) for x in config.exclude_patterns):
+        exclude_pattern_match = any(
+            input_path.match(x) for x in config.exclude_patterns
+        )
+        exclude_func_match = any(
+            exclusion_func(input_path) for exclusion_func in exclude_funcs
+        )
+        if exclude_pattern_match or exclude_func_match:
             if not config.quiet:
                 print(f"Skip excluded path '{input_path}'")
 
@@ -299,7 +318,7 @@ def load_data(config: Config) -> dict[str, Any]:
     return data
 
 
-def process_loader(loader_name: str, env: Environment, data: Data):
+def process_loader(loader_name: str, env: Environment, data: Data) -> AbstractLoader:
     cls: type[AbstractLoader] = import_string(loader_name)
     sig_params = signature(cls).parameters
     params: dict[str, Any] = {}
@@ -333,6 +352,8 @@ def process_loader(loader_name: str, env: Environment, data: Data):
 
     if hasattr(loader, "policies"):
         env.policies.update(loader.policies())
+
+    return loader
 
 
 def render_dir(input: Path, output: Path, config: Config) -> None:
