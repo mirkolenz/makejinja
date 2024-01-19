@@ -19,8 +19,8 @@ __all__ = (
     "Policies",
     "MutableData",
     "Data",
-    "Exclusion",
-    "Exclusions",
+    "PathFilter",
+    "PathFilters",
 )
 
 Extensions = abc.Sequence[type[Extension]]
@@ -33,8 +33,8 @@ Tests = abc.Sequence[Test]
 Policies = abc.Mapping[str, Any]
 MutableData = abc.MutableMapping[str, Any]
 Data = abc.Mapping[str, Any]
-Exclusion = abc.Callable[[Path], bool]
-Exclusions = abc.Sequence[Exclusion]
+PathFilter = abc.Callable[[Path], bool]
+PathFilters = abc.Sequence[PathFilter]
 
 
 class AbstractLoader:
@@ -59,7 +59,7 @@ class AbstractLoader:
     def extensions(self) -> Extensions:
         return []
 
-    def exclusions(self) -> Exclusions:
+    def path_filters(self) -> PathFilters:
         return []
 
     # Deprecated: Use functions() and data() instead

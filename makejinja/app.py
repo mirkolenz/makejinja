@@ -15,7 +15,7 @@ from jinja2.utils import import_string
 from rich import print
 
 from makejinja.config import Config
-from makejinja.loader import AbstractLoader, Data, Exclusion, MutableData
+from makejinja.loader import AbstractLoader, Data, MutableData, PathFilter
 
 __all__ = ["makejinja"]
 
@@ -43,11 +43,11 @@ def makejinja(config: Config):
     for loader_name in config.loaders:
         loaders.append(process_loader(loader_name, env, data))
 
-    exclude_funcs: list[Exclusion] = []
+    loader_path_filters: list[PathFilter] = []
 
     for loader in loaders:
-        if hasattr(loader, "exclusions"):
-            exclude_funcs.extend(loader.exclusions())
+        if hasattr(loader, "path_filters"):
+            loader_path_filters.extend(loader.path_filters())
 
     # Save rendered files to avoid duplicate work
     # Even if two files are in two separate dirs, they will have the same template name (i.e., relative path)
@@ -69,7 +69,7 @@ def makejinja(config: Config):
                 env,
                 rendered_files,
                 rendered_dirs,
-                exclude_funcs,
+                loader_path_filters,
             )
 
     postprocess_rendered_dirs(config, rendered_dirs)
@@ -134,7 +134,7 @@ def handle_input_dir(
     env: Environment,
     rendered_files: abc.MutableMapping[Path, Path],
     rendered_dirs: abc.MutableMapping[Path, Path],
-    exclude_funcs: abc.Sequence[abc.Callable[[Path], bool]],
+    loader_path_filters: abc.Sequence[abc.Callable[[Path], bool]],
 ) -> None:
     input_paths = (
         input_path
@@ -149,10 +149,10 @@ def handle_input_dir(
         exclude_pattern_match = any(
             input_path.match(x) for x in config.exclude_patterns
         )
-        exclude_func_match = any(
-            exclusion_func(input_path) for exclusion_func in exclude_funcs
+        path_filter_match = not any(
+            path_filter(input_path) for path_filter in loader_path_filters
         )
-        if exclude_pattern_match or exclude_func_match:
+        if exclude_pattern_match or path_filter_match:
             if not config.quiet:
                 print(f"Skip excluded path '{input_path}'")
 
