@@ -1,4 +1,5 @@
 from collections import abc
+from pathlib import Path
 from urllib.parse import quote
 
 
@@ -19,3 +20,12 @@ class Loader:
 
     def functions(self):
         return [getlang]
+
+    def path_filters(self):
+        return [self._remove_secrets]
+
+    def _remove_secrets(self, path: Path) -> bool:
+        if "secret" in path.stem:
+            return False
+
+        return True
