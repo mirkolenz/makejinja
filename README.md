@@ -1,16 +1,17 @@
 <!-- markdownlint-disable MD033 MD041 -->
+<h2><p align="center">makejinja</p></h2>
 <p align="center">
   <img width="256px" alt="makejinja logo" src="https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png" />
 </p>
 <p align="center">
   <a href="https://pypi.org/project/makejinja/">PyPI</a> |
+  <a href="https://github.com/users/mirkolenz/packages/container/package/makejinja">Docker</a> |
   <a href="https://mirkolenz.github.io/makejinja">Docs</a> |
   <a href="https://github.com/mirkolenz/makejinja/tree/main/tests/data">Example</a> |
-  <a href="https://jinja.palletsprojects.com/en/3.1.x/templates">Templating</a>
+  <a href="https://jinja.palletsprojects.com/en/3.1.x/templates">Jinja reference</a>
 </p>
 <p align="center">
-  makejinja is a CLI tool and Python library to automatically generate files from Jinja2 templates.
-  Use it to easily generate complex Home Assistant dashboards!
+  Generate entire directory structures using Jinja templates with support for external data and custom functionality.
 </p>
 
 ---
