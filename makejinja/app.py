@@ -149,8 +149,8 @@ def handle_input_dir(
         exclude_pattern_match = any(
             input_path.match(x) for x in config.exclude_patterns
         )
-        path_filter_match = not any(
-            path_filter(input_path) for path_filter in loader_path_filters
+        path_filter_match = any(
+            not path_filter(input_path) for path_filter in loader_path_filters
         )
         if exclude_pattern_match or path_filter_match:
             if not config.quiet:
