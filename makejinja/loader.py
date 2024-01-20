@@ -5,6 +5,8 @@ from typing import Any
 from jinja2 import Environment
 from jinja2.ext import Extension
 
+from makejinja.config import Config
+
 __all__ = (
     "AbstractLoader",
     "Environment",
@@ -38,7 +40,7 @@ PathFilters = abc.Sequence[PathFilter]
 
 
 class AbstractLoader:
-    def __init__(self, *, env: Environment, data: Data) -> None:
+    def __init__(self, *, env: Environment, data: Data, config: Config) -> None:
         pass
 
     def functions(self) -> Functions:

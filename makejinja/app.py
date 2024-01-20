@@ -41,7 +41,7 @@ def makejinja(config: Config):
     loaders: list[AbstractLoader] = []
 
     for loader_name in config.loaders:
-        loaders.append(process_loader(loader_name, env, data))
+        loaders.append(process_loader(loader_name, env, data, config))
 
     loader_path_filters: list[PathFilter] = []
 
@@ -318,7 +318,9 @@ def load_data(config: Config) -> dict[str, Any]:
     return data
 
 
-def process_loader(loader_name: str, env: Environment, data: Data) -> AbstractLoader:
+def process_loader(
+    loader_name: str, env: Environment, data: Data, config: Config
+) -> AbstractLoader:
     cls: type[AbstractLoader] = import_string(loader_name)
     sig_params = signature(cls).parameters
     params: dict[str, Any] = {}
@@ -329,6 +331,8 @@ def process_loader(loader_name: str, env: Environment, data: Data) -> AbstractLo
         params["environment"] = env
     if sig_params.get("data"):
         params["data"] = data
+    if sig_params.get("config"):
+        params["config"] = config
 
     loader = cls(**params)
 
