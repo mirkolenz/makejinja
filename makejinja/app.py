@@ -20,9 +20,12 @@ from makejinja.plugin import Data, MutableData, PathFilter, Plugin
 
 __all__ = ["makejinja"]
 
+STDOUT_PATH = Path("/dev/stdout").resolve()
+STDIN_PATH = Path("/dev/stdin").resolve()
+
 
 def log(message: str, config: Config) -> None:
-    if not config.quiet:
+    if not config.quiet and config.output != STDOUT_PATH:
         print(message)
 
 
@@ -65,7 +68,7 @@ def makejinja(config: Config):
     rendered_dirs: dict[Path, Path] = {}
 
     for user_input_path in config.inputs:
-        if user_input_path.is_file():
+        if user_input_path.is_file() or user_input_path == STDIN_PATH:
             handle_input_file(user_input_path, config, env, rendered_files)
         elif user_input_path.is_dir():
             handle_input_dir(
@@ -100,9 +103,13 @@ def postprocess_rendered_dirs(
 def single_input_output_file(config: Config) -> bool:
     """Check if the user provided a single input and a single output"""
     return (
-        len(config.inputs) == 1
-        and config.inputs[0].is_file()
-        and (config.output.suffix != "" or config.output.is_file())
+        len(config.inputs) <= 1
+        and not any(path.is_dir() for path in config.inputs)
+        and (
+            config.output == STDOUT_PATH
+            or config.output.suffix != ""
+            or config.output.is_file()
+        )
         and not config.output.is_dir()
     )
 
@@ -189,7 +196,11 @@ def init_jinja_env(
     data: Data,
 ) -> Environment:
     file_loader = DictLoader(
-        {path.name: path.read_text() for path in config.inputs if path.is_file()}
+        {
+            path.name: path.read_text()
+            for path in config.inputs
+            if path.is_file() or path == STDIN_PATH
+        }
     )
     dir_loader = FileSystemLoader([path for path in config.inputs if path.is_dir()])
     loaders: list[BaseLoader] = [file_loader, dir_loader]
@@ -367,7 +378,7 @@ def render_file(
     env: Environment,
     enforce_jinja_suffix: bool,
 ) -> None:
-    if output.exists() and not config.force:
+    if output.exists() and not config.force and output != STDOUT_PATH:
         log(f"Skip existing file '{output}'", config)
 
     elif input.suffix == config.jinja_suffix or not enforce_jinja_suffix:
