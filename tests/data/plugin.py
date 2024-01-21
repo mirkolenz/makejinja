@@ -17,13 +17,13 @@ def getlang(value: str | abc.Mapping[str, str], lang: str, default_lang: str = "
 
 
 class Plugin(makejinja.plugin.Plugin):
-    def filters(self):
+    def filters(self) -> makejinja.plugin.Filters:
         return [hassurl]
 
-    def functions(self):
+    def functions(self) -> makejinja.plugin.Functions:
         return [getlang]
 
-    def path_filters(self):
+    def path_filters(self) -> makejinja.plugin.PathFilters:
         return [self._remove_secrets]
 
     def _remove_secrets(self, path: Path) -> bool:
