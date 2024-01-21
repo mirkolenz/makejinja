@@ -13,4 +13,4 @@ The following files/directories are relevant:
 - `input`: Regular `yaml` config files together with `yaml.jinja` config templates (these are rendered by makejinja).
 - `output`: Resulting directory tree after running makejinja with the command shown above.
 - `config`: Directory containing a `yaml` file with variables used in our Jinja templates.
-- `loader.py`: Class with custom Jinja filters and global functions to use in our templates.
+- `plugin.py`: Class with custom Jinja filters and global functions to use in our templates.

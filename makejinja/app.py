@@ -1,3 +1,4 @@
+import itertools
 import json
 import os
 import shutil
@@ -15,7 +16,7 @@ from jinja2.utils import import_string
 from rich import print
 
 from makejinja.config import Config
-from makejinja.loader import AbstractLoader, Data, MutableData, PathFilter
+from makejinja.plugin import Data, MutableData, PathFilter, Plugin
 
 __all__ = ["makejinja"]
 
@@ -38,16 +39,16 @@ def makejinja(config: Config):
         config.output.mkdir(exist_ok=True, parents=True)
 
     env = init_jinja_env(config, data)
-    loaders: list[AbstractLoader] = []
+    plugins: list[Plugin] = []
 
-    for loader_name in config.loaders:
-        loaders.append(process_loader(loader_name, env, data, config))
+    for plugin_name in itertools.chain(config.plugins, config.loaders):
+        plugins.append(load_plugin(plugin_name, env, data, config))
 
-    loader_path_filters: list[PathFilter] = []
+    plugin_path_filters: list[PathFilter] = []
 
-    for loader in loaders:
-        if hasattr(loader, "path_filters"):
-            loader_path_filters.extend(loader.path_filters())
+    for plugin in plugins:
+        if hasattr(plugin, "path_filters"):
+            plugin_path_filters.extend(plugin.path_filters())
 
     # Save rendered files to avoid duplicate work
     # Even if two files are in two separate dirs, they will have the same template name (i.e., relative path)
@@ -69,7 +70,7 @@ def makejinja(config: Config):
                 env,
                 rendered_files,
                 rendered_dirs,
-                loader_path_filters,
+                plugin_path_filters,
             )
 
     postprocess_rendered_dirs(config, rendered_dirs)
@@ -134,7 +135,7 @@ def handle_input_dir(
     env: Environment,
     rendered_files: abc.MutableMapping[Path, Path],
     rendered_dirs: abc.MutableMapping[Path, Path],
-    loader_path_filters: abc.Sequence[abc.Callable[[Path], bool]],
+    plugin_path_filters: abc.Sequence[abc.Callable[[Path], bool]],
 ) -> None:
     input_paths = (
         input_path
@@ -150,7 +151,7 @@ def handle_input_dir(
             input_path.match(x) for x in config.exclude_patterns
         )
         path_filter_match = any(
-            not path_filter(input_path) for path_filter in loader_path_filters
+            not path_filter(input_path) for path_filter in plugin_path_filters
         )
         if exclude_pattern_match or path_filter_match:
             if not config.quiet:
@@ -188,14 +189,6 @@ def init_jinja_env(
     config: Config,
     data: Data,
 ) -> Environment:
-    # If the user-provided ordering of the inputs shall be respected, use this snippet
-    # loaders: list[BaseLoader] = []
-    # for path in config.inputs:
-    #     if path.is_dir():
-    #         loaders.append(FileSystemLoader(path))
-    #     elif path.is_file():
-    #         loaders.append(DictLoader({path.name: path.read_text()}))
-
     file_loader = DictLoader(
         {path.name: path.read_text() for path in config.inputs if path.is_file()}
     )
@@ -318,10 +311,10 @@ def load_data(config: Config) -> dict[str, Any]:
     return data
 
 
-def process_loader(
-    loader_name: str, env: Environment, data: Data, config: Config
-) -> AbstractLoader:
-    cls: type[AbstractLoader] = import_string(loader_name)
+def load_plugin(
+    plugin_name: str, env: Environment, data: Data, config: Config
+) -> Plugin:
+    cls: type[Plugin] = import_string(plugin_name)
     sig_params = signature(cls).parameters
     params: dict[str, Any] = {}
 
@@ -334,30 +327,30 @@ def process_loader(
     if sig_params.get("config"):
         params["config"] = config
 
-    loader = cls(**params)
+    plugin = cls(**params)
 
-    if hasattr(loader, "globals"):
-        env.globals.update({func.__name__: func for func in loader.globals()})
+    if hasattr(plugin, "globals"):
+        env.globals.update({func.__name__: func for func in plugin.globals()})
 
-    if hasattr(loader, "functions"):
-        env.globals.update({func.__name__: func for func in loader.functions()})
+    if hasattr(plugin, "functions"):
+        env.globals.update({func.__name__: func for func in plugin.functions()})
 
-    if hasattr(loader, "data"):
-        env.globals.update(loader.data())
+    if hasattr(plugin, "data"):
+        env.globals.update(plugin.data())
 
-    if hasattr(loader, "extensions"):
-        load_extensions(env, loader.extensions())
+    if hasattr(plugin, "extensions"):
+        load_extensions(env, plugin.extensions())
 
-    if hasattr(loader, "filters"):
-        env.filters.update({func.__name__: func for func in loader.filters()})
+    if hasattr(plugin, "filters"):
+        env.filters.update({func.__name__: func for func in plugin.filters()})
 
-    if hasattr(loader, "tests"):
-        env.tests.update({func.__name__: func for func in loader.tests()})
+    if hasattr(plugin, "tests"):
+        env.tests.update({func.__name__: func for func in plugin.tests()})
 
-    if hasattr(loader, "policies"):
-        env.policies.update(loader.policies())
+    if hasattr(plugin, "policies"):
+        env.policies.update(plugin.policies())
 
-    return loader
+    return plugin
 
 
 def render_dir(input: Path, output: Path, config: Config) -> None:

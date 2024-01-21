@@ -2,7 +2,7 @@
 inputs = ["./input1", "./input2"]
 output = "./output"
 data = ["./config"]
-loaders = ["loader:Loader"]
+plugins = ["plugin:Plugin"]
 exclude_patterns = ["*.partial"]
 data_vars = { "areas.kitchen.name.en" = "Cuisine" }
 

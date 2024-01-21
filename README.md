@@ -34,7 +34,7 @@ An [example for Home Assistant](https://github.com/mirkolenz/makejinja/tree/main
 - Tailor the whitespace behavior to your needs.
 - Use custom delimiters for Jinja blocks/comments/variables.
 - Modify _all_ init options for the Jinja environment.
-- Write custom **Python loaders** that implement a subset of our fully typed [abstract loader class](https://mirkolenz.github.io/makejinja/makejinja/loader.html#AbstractLoader)
+- Write custom [plugins](https://mirkolenz.github.io/makejinja/makejinja/plugin.html#Plugin)
 
 ## Installation
 

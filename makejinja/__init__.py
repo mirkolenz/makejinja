@@ -10,7 +10,11 @@
 While mainly intended to be used as a command line tool, makejinja can also be from Python directly.
 """
 
-from . import cli, config, loader
+from . import cli, config, plugin
 from .app import makejinja
+from .config import Config
+from .plugin import Plugin
 
-__all__ = ["makejinja", "config", "loader", "cli"]
+loader = plugin
+
+__all__ = ["makejinja", "config", "plugin", "loader", "cli", "Plugin", "Config"]

@@ -268,6 +268,14 @@ class Config:
         default=tuple(),
         click={
             "param_decls": ("--loader", "-l"),
+            "hidden": True,
+        },
+        help="Deprecated, use `--plugin` instead.",
+    )
+    plugins: tuple[str, ...] = ts.option(
+        default=tuple(),
+        click={
+            "param_decls": ("--plugin", "-p"),
         },
         help="""
             Use custom Python code to adjust the used Jinja environment to your needs.
@@ -276,8 +284,8 @@ class Config:
             In addition, you may add an `__init__` function that receives two positional arguments:
             the created Jinja environment and the data parsed from the files supplied to makejinja's `data` option.
             This allows you to apply arbitrary logic to makejinja.
-            An import path can be specified either in dotted notation (`your.custom.Loader`)
-            or with a colon as object delimiter (`your.custom:Loader`).
+            An import path can be specified either in dotted notation (`your.custom.Plugin`)
+            or with a colon as object delimiter (`your.custom:Plugin`).
             **Note:** This option may be passed multiple times to pass a list of values.
         """,
     )
@@ -289,7 +297,7 @@ class Config:
             "show_default": "current working directory",
         },
         help="""
-            In order to load custom loaders or Jinja extensions, the PYTHONPATH variable needs to be patched.
+            In order to load plugins or Jinja extensions, the PYTHONPATH variable needs to be patched.
             The default value works for most use cases, but you may load other paths as well.
         """,
     )
@@ -359,7 +367,7 @@ OPTION_GROUPS = {
             "options": [
                 "--data",
                 "--data-var",
-                "--loader",
+                "--plugin",
                 "--import-path",
                 "--extension",
                 "--undefined",

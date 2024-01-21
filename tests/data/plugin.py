@@ -2,6 +2,8 @@ from collections import abc
 from pathlib import Path
 from urllib.parse import quote
 
+import makejinja
+
 
 def hassurl(value: str) -> str:
     return quote(value).replace("_", "-")
@@ -14,7 +16,7 @@ def getlang(value: str | abc.Mapping[str, str], lang: str, default_lang: str = "
         return value.get(lang, value.get(default_lang, ""))
 
 
-class Loader:
+class Plugin(makejinja.Plugin):
     def filters(self):
         return [hassurl]
 

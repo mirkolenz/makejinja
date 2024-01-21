@@ -1,6 +1,6 @@
 from collections import abc
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 from jinja2 import Environment
 from jinja2.ext import Extension
@@ -8,6 +8,7 @@ from jinja2.ext import Extension
 from makejinja.config import Config
 
 __all__ = (
+    "Plugin",
     "AbstractLoader",
     "Environment",
     "Extension",
@@ -39,7 +40,7 @@ PathFilter = abc.Callable[[Path], bool]
 PathFilters = abc.Sequence[PathFilter]
 
 
-class AbstractLoader:
+class Plugin(Protocol):
     def __init__(self, *, env: Environment, data: Data, config: Config) -> None:
         pass
 
@@ -67,3 +68,6 @@ class AbstractLoader:
     # Deprecated: Use functions() and data() instead
     def globals(self) -> Functions:
         return []
+
+
+AbstractLoader = Plugin
