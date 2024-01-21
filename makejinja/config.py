@@ -322,6 +322,18 @@ class Config:
         """
         ),
     )
+    exec_pre: tuple[str, ...] = ts.option(
+        default=tuple(),
+        help="""
+            Shell commands to execute before rendering.
+        """,
+    )
+    exec_post: tuple[str, ...] = ts.option(
+        default=tuple(),
+        help="""
+            Shell commands to execute after rendering.
+        """,
+    )
     clean: bool = ts.option(
         default=False,
         click={"param_decls": ("--clean", "-c")},
@@ -400,6 +412,13 @@ OPTION_GROUPS = {
             "options": [
                 "--prefix-line-statement",
                 "--prefix-line-comment",
+            ],
+        },
+        {
+            "name": "Shell Hooks",
+            "options": [
+                "--exec-pre",
+                "--exec-post",
             ],
         },
     ]

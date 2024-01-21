@@ -2,6 +2,7 @@ import itertools
 import json
 import os
 import shutil
+import subprocess
 import sys
 import tomllib
 from collections import abc
@@ -29,8 +30,15 @@ def log(message: str, config: Config) -> None:
         print(message)
 
 
+def exec(cmd: str) -> None:
+    subprocess.run(cmd, shell=True, check=True)
+
+
 def makejinja(config: Config):
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/)."""
+
+    for cmd in config.exec_pre:
+        exec(cmd)
 
     for path in config.import_paths:
         sys.path.append(str(path.resolve()))
@@ -81,6 +89,9 @@ def makejinja(config: Config):
             )
 
     postprocess_rendered_dirs(config, rendered_dirs)
+
+    for cmd in config.exec_post:
+        exec(cmd)
 
 
 def postprocess_rendered_dirs(
