@@ -16,7 +16,7 @@ def getlang(value: str | abc.Mapping[str, str], lang: str, default_lang: str = "
         return value.get(lang, value.get(default_lang, ""))
 
 
-class Plugin(makejinja.Plugin):
+class Plugin(makejinja.plugin.Plugin):
     def filters(self):
         return [hassurl]
 
