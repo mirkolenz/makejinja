@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.4.0](https://github.com/mirkolenz/makejinja/compare/v2.3.5...v2.4.0) (2024-01-21)
+
+
+### Features
+
+* add exclusion functions to loader ([#102](https://github.com/mirkolenz/makejinja/issues/102)) ([1ad61f3](https://github.com/mirkolenz/makejinja/commit/1ad61f3024cc4787e0bb91052c20207bec9d9c53))
+* deprecate loaders, add plugins ([2c291bb](https://github.com/mirkolenz/makejinja/commit/2c291bb17e986c915d3dd64115fbc01935f1d25f))
+* keep trailing newlines by default ([a8436a8](https://github.com/mirkolenz/makejinja/commit/a8436a8bb54ca0416e34a7119c9160dc837b884f))
+* pass config to custom loaders ([61ae423](https://github.com/mirkolenz/makejinja/commit/61ae423b883ed8721ff7d7e1e858bd06e1cef31c))
+* replace loader exclusions with path filters ([7cba6c8](https://github.com/mirkolenz/makejinja/commit/7cba6c838940d2178c082d6bc8192412d518e111))
+
+
+### Bug Fixes
+
+* update plugin exports ([2dfa8a0](https://github.com/mirkolenz/makejinja/commit/2dfa8a023bf07a290026d7ccad5d4ef42e812b92))
+* use correct negation for path filters ([2992496](https://github.com/mirkolenz/makejinja/commit/299249612528c17bc19f299657534b44360316e6))
+
 ## [2.3.5](https://github.com/mirkolenz/makejinja/compare/v2.3.4...v2.3.5) (2024-01-16)
 
 
