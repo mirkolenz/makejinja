@@ -7,24 +7,7 @@ from jinja2.ext import Extension
 
 from makejinja.config import Config
 
-__all__ = (
-    "Plugin",
-    "AbstractLoader",
-    "Environment",
-    "Extension",
-    "Extensions",
-    "Filter",
-    "Filters",
-    "Function",
-    "Functions",
-    "Test",
-    "Tests",
-    "Policies",
-    "MutableData",
-    "Data",
-    "PathFilter",
-    "PathFilters",
-)
+__all__ = ["Plugin"]
 
 Extensions = abc.Sequence[type[Extension]]
 Filter = abc.Callable[[Any], Any]
@@ -41,6 +24,8 @@ PathFilters = abc.Sequence[PathFilter]
 
 
 class Plugin(Protocol):
+    """Extend the functionality of makejinja with a plugin implementing a subset of this protocol."""
+
     def __init__(self, *, env: Environment, data: Data, config: Config) -> None:
         pass
 
