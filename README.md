@@ -11,7 +11,7 @@
   <a href="https://jinja.palletsprojects.com/en/3.1.x/templates">Jinja reference</a>
 </p>
 <p align="center">
-  Generate entire directory structures using Jinja templates with support for external data and custom functionality.
+  Generate entire directory structures using Jinja templates with support for external data and custom plugins.
 </p>
 
 ---
