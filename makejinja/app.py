@@ -21,6 +21,11 @@ from makejinja.plugin import Data, MutableData, PathFilter, Plugin
 __all__ = ["makejinja"]
 
 
+def log(message: str, config: Config) -> None:
+    if not config.quiet:
+        print(message)
+
+
 def makejinja(config: Config):
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/)."""
 
@@ -30,8 +35,7 @@ def makejinja(config: Config):
     data = load_data(config)
 
     if config.output.is_dir() and config.clean:
-        if not config.quiet:
-            print(f"Remove output '{config.output}'")
+        log(f"Remove output '{config.output}'", config)
 
         shutil.rmtree(config.output)
 
@@ -85,15 +89,11 @@ def postprocess_rendered_dirs(
         rendered_dirs.items(), key=lambda x: x[0], reverse=True
     ):
         if not config.keep_empty and not any(output_path.iterdir()):
-            if not config.quiet:
-                print(f"Remove empty dir '{output_path}'")
-
+            log(f"Remove empty dir '{output_path}'", config)
             shutil.rmtree(output_path)
 
         elif config.copy_metadata:
-            if not config.quiet:
-                print(f"Copy dir metadata '{input_path}' -> '{output_path}'")
-
+            log(f"Copy dir metadata '{input_path}' -> '{output_path}'", config)
             shutil.copystat(input_path, output_path)
 
 
@@ -154,8 +154,7 @@ def handle_input_dir(
             not path_filter(input_path) for path_filter in plugin_path_filters
         )
         if exclude_pattern_match or path_filter_match:
-            if not config.quiet:
-                print(f"Skip excluded path '{input_path}'")
+            log(f"Skip excluded path '{input_path}'", config)
 
         elif input_path.is_file() and output_path not in rendered_files:
             render_file(
@@ -297,13 +296,11 @@ def load_data(config: Config) -> dict[str, Any]:
 
     for path in collect_files(config.data):
         if loader := DATA_LOADERS.get(path.suffix):
-            if not config.quiet:
-                print(f"Load data '{path}'")
+            log(f"Load data '{path}'", config)
 
             data |= loader(path)
         else:
-            if not config.quiet:
-                print(f"Skip unsupported data '{path}'")
+            log(f"Skip unsupported data '{path}'", config)
 
     for key, value in config.data_vars.items():
         dict_nested_set(data, key, value)
@@ -355,11 +352,9 @@ def load_plugin(
 
 def render_dir(input: Path, output: Path, config: Config) -> None:
     if output.exists() and not config.force:
-        if not config.quiet:
-            print(f"Skip existing dir '{output}'")
+        log(f"Skip existing dir '{output}'", config)
     else:
-        if not config.quiet:
-            print(f"Create dir '{input}' -> '{output}'")
+        log(f"Create dir '{input}' -> '{output}'", config)
 
         output.mkdir(exist_ok=True)
 
@@ -373,8 +368,7 @@ def render_file(
     enforce_jinja_suffix: bool,
 ) -> None:
     if output.exists() and not config.force:
-        if not config.quiet:
-            print(f"Skip existing file '{output}'")
+        log(f"Skip existing file '{output}'", config)
 
     elif input.suffix == config.jinja_suffix or not enforce_jinja_suffix:
         template = env.get_template(template_name)
@@ -383,11 +377,9 @@ def render_file(
         # Write the rendered template if it has content
         # Prevents empty macro definitions
         if rendered.strip() == "" and not config.keep_empty:
-            if not config.quiet:
-                print(f"Skip empty file '{input}'")
+            log(f"Skip empty file '{input}'", config)
         else:
-            if not config.quiet:
-                print(f"Render file '{input}' -> '{output}'")
+            log(f"Render file '{input}' -> '{output}'", config)
 
             with output.open("w") as fp:
                 fp.write(rendered)
@@ -396,7 +388,6 @@ def render_file(
                 shutil.copystat(input, output)
 
     else:
-        if not config.quiet:
-            print(f"Copy file '{input}' -> '{output}'")
+        log(f"Copy file '{input}' -> '{output}'", config)
 
         shutil.copy2(input, output)
