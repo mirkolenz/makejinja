@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.5.0](https://github.com/mirkolenz/makejinja/compare/v2.4.0...v2.5.0) (2024-01-21)
+
+
+### Features
+
+* add exec-pre and exec-post ([#96](https://github.com/mirkolenz/makejinja/issues/96)) ([c808400](https://github.com/mirkolenz/makejinja/commit/c808400b9dd668e81b1fefc68ac1ac9f401c3e27))
+* allow stdin/stdout on unix systems ([#58](https://github.com/mirkolenz/makejinja/issues/58)) ([7cd8e94](https://github.com/mirkolenz/makejinja/commit/7cd8e946f8c94431bcecad609ed03afbcfc1d59f))
+
 ## [2.4.0](https://github.com/mirkolenz/makejinja/compare/v2.3.5...v2.4.0) (2024-01-21)
 
 
