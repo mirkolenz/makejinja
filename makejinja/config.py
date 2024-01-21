@@ -30,6 +30,8 @@ frozendict = immutables.Map
 
 
 class Undefined(Enum):
+    """How to handle undefined variables."""
+
     default = DefaultUndefined
     chainable = ChainableUndefined
     debug = DebugUndefined
