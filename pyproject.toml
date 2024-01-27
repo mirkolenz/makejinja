@@ -57,7 +57,7 @@ typed-settings = { version = ">=23.1, <25", extras = [
 immutables = "^0.20"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4"
+pytest = "^8.0.0"
 pytest-cov = "^4.1"
 
 [tool.poetry.group.docs.dependencies]
