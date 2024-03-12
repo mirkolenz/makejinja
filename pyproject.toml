@@ -56,11 +56,11 @@ typed-settings = { version = ">=23.1, <25", extras = [
 ] }
 immutables = "^0.20"
 
-[tool.poetry.group.dev.dependencies]
+[tool.poetry.dev-dependencies]
 pytest = "^8.0.0"
 pytest-cov = "^4.1"
 
-[tool.poetry.group.docs.dependencies]
+[tool.poetry.docs-dependencies]
 pdoc = "^14.1"
 
 [tool.pytest.ini_options]
