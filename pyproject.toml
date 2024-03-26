@@ -58,7 +58,7 @@ immutables = "^0.20"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
-pytest-cov = "^4.1"
+pytest-cov = "^5.0.0"
 
 [tool.poetry.group.docs.dependencies]
 pdoc = "^14.1"
