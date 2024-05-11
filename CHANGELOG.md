@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.6.0](https://github.com/mirkolenz/makejinja/compare/v2.5.0...v2.6.0) (2024-05-11)
+
+
+### Features
+
+* allow rendering all files by providing empty jinja suffix ([697b0ce](https://github.com/mirkolenz/makejinja/commit/697b0cea6c43d8aa27453211e40efbc766529204))
+
+
+### Bug Fixes
+
+* add metadata to nix derivation ([31ebb23](https://github.com/mirkolenz/makejinja/commit/31ebb23e45145ca841127e467e586d30619082e1))
+
 ## [2.5.0](https://github.com/mirkolenz/makejinja/compare/v2.4.0...v2.5.0) (2024-01-21)
 
 
