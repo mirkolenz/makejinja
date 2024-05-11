@@ -40,6 +40,14 @@
             inherit python;
             projectDir = ./.;
             preferWheels = true;
+            meta = {
+              mainProgram = "makejinja";
+              maintainers = with lib.maintainers; [ mirkolenz ];
+              license = lib.licenses.mit;
+              homepage = "https://github.com/mirkolenz/makejinja";
+              description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins.";
+              platforms = lib.platforms.darwin ++ lib.platforms.linux;
+            };
           };
         in
         {
