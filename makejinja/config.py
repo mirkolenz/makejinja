@@ -207,13 +207,14 @@ class Config:
             Multiple can be provided.
         """,
     )
-    jinja_suffix: str = ts.option(
+    jinja_suffix: str | None = ts.option(
         default=".jinja",
         help="""
             File ending of Jinja template files.
             All files with this suffix in `inputs` matched by `pattern` are passed to the Jinja renderer.
             This suffix is not enforced for individual files passed to `inputs`.
             **Note:** Should be provided *with* the leading dot.
+            If empty, all files are considered to be Jinja templates.
         """,
     )
     keep_jinja_suffix: bool = ts.option(

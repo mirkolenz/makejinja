@@ -160,6 +160,8 @@ def handle_input_dir(
         for include_pattern in config.include_patterns
         for input_path in sorted(user_input_path.glob(include_pattern))
     )
+    # If the user provided a Jinja suffix, enforce it
+    enforce_jinja_suffix = bool(config.jinja_suffix)
 
     for input_path in input_paths:
         relative_path = input_path.relative_to(user_input_path)
@@ -181,7 +183,7 @@ def handle_input_dir(
                 output_path,
                 config,
                 env,
-                enforce_jinja_suffix=True,
+                enforce_jinja_suffix,
             )
             rendered_files[output_path] = input_path
 
