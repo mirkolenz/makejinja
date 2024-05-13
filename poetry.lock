@@ -493,13 +493,13 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "rich-click"
-version = "1.8.0"
+version = "1.8.1"
 description = "Format click help output nicely with rich"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "rich_click-1.8.0-py3-none-any.whl", hash = "sha256:846f504eb83a948d864888b2d73c71e52c310490c2babceac57e388aead086e2"},
-    {file = "rich_click-1.8.0.tar.gz", hash = "sha256:f8cad0d67d286d6cd6fc9f69f2d6f25c6c4c2d99fb9d6cb3b8987b593dbe6fa8"},
+    {file = "rich_click-1.8.1-py3-none-any.whl", hash = "sha256:0cf0bf84404e78379bd2722db88cb07ffd0535440e20a05943d5b02249d90f8a"},
+    {file = "rich_click-1.8.1.tar.gz", hash = "sha256:73c2ec88a66d7bf6b8c32783539d1c9c92c7c75847f14186092d27f83b206e8a"},
 ]
 
 [package.dependencies]
@@ -513,13 +513,13 @@ docs = ["markdown-include", "mkdocs", "mkdocs-glightbox", "mkdocs-material-exten
 
 [[package]]
 name = "typed-settings"
-version = "24.2.0"
+version = "24.3.0"
 description = "Typed settings based on attrs classes"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "typed_settings-24.2.0-py3-none-any.whl", hash = "sha256:6788ecdb3bf42b561c8a61630588d26d5a3d09dda47c8027e29e6698796252d4"},
-    {file = "typed_settings-24.2.0.tar.gz", hash = "sha256:06ea2c7c89428020fe87b780ffafe813df3375445a4f77a293e772b01a4947e6"},
+    {file = "typed_settings-24.3.0-py3-none-any.whl", hash = "sha256:9fd46054b971915318060954e90916381db3d96854e41882cc3f633c469fe864"},
+    {file = "typed_settings-24.3.0.tar.gz", hash = "sha256:c75a2349264daca9011ca13d756c3b3735ff1ba82045844843930c6a1c0bd4fb"},
 ]
 
 [package.dependencies]
@@ -528,17 +528,17 @@ cattrs = {version = ">=22.2", optional = true, markers = "extra == \"cattrs\""}
 click = {version = ">=7", optional = true, markers = "extra == \"click\""}
 
 [package.extras]
-all = ["typed-settings[attrs,cattrs,click,jinja,option-groups,pydantic]"]
+all = ["attrs (>=23.1)", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "jinja2", "pydantic (>=2)"]
 attrs = ["attrs (>=23.1)"]
 cattrs = ["cattrs (>=22.2)"]
 click = ["click (>=7)"]
-dev = ["nox", "pip-audit", "typed-settings[docs,lint,test]"]
-docs = ["furo (>=2023.9)", "myst-parser (>=2.0)", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)", "typed-settings[all]"]
+dev = ["attrs (>=23.1)", "black", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "coverage[toml] (>=5.3)", "furo (>=2023.9)", "hypothesis", "jinja2", "mypy", "myst-parser (>=2.0)", "nox", "pip-audit", "pydantic (>=2)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "ruff", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)", "sybil (>=6)", "types-toml", "typing-extensions"]
+docs = ["attrs (>=23.1)", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "furo (>=2023.9)", "jinja2", "myst-parser (>=2.0)", "pydantic (>=2)", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)"]
 jinja = ["jinja2"]
-lint = ["black", "mypy", "ruff", "typed-settings[all]", "types-toml"]
+lint = ["attrs (>=23.1)", "black", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "jinja2", "mypy", "pydantic (>=2)", "ruff", "types-toml"]
 option-groups = ["click (>=7)", "click-option-group"]
 pydantic = ["pydantic (>=2)"]
-test = ["coverage[toml] (>=5.3)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "sybil (>=6)", "typed-settings[all]", "typing-extensions"]
+test = ["attrs (>=23.1)", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "coverage[toml] (>=5.3)", "hypothesis", "jinja2", "pydantic (>=2)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "sybil (>=6)", "typing-extensions"]
 
 [[package]]
 name = "typing-extensions"
