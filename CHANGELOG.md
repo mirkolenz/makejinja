@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/mirkolenz/makejinja/compare/v2.6.0...v2.6.1) (2024-06-26)
+
+
+### Bug Fixes
+
+* **deps:** bump pdoc due to security issue ([9c7df0c](https://github.com/mirkolenz/makejinja/commit/9c7df0c95fe0748bfbb8b53ee300f99f452dbb48))
+
 ## [2.6.0](https://github.com/mirkolenz/makejinja/compare/v2.5.0...v2.6.0) (2024-05-11)
 
 
