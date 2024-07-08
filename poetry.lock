@@ -513,13 +513,13 @@ docs = ["markdown-include", "mkdocs", "mkdocs-glightbox", "mkdocs-material-exten
 
 [[package]]
 name = "typed-settings"
-version = "24.3.0"
+version = "24.4.0"
 description = "Typed settings based on attrs classes"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "typed_settings-24.3.0-py3-none-any.whl", hash = "sha256:9fd46054b971915318060954e90916381db3d96854e41882cc3f633c469fe864"},
-    {file = "typed_settings-24.3.0.tar.gz", hash = "sha256:c75a2349264daca9011ca13d756c3b3735ff1ba82045844843930c6a1c0bd4fb"},
+    {file = "typed_settings-24.4.0-py3-none-any.whl", hash = "sha256:ca02d886d05625acd2eae83429b6e32cfc6993d093f841eb243d4c653119d82d"},
+    {file = "typed_settings-24.4.0.tar.gz", hash = "sha256:274998f2285f466f77f3fab2570915545228fa19fbf024742e7035bb9c51dc86"},
 ]
 
 [package.dependencies]
