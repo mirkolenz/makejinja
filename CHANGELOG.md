@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.2](https://github.com/mirkolenz/makejinja/compare/v2.6.1...v2.6.2) (2024-07-28)
+
+
+### Bug Fixes
+
+* warn about recursive exclude patterns ([22a0918](https://github.com/mirkolenz/makejinja/commit/22a09189451f9004166ef87095ed2b82c1036b36))
+
 ## [2.6.1](https://github.com/mirkolenz/makejinja/compare/v2.6.0...v2.6.1) (2024-06-26)
 
 

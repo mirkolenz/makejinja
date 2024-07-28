@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "makejinja"
-version = "2.6.1"
+version = "2.6.2"
 description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins."
 authors = ["Mirko Lenz <mirko@mirkolenz.com>"]
 license = "MIT"
