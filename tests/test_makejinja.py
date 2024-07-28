@@ -17,6 +17,7 @@ class Paths:
 
 @pytest.fixture(scope="session")
 def exec(tmp_path_factory: pytest.TempPathFactory) -> Paths:
+    assert __package__ is not None
     data_path = Path(__package__, "data")
     input_path = data_path / "input"
     baseline_path = data_path / "output"
