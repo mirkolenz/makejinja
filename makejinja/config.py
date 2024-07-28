@@ -38,6 +38,14 @@ class Undefined(Enum):
     strict = StrictUndefined
 
 
+def _exclude_patterns_validator(instance, attribute, value) -> None:
+    if any("**" in pattern for pattern in value):
+        # raise ValueError("The recursive wildcard `**` is not supported by `exclude_patterns`.")
+        print(
+            "The recursive wildcard `**` is not supported by `exclude_patterns` (it acts like non-recursive `*`).",
+        )
+
+
 @ts.settings(frozen=True)
 class Delimiter:
     block_start: str = ts.option(
@@ -201,9 +209,11 @@ class Config:
     exclude_patterns: tuple[str, ...] = ts.option(
         default=tuple(),
         click={"param_decls": ("--exclude-pattern", "--exclude", "-E")},
+        validator=_exclude_patterns_validator,
         help="""
             Glob patterns pattern to exclude files matched.
-            Applied against files discovered through `include_patterns`.
+            Applied against files discovered through `include_patterns` via `Path.match`.
+            **Note:** The recursive wildcard `**` is not supported (it acts like non-recursive `*`).
             Multiple can be provided.
         """,
     )
