@@ -21,13 +21,13 @@ tests-mypy = ["mypy (>=1.11.1)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "cattrs"
-version = "23.2.3"
+version = "24.1.0"
 description = "Composable complex class support for attrs and dataclasses."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "cattrs-23.2.3-py3-none-any.whl", hash = "sha256:0341994d94971052e9ee70662542699a3162ea1e0c62f7ce1b4a57f563685108"},
-    {file = "cattrs-23.2.3.tar.gz", hash = "sha256:a934090d95abaa9e911dac357e3a8699e0b4b14f8529bcc7d2b1ad9d51672b9f"},
+    {file = "cattrs-24.1.0-py3-none-any.whl", hash = "sha256:043bb8af72596432a7df63abcff0055ac0f198a4d2e95af8db5a936a7074a761"},
+    {file = "cattrs-24.1.0.tar.gz", hash = "sha256:8274f18b253bf7674a43da851e3096370d67088165d23138b04a1c04c8eaf48e"},
 ]
 
 [package.dependencies]
@@ -37,6 +37,7 @@ attrs = ">=23.1.0"
 bson = ["pymongo (>=4.4.0)"]
 cbor2 = ["cbor2 (>=5.4.6)"]
 msgpack = ["msgpack (>=1.0.5)"]
+msgspec = ["msgspec (>=0.18.5)"]
 orjson = ["orjson (>=3.9.2)"]
 pyyaml = ["pyyaml (>=6.0)"]
 tomlkit = ["tomlkit (>=0.11.8)"]
@@ -349,13 +350,13 @@ files = [
 
 [[package]]
 name = "pdoc"
-version = "14.6.0"
+version = "14.6.1"
 description = "API Documentation for Python Projects"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pdoc-14.6.0-py3-none-any.whl", hash = "sha256:36c42c546a317d8e3e8c0b39645f24161374de0c7066ccaae76628d721e49ba5"},
-    {file = "pdoc-14.6.0.tar.gz", hash = "sha256:6e98a24c5e0ca5d188397969cf82581836eaef13f172fc3820047bfe15c61c9a"},
+    {file = "pdoc-14.6.1-py3-none-any.whl", hash = "sha256:efbed433655264392c60551615a3d42b8f21e492373419756d20234c667b54bc"},
+    {file = "pdoc-14.6.1.tar.gz", hash = "sha256:ee598f30d5c55dd4702086dabc412a26022acc35aa88aa382cda8ac655fead98"},
 ]
 
 [package.dependencies]
@@ -497,13 +498,13 @@ files = [
 
 [[package]]
 name = "rich"
-version = "13.7.1"
+version = "13.8.0"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "rich-13.7.1-py3-none-any.whl", hash = "sha256:4edbae314f59eb482f54e9e30bf00d33350aaa94f4bfcd4e9e3110e64d0d7222"},
-    {file = "rich-13.7.1.tar.gz", hash = "sha256:9be308cb1fe2f1f57d67ce99e95af38a1e2bc71ad9813b0e247cf7ffbcc3a432"},
+    {file = "rich-13.8.0-py3-none-any.whl", hash = "sha256:2e85306a063b9492dffc86278197a60cbece75bcb766022f3436f567cae11bdc"},
+    {file = "rich-13.8.0.tar.gz", hash = "sha256:a5ac1f1cd448ade0d59cc3356f7db7a7ccda2c8cbae9c7a90c28ff463d3e91f4"},
 ]
 
 [package.dependencies]
@@ -535,32 +536,32 @@ docs = ["markdown-include", "mkdocs", "mkdocs-glightbox", "mkdocs-material-exten
 
 [[package]]
 name = "typed-settings"
-version = "24.4.0"
+version = "24.5.0"
 description = "Typed settings based on attrs classes"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "typed_settings-24.4.0-py3-none-any.whl", hash = "sha256:ca02d886d05625acd2eae83429b6e32cfc6993d093f841eb243d4c653119d82d"},
-    {file = "typed_settings-24.4.0.tar.gz", hash = "sha256:274998f2285f466f77f3fab2570915545228fa19fbf024742e7035bb9c51dc86"},
+    {file = "typed_settings-24.5.0-py3-none-any.whl", hash = "sha256:abb552e6e8892676127fc569ef5ba308c1785e48e075e5369c9755a93fd66ba2"},
+    {file = "typed_settings-24.5.0.tar.gz", hash = "sha256:1c25705e22abbc0bcf417539ac3e70c5f94f041701fa8a9c5ab8898b374e312f"},
 ]
 
 [package.dependencies]
 attrs = {version = ">=23.1", optional = true, markers = "extra == \"attrs\""}
-cattrs = {version = ">=22.2", optional = true, markers = "extra == \"cattrs\""}
+cattrs = {version = ">=24.1", optional = true, markers = "extra == \"cattrs\""}
 click = {version = ">=7", optional = true, markers = "extra == \"click\""}
 
 [package.extras]
-all = ["attrs (>=23.1)", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "jinja2", "pydantic (>=2)"]
+all = ["attrs (>=23.1)", "cattrs (>=24.1)", "click (>=7)", "click-option-group", "jinja2", "pydantic (>=2)"]
 attrs = ["attrs (>=23.1)"]
-cattrs = ["cattrs (>=22.2)"]
+cattrs = ["cattrs (>=24.1)"]
 click = ["click (>=7)"]
-dev = ["attrs (>=23.1)", "black", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "coverage[toml] (>=5.3)", "furo (>=2023.9)", "hypothesis", "jinja2", "mypy", "myst-parser (>=2.0)", "nox", "pip-audit", "pydantic (>=2)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "ruff", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)", "sybil (>=6)", "types-toml", "typing-extensions"]
-docs = ["attrs (>=23.1)", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "furo (>=2023.9)", "jinja2", "myst-parser (>=2.0)", "pydantic (>=2)", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)"]
+dev = ["attrs (>=23.1)", "black", "cattrs (>=24.1)", "click (>=7)", "click-option-group", "coverage[toml] (>=5.3)", "furo (>=2023.9)", "hypothesis", "jinja2", "mypy", "myst-parser (>=2.0)", "nox", "pip-audit", "pydantic (>=2)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "ruff", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)", "sybil (>=6)", "types-toml", "typing-extensions"]
+docs = ["attrs (>=23.1)", "cattrs (>=24.1)", "click (>=7)", "click-option-group", "furo (>=2023.9)", "jinja2", "myst-parser (>=2.0)", "pydantic (>=2)", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)"]
 jinja = ["jinja2"]
-lint = ["attrs (>=23.1)", "black", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "jinja2", "mypy", "pydantic (>=2)", "ruff", "types-toml"]
+lint = ["attrs (>=23.1)", "black", "cattrs (>=24.1)", "click (>=7)", "click-option-group", "jinja2", "mypy", "pydantic (>=2)", "ruff", "types-toml"]
 option-groups = ["click (>=7)", "click-option-group"]
 pydantic = ["pydantic (>=2)"]
-test = ["attrs (>=23.1)", "cattrs (>=22.2)", "click (>=7)", "click-option-group", "coverage[toml] (>=5.3)", "hypothesis", "jinja2", "pydantic (>=2)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "sybil (>=6)", "typing-extensions"]
+test = ["attrs (>=23.1)", "cattrs (>=24.1)", "click (>=7)", "click-option-group", "coverage[toml] (>=5.3)", "hypothesis", "jinja2", "pydantic (>=2)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "sybil (>=6)", "typing-extensions"]
 
 [[package]]
 name = "typing-extensions"
