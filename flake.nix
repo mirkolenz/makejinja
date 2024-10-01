@@ -11,6 +11,10 @@
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -24,13 +28,16 @@
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import systems;
-      imports = [ inputs.flake-parts.flakeModules.easyOverlay ];
+      imports = [
+        inputs.flake-parts.flakeModules.easyOverlay
+        inputs.git-hooks.flakeModule
+      ];
       perSystem =
         {
           pkgs,
           system,
           lib,
-          self',
+          config,
           ...
         }:
         let
@@ -56,20 +63,26 @@
             overlays = [ poetry2nix.overlays.default ];
           };
           overlayAttrs = {
-            inherit (self'.packages) makejinja;
+            inherit (config.packages) makejinja;
           };
           checks = {
-            inherit (self'.packages) makejinja;
+            inherit (config.packages) makejinja;
+          };
+          pre-commit.settings.hooks = {
+            ruff.enable = true;
+            ruff-format.enable = true;
+            nixfmt-rfc-style.enable = true;
+            poetry-check.enable = true;
           };
           packages = {
             default = pkgs.poetry2nix.mkPoetryApplication (poetryAppArgs // { checkPhase = "pytest"; });
-            makejinja = self'.packages.default;
+            makejinja = config.packages.default;
             docker = pkgs.dockerTools.buildLayeredImage {
               name = "makejinja";
               tag = "latest";
               created = "now";
               config = {
-                entrypoint = [ (lib.getExe self'.packages.default) ];
+                entrypoint = [ (lib.getExe config.packages.default) ];
                 cmd = [ ];
               };
             };
@@ -139,6 +152,7 @@
             ];
             POETRY_VIRTUALENVS_IN_PROJECT = true;
             shellHook = ''
+              ${config.pre-commit.installationScript}
               ${lib.getExe poetry} env use ${lib.getExe python}
               ${lib.getExe poetry} install --sync --all-extras --no-root
             '';
