@@ -11,8 +11,8 @@
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    git-hooks = {
-      url = "github:cachix/git-hooks.nix";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -30,7 +30,7 @@
       systems = import systems;
       imports = [
         inputs.flake-parts.flakeModules.easyOverlay
-        inputs.git-hooks.flakeModule
+        inputs.treefmt-nix.flakeModule
       ];
       perSystem =
         {
@@ -68,11 +68,13 @@
           checks = {
             inherit (config.packages) makejinja;
           };
-          pre-commit.settings.hooks = {
-            ruff.enable = true;
-            ruff-format.enable = true;
-            nixfmt-rfc-style.enable = true;
-            poetry-check.enable = true;
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs = {
+              ruff-check.enable = true;
+              ruff-format.enable = true;
+              nixfmt.enable = true;
+            };
           };
           packages = {
             default = pkgs.poetry2nix.mkPoetryApplication (poetryAppArgs // { checkPhase = "pytest"; });
@@ -149,10 +151,10 @@
               poetry
               python
               pkgs.vhs
+              config.treefmt.build.wrapper
             ];
             POETRY_VIRTUALENVS_IN_PROJECT = true;
             shellHook = ''
-              ${config.pre-commit.installationScript}
               ${lib.getExe poetry} env use ${lib.getExe python}
               ${lib.getExe poetry} install --sync --all-extras --no-root
             '';
