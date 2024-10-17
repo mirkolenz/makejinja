@@ -41,21 +41,30 @@
           ...
         }:
         let
-          python = pkgs.python311;
+          python = pkgs.python312;
           poetry = pkgs.poetry;
-          poetryAppArgs = {
-            inherit python;
-            projectDir = ./.;
-            preferWheels = true;
-            meta = {
-              mainProgram = "makejinja";
-              maintainers = with lib.maintainers; [ mirkolenz ];
-              license = lib.licenses.mit;
-              homepage = "https://github.com/mirkolenz/makejinja";
-              description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins.";
-              platforms = lib.platforms.darwin ++ lib.platforms.linux;
-            };
-          };
+          mkPoetryApp =
+            args:
+            pkgs.poetry2nix.mkPoetryApplication (
+              {
+                inherit python;
+                projectDir = ./.;
+                preferWheels = true;
+                nativeCheckInputs = with python.pkgs; [
+                  pytestCheckHook
+                  pytest-cov-stub
+                ];
+                meta = with lib; {
+                  mainProgram = "makejinja";
+                  maintainers = with maintainers; [ mirkolenz ];
+                  license = licenses.mit;
+                  homepage = "https://github.com/mirkolenz/makejinja";
+                  description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins.";
+                  platforms = with platforms; darwin ++ linux;
+                };
+              }
+              // args
+            );
         in
         {
           _module.args.pkgs = import nixpkgs {
@@ -77,8 +86,8 @@
             };
           };
           packages = {
-            default = pkgs.poetry2nix.mkPoetryApplication (poetryAppArgs // { checkPhase = "pytest"; });
-            makejinja = config.packages.default;
+            default = config.packages.makejinja;
+            makejinja = mkPoetryApp { };
             docker = pkgs.dockerTools.buildLayeredImage {
               name = "makejinja";
               tag = "latest";
@@ -97,7 +106,10 @@
             };
             docs =
               let
-                app = pkgs.poetry2nix.mkPoetryApplication (poetryAppArgs // { groups = [ "docs" ]; });
+                app = mkPoetryApp {
+                  nativeCheckInputs = [ ];
+                  groups = [ "docs" ];
+                };
                 env = app.dependencyEnv;
                 font = pkgs.jetbrains-mono;
               in
@@ -135,7 +147,7 @@
                 dontInstall = true;
               };
           };
-          legacyPackages.dockerManifest = flocken.legacyPackages.${system}.mkDockerManifest {
+          apps.dockerManifest.program = flocken.legacyPackages.${system}.mkDockerManifest {
             github = {
               enable = true;
               token = "$GH_TOKEN";
