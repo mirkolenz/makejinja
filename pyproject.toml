@@ -57,11 +57,11 @@ typed-settings = { version = ">=23.1, <25", extras = [
 immutables = "^0.20"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.0.0"
-pytest-cov = "^5.0.0"
+pytest = "^8"
+pytest-cov = "^5"
 
 [tool.poetry.group.docs.dependencies]
-pdoc = "^14.1"
+pdoc = "^15"
 
 [tool.pytest.ini_options]
 addopts = "--cov makejinja --cov-report term-missing"
