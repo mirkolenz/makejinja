@@ -108,7 +108,10 @@
               let
                 app = mkPoetryApp {
                   nativeCheckInputs = [ ];
-                  groups = [ "docs" ];
+                  groups = [
+                    "main"
+                    "docs"
+                  ];
                 };
                 env = app.dependencyEnv;
                 font = pkgs.jetbrains-mono;
