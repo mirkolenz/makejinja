@@ -330,13 +330,13 @@ files = [
 
 [[package]]
 name = "packaging"
-version = "24.1"
+version = "24.2"
 description = "Core utilities for Python packages"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "packaging-24.1-py3-none-any.whl", hash = "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124"},
-    {file = "packaging-24.1.tar.gz", hash = "sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"},
+    {file = "packaging-24.2-py3-none-any.whl", hash = "sha256:09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759"},
+    {file = "packaging-24.2.tar.gz", hash = "sha256:c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f"},
 ]
 
 [[package]]
@@ -524,13 +524,13 @@ docs = ["markdown-include", "mkdocs", "mkdocs-glightbox", "mkdocs-material-exten
 
 [[package]]
 name = "typed-settings"
-version = "24.5.0"
+version = "24.6.0"
 description = "Typed settings based on attrs classes"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "typed_settings-24.5.0-py3-none-any.whl", hash = "sha256:abb552e6e8892676127fc569ef5ba308c1785e48e075e5369c9755a93fd66ba2"},
-    {file = "typed_settings-24.5.0.tar.gz", hash = "sha256:1c25705e22abbc0bcf417539ac3e70c5f94f041701fa8a9c5ab8898b374e312f"},
+    {file = "typed_settings-24.6.0-py3-none-any.whl", hash = "sha256:22221598a821395700beaafd8eab0e1bc596b394767aa37e0926c5f74d0b6a62"},
+    {file = "typed_settings-24.6.0.tar.gz", hash = "sha256:9a5595de33f80452a2038e018bc45508fffc238a8752f08f5c03dc8e7bc0d1e2"},
 ]
 
 [package.dependencies]
@@ -543,13 +543,9 @@ all = ["attrs (>=23.1)", "cattrs (>=24.1)", "click (>=7)", "click-option-group",
 attrs = ["attrs (>=23.1)"]
 cattrs = ["cattrs (>=24.1)"]
 click = ["click (>=7)"]
-dev = ["attrs (>=23.1)", "black", "cattrs (>=24.1)", "click (>=7)", "click-option-group", "coverage[toml] (>=5.3)", "furo (>=2023.9)", "hypothesis", "jinja2", "mypy", "myst-parser (>=2.0)", "nox", "pip-audit", "pydantic (>=2)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "ruff", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)", "sybil (>=6)", "types-toml", "typing-extensions"]
-docs = ["attrs (>=23.1)", "cattrs (>=24.1)", "click (>=7)", "click-option-group", "furo (>=2023.9)", "jinja2", "myst-parser (>=2.0)", "pydantic (>=2)", "sphinx (>=7.2)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)"]
 jinja = ["jinja2"]
-lint = ["attrs (>=23.1)", "black", "cattrs (>=24.1)", "click (>=7)", "click-option-group", "jinja2", "mypy", "pydantic (>=2)", "ruff", "types-toml"]
 option-groups = ["click (>=7)", "click-option-group"]
 pydantic = ["pydantic (>=2)"]
-test = ["attrs (>=23.1)", "cattrs (>=24.1)", "click (>=7)", "click-option-group", "coverage[toml] (>=5.3)", "hypothesis", "jinja2", "pydantic (>=2)", "pytest (>=7.2.0)", "pytest-cov", "rich-click (>=1.6)", "sybil (>=6)", "typing-extensions"]
 
 [[package]]
 name = "typing-extensions"
