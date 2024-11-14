@@ -1,0 +1,19 @@
+name: autofix.ci
+on:
+  pull_request:
+  push:
+    branches: [main, beta]
+jobs:
+  autofix:
+    if: ${{ github.repository_owner == 'wi2trier' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v15
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+      - run: nix fmt
+      - uses: autofix-ci/action@v1.3.1
+        with:
+          commit-message: "chore: reformat code"
