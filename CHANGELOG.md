@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.7.0](https://github.com/mirkolenz/makejinja/compare/v2.6.2...v2.7.0) (2024-11-14)
+
+### Features
+
+* move from poetry to uv ([0ac9325](https://github.com/mirkolenz/makejinja/commit/0ac93253fafd8c823a9a8c6d7cb83bb137799de9))
+
 ## [2.6.2](https://github.com/mirkolenz/makejinja/compare/v2.6.1...v2.6.2) (2024-07-28)
 
 
