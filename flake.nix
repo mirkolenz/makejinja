@@ -7,23 +7,28 @@
       url = "github:mirkolenz/flocken/v2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    poetry2nix = {
-      url = "github:nix-community/poetry2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pyproject-nix = {
+      url = "github:nix-community/pyproject.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    uv2nix = {
+      url = "github:adisbladis/uv2nix";
+      inputs.pyproject-nix.follows = "pyproject-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs =
     inputs@{
       self,
-      nixpkgs,
       flake-parts,
       systems,
       flocken,
-      poetry2nix,
+      pyproject-nix,
+      uv2nix,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -42,40 +47,130 @@
         }:
         let
           python = pkgs.python312;
-          poetry = pkgs.poetry;
-          mkPoetryApp =
-            args:
-            pkgs.poetry2nix.mkPoetryApplication (
-              {
-                inherit python;
-                projectDir = ./.;
-                preferWheels = true;
-                nativeCheckInputs = with python.pkgs; [
-                  pytestCheckHook
-                  pytest-cov-stub
-                ];
-                meta = with lib; {
-                  mainProgram = "makejinja";
-                  maintainers = with maintainers; [ mirkolenz ];
-                  license = licenses.mit;
-                  homepage = "https://github.com/mirkolenz/makejinja";
-                  description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins.";
-                  platforms = with platforms; darwin ++ linux;
+          workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
+          pyprojectOverlay = workspace.mkPyprojectOverlay {
+            sourcePreference = "wheel";
+          };
+          mkBuildSystemOverrides =
+            attrs: final: prev:
+            lib.mapAttrs (
+              name: value:
+              prev.${name}.overrideAttrs (old: {
+                nativeBuildInputs = old.nativeBuildInputs or [ ] ++ (final.resolveBuildSystem value);
+              })
+            ) attrs;
+          buildSystemOverrides = mkBuildSystemOverrides {
+            markupsafe = {
+              setuptools = [ ];
+            };
+            immutables = {
+              setuptools = [ ];
+            };
+            coverage = {
+              setuptools = [ ];
+            };
+          };
+          pyprojectOverrides = final: prev: {
+            makejinja = prev.makejinja.overrideAttrs (old: {
+              passthru = (old.passthru or { }) // {
+                tests = (old.tests or { }) // {
+                  pytest = pkgs.stdenv.mkDerivation {
+                    name = "${final.makejinja.name}-pytest";
+                    inherit (final.makejinja) src;
+                    nativeBuildInputs = [
+                      (final.mkVirtualEnv "makejinja-test-env" {
+                        makejinja = [ "test" ];
+                      })
+                    ];
+                    dontConfigure = true;
+                    buildPhase = ''
+                      runHook preBuild
+                      pytest --cov-report=html
+                      runHook postBuild
+                    '';
+                    installPhase = ''
+                      runHook preInstall
+                      mv htmlcov $out
+                      runHook postInstall
+                    '';
+                  };
                 };
-              }
-              // args
-            );
+                docs = pkgs.stdenv.mkDerivation {
+                  name = "${final.makejinja.name}-docs";
+                  inherit (final.makejinja) src;
+                  nativeBuildInputs = with pkgs; [
+                    (final.mkVirtualEnv "makejinja-docs-env" {
+                      makejinja = [ "docs" ];
+                    })
+                    asciinema-scenario
+                    asciinema-agg
+                  ];
+                  dontConfigure = true;
+                  buildPhase = ''
+                    {
+                      echo '```txt'
+                      COLUMNS=120 makejinja --help
+                      echo '```'
+                    } > ./manpage.md
+
+                    # remove everything before the first ---
+                    # sed -i '1,/^---$/d' ./README.md
+                    # remove everything before the first header
+                    sed -i '1,/^# /d' ./README.md
+
+                    asciinema-scenario ./assets/demo.scenario > ./assets/demo.cast
+                    agg \
+                      --font-dir "${pkgs.jetbrains-mono}/share/fonts/truetype" \
+                      --font-family "JetBrains Mono" \
+                      --theme monokai \
+                      ./assets/demo.cast ./assets/demo.gif
+                  '';
+                  installPhase = ''
+                    mkdir -p "$out"
+                    mkdir -p "$out/assets"
+
+                    pdoc -d google -t pdoc-template --math \
+                      --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \
+                      -o "$out" ./makejinja
+
+                    cp -rf ./assets/{*.png,*.gif} "$out/assets/"
+                  '';
+                };
+              };
+            });
+          };
+          baseSet = pkgs.callPackage pyproject-nix.build.packages {
+            inherit python;
+          };
+          pythonSet = baseSet.overrideScope (
+            lib.composeManyExtensions [
+              pyprojectOverlay
+              pyprojectOverrides
+              buildSystemOverrides
+            ]
+          );
+          addPassthru =
+            drv:
+            drv.overrideAttrs (old: {
+              passthru = lib.recursiveUpdate (old.passthru or { }) {
+                inherit (pythonSet.makejinja.passthru) tests;
+              };
+              meta = (old.meta or { }) // {
+                mainProgram = "makejinja";
+                maintainers = with lib.maintainers; [ mirkolenz ];
+                license = lib.licenses.mit;
+                homepage = "https://github.com/mirkolenz/makejinja";
+                description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins.";
+                platforms = with lib.platforms; darwin ++ linux;
+              };
+            });
         in
         {
-          _module.args.pkgs = import nixpkgs {
-            inherit system;
-            overlays = [ poetry2nix.overlays.default ];
-          };
           overlayAttrs = {
             inherit (config.packages) makejinja;
           };
-          checks = {
-            inherit (config.packages) makejinja;
+          checks = pythonSet.makejinja.passthru.tests // {
+            inherit (pythonSet.makejinja.passthru) docs;
           };
           treefmt = {
             projectRootFile = "flake.nix";
@@ -86,71 +181,24 @@
             };
           };
           packages = {
+            inherit (pythonSet.makejinja.passthru) docs;
             default = config.packages.makejinja;
-            makejinja = mkPoetryApp { };
+            makejinja = addPassthru (pythonSet.mkVirtualEnv "makejinja-env" workspace.deps.optionals);
             docker = pkgs.dockerTools.buildLayeredImage {
               name = "makejinja";
               tag = "latest";
               created = "now";
-              config = {
-                entrypoint = [ (lib.getExe config.packages.default) ];
-                cmd = [ ];
-              };
+              config.Entrypoint = [ (lib.getExe config.packages.makejinja) ];
             };
-            releaseEnv = pkgs.buildEnv {
+            release-env = pkgs.buildEnv {
               name = "release-env";
               paths = [
-                poetry
+                pkgs.uv
                 python
               ];
             };
-            docs =
-              let
-                app = mkPoetryApp {
-                  nativeCheckInputs = [ ];
-                  groups = [
-                    "main"
-                    "docs"
-                  ];
-                };
-                env = app.dependencyEnv;
-                font = pkgs.jetbrains-mono;
-              in
-              pkgs.stdenv.mkDerivation {
-                name = "makejinja-docs";
-                src = ./.;
-                buildPhase = ''
-                  mkdir -p "$out"
-
-                  {
-                    echo '```txt'
-                    COLUMNS=120 ${lib.getExe app} --help
-                    echo '```'
-                  } > ./manpage.md
-
-                  # remove everything before the first ---
-                  # ${lib.getExe pkgs.gnused} -i '1,/^---$/d' ./README.md
-                  # remove everything before the first header
-                  ${lib.getExe pkgs.gnused} -i '1,/^# /d' ./README.md
-
-                  ${lib.getExe pkgs.asciinema-scenario} ./assets/demo.scenario > ./assets/demo.cast
-                  ${lib.getExe pkgs.asciinema-agg} \
-                    --font-dir "${font}/share/fonts/truetype" \
-                    --font-family "JetBrains Mono" \
-                    --theme monokai \
-                    ./assets/demo.cast ./assets/demo.gif
-
-                  ${lib.getExe' env "pdoc"} -d google -t pdoc-template --math \
-                    --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \
-                    -o "$out" ./makejinja
-
-                  mkdir "$out/assets"
-                  cp -rf ./assets/{*.png,*.gif} "$out/assets/"
-                '';
-                dontInstall = true;
-              };
           };
-          apps.dockerManifest.program = flocken.legacyPackages.${system}.mkDockerManifest {
+          apps.docker-manifest.program = flocken.legacyPackages.${system}.mkDockerManifest {
             github = {
               enable = true;
               token = "$GH_TOKEN";
@@ -162,16 +210,13 @@
             ];
           };
           devShells.default = pkgs.mkShell {
-            packages = [
-              poetry
-              python
-              pkgs.vhs
+            packages = with pkgs; [
+              uv
               config.treefmt.build.wrapper
             ];
-            POETRY_VIRTUALENVS_IN_PROJECT = true;
+            UV_PYTHON = lib.getExe python;
             shellHook = ''
-              ${lib.getExe poetry} env use ${lib.getExe python}
-              ${lib.getExe poetry} install --sync --all-extras --no-root
+              ${lib.getExe pkgs.uv} sync --all-extras --locked
             '';
           };
         };

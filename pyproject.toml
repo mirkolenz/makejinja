@@ -1,13 +1,11 @@
-[tool.poetry]
+[project]
 name = "makejinja"
 version = "2.6.2"
 description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins."
-authors = ["Mirko Lenz <mirko@mirkolenz.com>"]
-license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "Mirko Lenz", email = "mirko@mirkolenz.com" }]
+license = { file = "LICENSE" }
 readme = "README.md"
-repository = "https://github.com/mirkolenz/makejinja"
-homepage = "https://mirkolenz.github.io/makejinja/"
-documentation = "https://mirkolenz.github.io/makejinja/makejinja/cli.html"
 keywords = [
     "jinja2",
     "home-assistant",
@@ -39,29 +37,36 @@ classifiers = [
     "Topic :: Text Processing :: Markup",
     "Topic :: Utilities",
     "Typing :: Typed",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "jinja2>=3,<4",
+    "pyyaml>=6,<7",
+    "rich-click>=1,<2",
+    "typed-settings[attrs,cattrs,click]>=23,<25",
+    "immutables>=0.20,<1",
 ]
 
-[tool.poetry.scripts]
+[project.urls]
+Repository = "https://github.com/mirkolenz/makejinja"
+Homepage = "https://mirkolenz.github.io/makejinja/"
+Documentation = "https://mirkolenz.github.io/makejinja/makejinja/cli.html"
+Issues = "https://github.com/mirkolenz/makejinja/issues"
+Changelog = "https://github.com/mirkolenz/makejinja/releases"
+
+[project.scripts]
 makejinja = "makejinja.cli:makejinja_cli"
 
-[tool.poetry.dependencies]
-python = "^3.11"
-jinja2 = "^3.1"
-pyyaml = "^6.0"
-rich-click = "^1.7"
-typed-settings = { version = ">=23.1, <25", extras = [
-    "attrs",
-    "cattrs",
-    "click",
-] }
-immutables = "^0.20"
+[dependency-groups]
+test = ["pytest>=8,<9", "pytest-cov>=6,<7"]
+docs = ["pdoc>=15,<16"]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8"
-pytest-cov = "^6.0.0"
-
-[tool.poetry.group.docs.dependencies]
-pdoc = "^15"
+[tool.uv]
+default-groups = ["test", "docs"]
+package = true
 
 [tool.pytest.ini_options]
 addopts = "--cov makejinja --cov-report term-missing"
@@ -74,6 +79,5 @@ ignore = ["E501"]
 [tool.ruff.pydocstyle]
 convention = "google"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.setuptools]
+packages = ["makejinja"]

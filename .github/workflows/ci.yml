@@ -29,9 +29,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v15
       - uses: DeterminateSystems/magic-nix-cache-action@v8
-      - run: nix profile install .#releaseEnv
-      - uses: cihelper/action-semanticrelease-poetry@v1
+      - run: nix profile install .#release-env
+      - uses: cihelper/action-semanticrelease-uv@v1
         id: semanticrelease
+        with:
+          uv-publish: false
       - uses: actions/upload-artifact@v4
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
         with:
@@ -59,7 +61,7 @@ jobs:
           extra-conf: |
             extra-platforms = aarch64-linux
       - uses: DeterminateSystems/magic-nix-cache-action@v8
-      - run: nix run .#dockerManifest --impure
+      - run: nix run .#docker-manifest --impure
         env:
           VERSION: ${{ needs.release.outputs.version }}
           GH_TOKEN: ${{ github.token }}
