@@ -149,7 +149,7 @@
               buildSystemOverrides
             ]
           );
-          addPassthru =
+          addMeta =
             drv:
             drv.overrideAttrs (old: {
               passthru = lib.recursiveUpdate (old.passthru or { }) {
@@ -183,7 +183,7 @@
           packages = {
             inherit (pythonSet.makejinja.passthru) docs;
             default = config.packages.makejinja;
-            makejinja = addPassthru (pythonSet.mkVirtualEnv "makejinja-env" workspace.deps.optionals);
+            makejinja = addMeta (pythonSet.mkVirtualEnv "makejinja-env" workspace.deps.optionals);
             docker = pkgs.dockerTools.buildLayeredImage {
               name = "makejinja";
               tag = "latest";
