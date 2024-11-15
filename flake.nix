@@ -24,6 +24,7 @@
   outputs =
     inputs@{
       self,
+      nixpkgs,
       flake-parts,
       systems,
       flocken,
@@ -46,7 +47,6 @@
           ...
         }:
         let
-          python = pkgs.python312;
           workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
           pyprojectOverlay = workspace.mkPyprojectOverlay {
             sourcePreference = "wheel";
@@ -140,7 +140,7 @@
             });
           };
           baseSet = pkgs.callPackage pyproject-nix.build.packages {
-            inherit python;
+            python = pkgs.python3;
           };
           pythonSet = baseSet.overrideScope (
             lib.composeManyExtensions [
@@ -166,6 +166,15 @@
             });
         in
         {
+          _module.args.pkgs = import nixpkgs {
+            inherit system;
+            overlays = lib.singleton (
+              final: prev: {
+                python3 = final.python312;
+                uv = uv2nix.packages.${system}.uv-bin;
+              }
+            );
+          };
           overlayAttrs = {
             inherit (config.packages) makejinja;
           };
@@ -192,9 +201,9 @@
             };
             release-env = pkgs.buildEnv {
               name = "release-env";
-              paths = [
-                pkgs.uv
-                python
+              paths = with pkgs; [
+                uv
+                python3
               ];
             };
           };
@@ -214,9 +223,9 @@
               uv
               config.treefmt.build.wrapper
             ];
-            UV_PYTHON = lib.getExe python;
+            UV_PYTHON = lib.getExe pkgs.python3;
             shellHook = ''
-              ${lib.getExe pkgs.uv} sync --all-extras --locked
+              uv sync --all-extras --locked
             '';
           };
         };
