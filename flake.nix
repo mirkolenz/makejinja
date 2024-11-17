@@ -107,6 +107,8 @@
                   ];
                   dontConfigure = true;
                   buildPhase = ''
+                    runHook preBuild
+
                     {
                       echo '```txt'
                       COLUMNS=120 makejinja --help
@@ -124,8 +126,12 @@
                       --font-family "JetBrains Mono" \
                       --theme monokai \
                       ./assets/demo.cast ./assets/demo.gif
+
+                    runHook postBuild
                   '';
                   installPhase = ''
+                    runHook preInstall
+
                     mkdir -p "$out"
                     mkdir -p "$out/assets"
 
@@ -134,6 +140,8 @@
                       -o "$out" ./makejinja
 
                     cp -rf ./assets/{*.png,*.gif} "$out/assets/"
+
+                    runHook postInstall
                   '';
                 };
               };
