@@ -1,10 +1,8 @@
 [project]
 name = "makejinja"
 version = "2.7.0"
-description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins."
-requires-python = ">=3.11"
+description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins"
 authors = [{ name = "Mirko Lenz", email = "mirko@mirkolenz.com" }]
-license = { file = "LICENSE" }
 readme = "README.md"
 keywords = [
     "jinja2",
@@ -28,6 +26,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3",
     "Topic :: File Formats",
     "Topic :: Home Automation",
     "Topic :: Software Development :: Code Generators",
@@ -37,11 +39,8 @@ classifiers = [
     "Topic :: Text Processing :: Markup",
     "Topic :: Utilities",
     "Typing :: Typed",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
 ]
+requires-python = ">=3.11"
 dependencies = [
     "jinja2>=3,<4",
     "pyyaml>=6,<7",
@@ -64,9 +63,12 @@ makejinja = "makejinja.cli:makejinja_cli"
 test = ["pytest>=8,<9", "pytest-cov>=6,<7"]
 docs = ["pdoc>=15,<16"]
 
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
 [tool.uv]
 default-groups = ["test", "docs"]
-package = true
 
 [tool.pytest.ini_options]
 addopts = "--cov makejinja --cov-report term-missing"
@@ -78,6 +80,3 @@ ignore = ["E501"]
 
 [tool.ruff.pydocstyle]
 convention = "google"
-
-[tool.setuptools]
-packages = ["makejinja"]
