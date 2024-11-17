@@ -1,9 +1,10 @@
 """
 **[🌟 GitHub Project 🌟](https://github.com/mirkolenz/makejinja)**
 
-![Screencast demo](../assets/demo.gif)
+![Screencast demo](../../assets/demo.gif)
 
-.. include:: ../README.md
+.. include:: ../../README.md
+   :start-after: # makejinja
 
 ## Usage as a Library
 

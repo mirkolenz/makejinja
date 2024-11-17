@@ -115,11 +115,6 @@
                       echo '```'
                     } > ./manpage.md
 
-                    # remove everything before the first ---
-                    # sed -i '1,/^---$/d' ./README.md
-                    # remove everything before the first header
-                    sed -i '1,/^# /d' ./README.md
-
                     asciinema-scenario ./assets/demo.scenario > ./assets/demo.cast
                     agg \
                       --font-dir "${pkgs.jetbrains-mono}/share/fonts/truetype" \
@@ -127,18 +122,20 @@
                       --theme monokai \
                       ./assets/demo.cast ./assets/demo.gif
 
+                    pdoc \
+                      -d google \
+                      -t pdoc-template \
+                      --math \
+                      --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \
+                      -o "$out" \
+                      ./src/makejinja
+
                     runHook postBuild
                   '';
                   installPhase = ''
                     runHook preInstall
 
-                    mkdir -p "$out"
                     mkdir -p "$out/assets"
-
-                    pdoc -d google -t pdoc-template --math \
-                      --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \
-                      -o "$out" ./makejinja
-
                     cp -rf ./assets/{*.png,*.gif} "$out/assets/"
 
                     runHook postInstall
