@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.7.1](https://github.com/mirkolenz/makejinja/compare/v2.7.0...v2.7.1) (2024-11-17)
+
+### Bug Fixes
+
+* update metadata and add build-system to pyproject.toml ([df11d96](https://github.com/mirkolenz/makejinja/commit/df11d96e31bf1136dc203180228b83e0dec4088e))
+
 ## [2.7.0](https://github.com/mirkolenz/makejinja/compare/v2.6.2...v2.7.0) (2024-11-14)
 
 ### Features
