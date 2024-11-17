@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.7.2](https://github.com/mirkolenz/makejinja/compare/v2.7.1...v2.7.2) (2024-11-17)
+
+### Bug Fixes
+
+* update paths to get docs working again ([a27f7c7](https://github.com/mirkolenz/makejinja/commit/a27f7c74259b61f0bf2b3574e7656e640d33a955))
+
 ## [2.7.1](https://github.com/mirkolenz/makejinja/compare/v2.7.0...v2.7.1) (2024-11-17)
 
 ### Bug Fixes
