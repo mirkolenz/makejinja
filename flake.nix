@@ -47,108 +47,7 @@
           ...
         }:
         let
-          workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
-          pyprojectOverlay = workspace.mkPyprojectOverlay {
-            sourcePreference = "wheel";
-          };
-          pyprojectOverrides = final: prev: {
-            makejinja = prev.makejinja.overrideAttrs (old: {
-              passthru = (old.passthru or { }) // {
-                tests = (old.tests or { }) // {
-                  pytest = pkgs.stdenv.mkDerivation {
-                    name = "${final.makejinja.name}-pytest";
-                    inherit (final.makejinja) src;
-                    nativeBuildInputs = [
-                      (final.mkVirtualEnv "makejinja-test-env" {
-                        makejinja = [ "test" ];
-                      })
-                    ];
-                    dontConfigure = true;
-                    buildPhase = ''
-                      runHook preBuild
-                      pytest --cov-report=html
-                      runHook postBuild
-                    '';
-                    installPhase = ''
-                      runHook preInstall
-                      mv htmlcov $out
-                      runHook postInstall
-                    '';
-                  };
-                };
-                docs = pkgs.stdenv.mkDerivation {
-                  name = "${final.makejinja.name}-docs";
-                  inherit (final.makejinja) src;
-                  nativeBuildInputs = with pkgs; [
-                    (final.mkVirtualEnv "makejinja-docs-env" {
-                      makejinja = [ "docs" ];
-                    })
-                    asciinema-scenario
-                    asciinema-agg
-                  ];
-                  dontConfigure = true;
-                  buildPhase = ''
-                    runHook preBuild
-
-                    {
-                      echo '```txt'
-                      COLUMNS=120 makejinja --help
-                      echo '```'
-                    } > ./manpage.md
-
-                    asciinema-scenario ./assets/demo.scenario > ./assets/demo.cast
-                    agg \
-                      --font-dir "${pkgs.jetbrains-mono}/share/fonts/truetype" \
-                      --font-family "JetBrains Mono" \
-                      --theme monokai \
-                      ./assets/demo.cast ./assets/demo.gif
-
-                    pdoc \
-                      -d google \
-                      -t pdoc-template \
-                      --math \
-                      --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \
-                      -o "$out" \
-                      ./src/makejinja
-
-                    runHook postBuild
-                  '';
-                  installPhase = ''
-                    runHook preInstall
-
-                    mkdir -p "$out/assets"
-                    cp -rf ./assets/{*.png,*.gif} "$out/assets/"
-
-                    runHook postInstall
-                  '';
-                };
-              };
-            });
-          };
-          baseSet = pkgs.callPackage pyproject-nix.build.packages {
-            python = pkgs.python3;
-          };
-          pythonSet = baseSet.overrideScope (
-            lib.composeManyExtensions [
-              pyprojectOverlay
-              pyprojectOverrides
-            ]
-          );
-          addMeta =
-            drv:
-            drv.overrideAttrs (old: {
-              passthru = lib.recursiveUpdate (old.passthru or { }) {
-                inherit (pythonSet.makejinja.passthru) tests;
-              };
-              meta = (old.meta or { }) // {
-                mainProgram = "makejinja";
-                maintainers = with lib.maintainers; [ mirkolenz ];
-                license = lib.licenses.mit;
-                homepage = "https://github.com/mirkolenz/makejinja";
-                description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins.";
-                platforms = with lib.platforms; darwin ++ linux;
-              };
-            });
+          inherit (config.legacyPackages) pythonSet;
         in
         {
           _module.args.pkgs = import nixpkgs {
@@ -174,11 +73,14 @@
               nixfmt.enable = true;
             };
           };
+          legacyPackages.pythonSet = pkgs.callPackage ./default.nix {
+            inherit (inputs) uv2nix pyproject-nix;
+          };
           packages = {
             inherit (pythonSet.makejinja.passthru) docs;
             default = config.packages.makejinja;
-            makejinja = addMeta (pythonSet.mkVirtualEnv "makejinja-env" workspace.deps.optionals);
-            docker = pkgs.dockerTools.buildLayeredImage {
+            makejinja = pythonSet.mkApp "optionals";
+            docker = pkgs.dockerTools.streamLayeredImage {
               name = "makejinja";
               tag = "latest";
               created = "now";
@@ -198,7 +100,7 @@
               token = "$GH_TOKEN";
             };
             version = builtins.getEnv "VERSION";
-            images = with self.packages; [
+            imageStreams = with self.packages; [
               x86_64-linux.docker
               aarch64-linux.docker
             ];
