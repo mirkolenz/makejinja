@@ -51,25 +51,6 @@
           pyprojectOverlay = workspace.mkPyprojectOverlay {
             sourcePreference = "wheel";
           };
-          mkBuildSystemOverrides =
-            attrs: final: prev:
-            lib.mapAttrs (
-              name: value:
-              prev.${name}.overrideAttrs (old: {
-                nativeBuildInputs = old.nativeBuildInputs or [ ] ++ (final.resolveBuildSystem value);
-              })
-            ) attrs;
-          buildSystemOverrides = mkBuildSystemOverrides {
-            markupsafe = {
-              setuptools = [ ];
-            };
-            immutables = {
-              setuptools = [ ];
-            };
-            coverage = {
-              setuptools = [ ];
-            };
-          };
           pyprojectOverrides = final: prev: {
             makejinja = prev.makejinja.overrideAttrs (old: {
               passthru = (old.passthru or { }) // {
@@ -151,7 +132,6 @@
             lib.composeManyExtensions [
               pyprojectOverlay
               pyprojectOverrides
-              buildSystemOverrides
             ]
           );
           addMeta =
