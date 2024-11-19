@@ -1,8 +1,10 @@
 <!-- markdownlint-disable MD033 MD041 -->
-<h2><p align="center">makejinja</p></h2>
+<h1><p align="center">makejinja</p></h1>
+
 <p align="center">
   <img width="256px" alt="makejinja logo" src="https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png" />
 </p>
+
 <p align="center">
   <a href="https://pypi.org/project/makejinja/">PyPI</a> |
   <a href="https://github.com/users/mirkolenz/packages/container/package/makejinja">Docker</a> |
@@ -10,13 +12,18 @@
   <a href="https://github.com/mirkolenz/makejinja/tree/main/tests/data">Example</a> |
   <a href="https://jinja.palletsprojects.com/en/3.1.x/templates">Jinja reference</a>
 </p>
+
 <p align="center">
   Generate entire directory structures using Jinja templates with support for external data and custom plugins.
 </p>
 
+<p align="center">
+  <img alt="makejinja demonstration" src="https://mirkolenz.github.io/makejinja/assets/demo.gif" />
+</p>
+
 ---
 
-# makejinja
+<!-- PDOC_START -->
 
 makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates).
 It is conceptually similar to [Ansible templates](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html) since both are built on top of Jinja.

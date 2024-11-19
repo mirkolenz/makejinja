@@ -1,10 +1,10 @@
 """
 **[🌟 GitHub Project 🌟](https://github.com/mirkolenz/makejinja)**
 
-![Screencast demo](../../assets/demo.gif)
+![makejinja demonstration](../../assets/demo.gif)
 
 .. include:: ../../README.md
-   :start-after: # makejinja
+   :start-after: <!-- PDOC_START -->
 
 ## Usage as a Library
 
