@@ -2,6 +2,7 @@
   lib,
   stdenv,
   callPackage,
+  fetchFromGitHub,
   python3,
   jetbrains-mono,
   asciinema-scenario,
@@ -10,6 +11,12 @@
   pyproject-nix,
 }:
 let
+  pdocRepo = fetchFromGitHub {
+    owner = "mitmproxy";
+    repo = "pdoc";
+    rev = "v15.0.0";
+    hash = "sha256-6XEcHhaKkxY/FU748f+OsTcSgrM4iQTmJAL8rJ3EqnY=";
+  };
   workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
   pyprojectOverlay = workspace.mkPyprojectOverlay {
     sourcePreference = "wheel";
@@ -66,7 +73,7 @@ let
 
             pdoc \
               -d google \
-              -t pdoc-template \
+              -t ${pdocRepo}/examples/dark-mode \
               --math \
               --logo https://raw.githubusercontent.com/mirkolenz/makejinja/main/assets/logo.png \
               -o "$out" \
