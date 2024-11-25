@@ -12,12 +12,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     pyproject-nix = {
-      url = "github:nix-community/pyproject.nix";
+      url = "github:pyproject-nix/pyproject.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     uv2nix = {
-      url = "github:adisbladis/uv2nix";
+      url = "github:pyproject-nix/uv2nix";
       inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.uv2nix.follows = "uv2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -28,7 +34,6 @@
       flake-parts,
       systems,
       flocken,
-      pyproject-nix,
       uv2nix,
       ...
     }:
@@ -74,7 +79,7 @@
             };
           };
           legacyPackages.pythonSet = pkgs.callPackage ./default.nix {
-            inherit (inputs) uv2nix pyproject-nix;
+            inherit (inputs) uv2nix pyproject-nix pyproject-build-systems;
           };
           packages = {
             inherit (pythonSet.makejinja.passthru) docs;

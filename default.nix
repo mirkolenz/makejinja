@@ -9,6 +9,7 @@
   asciinema-agg,
   uv2nix,
   pyproject-nix,
+  pyproject-build-systems,
 }:
 let
   pdocRepo = fetchFromGitHub {
@@ -98,6 +99,7 @@ let
   };
   pythonSet = baseSet.overrideScope (
     lib.composeManyExtensions [
+      pyproject-build-systems.overlays.default
       pyprojectOverlay
       pyprojectOverrides
     ]
