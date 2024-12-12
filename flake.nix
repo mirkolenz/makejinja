@@ -52,7 +52,9 @@
           ...
         }:
         let
-          inherit (config.legacyPackages) pythonSet;
+          pythonSet = pkgs.callPackage ./default.nix {
+            inherit (inputs) uv2nix pyproject-nix pyproject-build-systems;
+          };
         in
         {
           _module.args.pkgs = import nixpkgs {
@@ -78,9 +80,6 @@
               nixfmt.enable = true;
             };
           };
-          legacyPackages.pythonSet = pkgs.callPackage ./default.nix {
-            inherit (inputs) uv2nix pyproject-nix pyproject-build-systems;
-          };
           packages = {
             inherit (pythonSet.makejinja.passthru) docs;
             default = config.packages.makejinja;
@@ -99,7 +98,7 @@
               ];
             };
           };
-          apps.docker-manifest.program = flocken.legacyPackages.${system}.mkDockerManifest {
+          legacyPackage.docker-manifest = flocken.legacyPackages.${system}.mkDockerManifest {
             github = {
               enable = true;
               token = "$GH_TOKEN";
