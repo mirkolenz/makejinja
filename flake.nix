@@ -52,9 +52,14 @@
           ...
         }:
         let
-          pythonSet = pkgs.callPackage ./default.nix {
-            inherit (inputs) uv2nix pyproject-nix pyproject-build-systems;
-          };
+          inherit
+            (pkgs.callPackage ./default.nix {
+              inherit (inputs) uv2nix pyproject-nix pyproject-build-systems;
+            })
+            pythonSet
+            workspace
+            mkApplication
+            ;
         in
         {
           _module.args.pkgs = import nixpkgs {
@@ -83,7 +88,10 @@
           packages = {
             inherit (pythonSet.makejinja.passthru) docs;
             default = config.packages.makejinja;
-            makejinja = pythonSet.mkApp "optionals";
+            makejinja = mkApplication {
+              venv = pythonSet.mkVirtualEnv "makejinja-env" workspace.deps.optionals;
+              package = pythonSet.makejinja;
+            };
             docker = pkgs.dockerTools.streamLayeredImage {
               name = "makejinja";
               tag = "latest";
