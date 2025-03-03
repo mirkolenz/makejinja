@@ -21,7 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v16
-      - uses: DeterminateSystems/magic-nix-cache-action@v9
+        with:
+          extra-conf: |
+            accept-flake-config = true
+      - uses: cachix/cachix-action@v15
+        with:
+          name: mirkolenz
+          authToken: ${{ secrets.CACHIX_TOKEN }}
       - run: nix profile install .#release-env
       - uses: cihelper/action-semanticrelease-uv@v1
         id: semanticrelease
@@ -53,7 +59,11 @@ jobs:
         with:
           extra-conf: |
             extra-platforms = aarch64-linux
-      - uses: DeterminateSystems/magic-nix-cache-action@v9
+            accept-flake-config = true
+      - uses: cachix/cachix-action@v15
+        with:
+          name: mirkolenz
+          authToken: ${{ secrets.CACHIX_TOKEN }}
       - run: nix run .#docker-manifest --impure
         env:
           VERSION: ${{ needs.release.outputs.version }}
@@ -87,7 +97,13 @@ jobs:
           ref: ${{ needs.release.outputs.git-head }}
       - uses: actions/configure-pages@v5
       - uses: DeterminateSystems/nix-installer-action@v16
-      - uses: DeterminateSystems/magic-nix-cache-action@v9
+        with:
+          extra-conf: |
+            accept-flake-config = true
+      - uses: cachix/cachix-action@v15
+        with:
+          name: mirkolenz
+          authToken: ${{ secrets.CACHIX_TOKEN }}
       - run: nix build .#docs
       - uses: actions/upload-pages-artifact@v3
         with:

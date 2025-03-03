@@ -12,7 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v16
-      - uses: DeterminateSystems/magic-nix-cache-action@v9
+        with:
+          extra-conf: |
+            accept-flake-config = true
+      - uses: cachix/cachix-action@v15
+        with:
+          name: mirkolenz
+          authToken: ${{ secrets.CACHIX_TOKEN }}
       - run: nix fmt
       - uses: autofix-ci/action@v1.3.1
         with:
