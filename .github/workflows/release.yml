@@ -24,7 +24,7 @@ jobs:
         with:
           extra-conf: |
             accept-flake-config = true
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v16
         with:
           name: mirkolenz
           authToken: ${{ secrets.CACHIX_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
           extra-conf: |
             extra-platforms = aarch64-linux
             accept-flake-config = true
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v16
         with:
           name: mirkolenz
           authToken: ${{ secrets.CACHIX_TOKEN }}
@@ -100,7 +100,7 @@ jobs:
         with:
           extra-conf: |
             accept-flake-config = true
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v16
         with:
           name: mirkolenz
           authToken: ${{ secrets.CACHIX_TOKEN }}
