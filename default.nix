@@ -111,7 +111,7 @@ in
   inherit (callPackage pyproject-nix.build.util { }) mkApplication;
   pythonSet = baseSet.overrideScope (
     lib.composeManyExtensions [
-      pyproject-build-systems.overlays.default
+      pyproject-build-systems.overlays.wheel
       pyprojectOverlay
       pyprojectOverrides
     ]
