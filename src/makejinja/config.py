@@ -277,6 +277,19 @@ class Config:
             """,
         },
     )
+    file_data: abc.Mapping[str, tuple[Path, ...]] = ts.option(
+        default=frozendict(),
+        click={
+            "param_decls": ("--file-data",),
+            "help": """
+                Load file-specific data for individual templates.
+                Format: template_file=data_file1,data_file2,...
+                Example: --file-data "home.yaml.jinja=home_data.yaml,common.yaml"
+                The data from these files will be available only when rendering the specified template.
+                **Note:** This option may be passed multiple times.
+            """,
+        },
+    )
     loaders: tuple[str, ...] = ts.option(
         default=tuple(),
         click={
@@ -392,6 +405,7 @@ OPTION_GROUPS = {
             "options": [
                 "--data",
                 "--data-var",
+                "--file-data",
                 "--plugin",
                 "--import-path",
                 "--extension",

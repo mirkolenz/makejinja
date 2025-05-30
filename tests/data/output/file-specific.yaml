@@ -1,0 +1,7 @@
+# Test file-specific data
+specific_var1: Value from data1
+specific_var2: Value from data2
+specific_list:
+  - item1
+  - item2
+override_var: Overridden value

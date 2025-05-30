@@ -332,6 +332,26 @@ def load_data(config: Config) -> dict[str, Any]:
     return data
 
 
+def load_file_data(template_name: str, config: Config) -> dict[str, Any]:
+    file_data: dict[str, Any] = {}
+
+    if data_paths := config.file_data.get(template_name):
+        for data_path in data_paths:
+            if data_path.exists() and (loader := DATA_LOADERS.get(data_path.suffix)):
+                log(
+                    f"Load file-specific data '{data_path}' for template '{template_name}'",
+                    config,
+                )
+                file_data |= loader(data_path)
+            else:
+                log(
+                    f"Skip missing or unsupported file-specific data '{data_path}'",
+                    config,
+                )
+
+    return file_data
+
+
 def load_plugin(
     plugin_name: str, env: Environment, data: Data, config: Config
 ) -> Plugin:
@@ -396,7 +416,8 @@ def render_file(
 
     elif input.suffix == config.jinja_suffix or not enforce_jinja_suffix:
         template = env.get_template(template_name)
-        rendered = template.render()
+        file_data = load_file_data(template_name, config)
+        rendered = template.render(file_data)
 
         # Write the rendered template if it has content
         # Prevents empty macro definitions

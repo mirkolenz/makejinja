@@ -1,0 +1,8 @@
+# Test file-specific data
+specific_var1: << specific_var1 >>
+specific_var2: << specific_var2 | default('Not available') >>
+specific_list:
+<% for item in specific_list %>
+  - << item >>
+<% endfor %>
+override_var: << override_var | default('Default value') >>

@@ -6,6 +6,8 @@ plugins = ["plugin:Plugin"]
 exclude_patterns = ["*.partial"]
 data_vars = { "areas.kitchen.name.en" = "Cuisine" }
 
+[makejinja.file_data]
+"file-specific.yaml.jinja" = ["./file-specific/data1.yaml", "./file-specific/data2.yaml"]
 
 [makejinja.delimiter]
 block_start = "<%"
