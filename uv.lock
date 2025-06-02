@@ -13,14 +13,15 @@ wheels = [
 
 [[package]]
 name = "cattrs"
-version = "24.1.3"
+version = "25.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "attrs" },
+    { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/29/7b/da4aa2f95afb2f28010453d03d6eedf018f9e085bd001f039e15731aba89/cattrs-24.1.3.tar.gz", hash = "sha256:981a6ef05875b5bb0c7fb68885546186d306f10f0f6718fe9b96c226e68821ff", size = 426684, upload-time = "2025-03-25T15:01:00.325Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f7/f2/5143934dd19ba6e148a4fb6855e9c9557194bf21aa9801f4bac1f8a98854/cattrs-25.1.0.tar.gz", hash = "sha256:3bf01e9592b38a49bdae47a26385583f000c98862d0efcda2c03a508b02b95b8", size = 434766, upload-time = "2025-05-31T09:57:56.934Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3c/ee/d68a3de23867a9156bab7e0a22fb9a0305067ee639032a22982cf7f725e7/cattrs-24.1.3-py3-none-any.whl", hash = "sha256:adf957dddd26840f27ffbd060a6c4dd3b2192c5b7c2c0525ef1bd8131d8a83f5", size = 66462, upload-time = "2025-03-25T15:00:58.663Z" },
+    { url = "https://files.pythonhosted.org/packages/36/b7/318acfc745ef8528fea93581e8c60be1999203903d3e9b375294f790862d/cattrs-25.1.0-py3-none-any.whl", hash = "sha256:b07bd2082298f8915d53ed7254c4c34d90995d4a79467b7df7bbd544eef532f1", size = 69239, upload-time = "2025-05-31T09:57:55.061Z" },
 ]
 
 [[package]]
