@@ -28,39 +28,55 @@
 makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates).
 It is conceptually similar to [Ansible templates](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html) since both are built on top of Jinja.
 However, makejinja is a standalone tool that can be used without Ansible and offers some advanced features like custom plugins.
-A use case for this tool is generating config files for [Home Assistant](https://www.home-assistant.io/):
-Using the same language that the built-in templates use, you can greatly simplify your configuration.
-An [example for Home Assistant](https://github.com/mirkolenz/makejinja/tree/main/tests/data) can be found in the tests directory.
 
-## Highlights
+A popular use case is generating config files for [Home Assistant](https://www.home-assistant.io/):
+Using the same Jinja language that Home Assistant's built-in templates use, you can greatly simplify your configuration management.
+makejinja's custom delimiter support prevents conflicts with Home Assistant's own template syntax, while file-specific data loading enables modular dashboard and automation generation.
+Our comprehensive [Home Assistant example](https://github.com/mirkolenz/makejinja/tree/main/tests/data) demonstrates dashboard generation with custom plugins, multiple data sources, and advanced template organization.
 
-- Recursively render nested directories containing template files to a common output directory.
-- Load data files containing variables to use in your Jinja templates from YAML, TOML, and Python files.
-- Write custom [plugins](https://mirkolenz.github.io/makejinja/makejinja/plugin.html#Plugin) to extend the functionality of makejinja.
-- Adjust all Jinja options (e.g., whitespace behavior and delimiters) to your needs via CLI flags or a config file.
+## Key Features
+
+- **Multi-Source Data Integration**: Load variables from YAML, TOML, and Python files, with support for file-specific data sources and runtime variable injection.
+- **Custom Template Delimiters**: Configure Jinja delimiters (e.g., `<% %>` instead of `{{ }}`) to avoid conflicts with target file formats like Home Assistant, Kubernetes, or Terraform.
+- **Flexible Directory Processing**: Process multiple input directories with complex nested structures, preserving hierarchy while applying powerful template transformations.
+- **Extensible Plugin System**: Create custom [plugins](https://mirkolenz.github.io/makejinja/makejinja/plugin.html#Plugin) with filters, functions, and path filtering logic for specialized requirements.
+- **Production-Ready**: Comprehensive CLI interface, configuration file support, and Python library API for seamless workflow integration.
+
+## Use Cases
+
+- **Configuration Management**: Generate environment-specific configs (dev/staging/prod) from shared templates with different data sources.
+- **Home Assistant Dashboards**: Create complex dashboards and automations using Jinja syntax without conflicts. See our [complete example](https://github.com/mirkolenz/makejinja/tree/main/tests/data).
+- **Infrastructure as Code**: Generate Kubernetes manifests, Terraform modules, or Docker Compose files with consistent patterns across environments.
+- **Web Development**: Generate HTML pages, CSS files, or JavaScript configs from data sources for static sites or multi-tenant applications.
+- **Database Schemas**: Create SQL migration scripts, database configurations, or ORM models based on structured schema definitions.
+- **Network Configuration**: Generate router configs, firewall rules, or network device settings from centralized network topology data.
+- **Monitoring & Alerting**: Create Grafana dashboards, Prometheus rules, or alerting configurations from service inventories.
+- **Documentation & CI/CD**: Create project docs, API specifications, or pipeline definitions from structured data sources.
 
 ## Installation
 
-The tool is written in Python and can be installed via pip, nix, and docker.
+The tool is written in Python and can be installed via uv, nix, and docker.
 It can be used as a CLI tool or as a Python library.
 
-### PIP
+### UV
 
-makejinja is available on [PyPI](https://pypi.org/project/makejinja/) and can be installed via `pip`:
+makejinja is available on [PyPI](https://pypi.org/project/makejinja/) and can be installed via `uv`:
 
 ```shell
-pip install makejinja
+uv tool install makejinja
 makejinja -i ./input -o ./output
 ```
 
 ### Nix
 
-If you use the `nix` package manager, you can add this repository as an input to your flake and use `makejinja.packages.${system}.default` or apply the overlay `makejinja.overlays.default`.
-You can also run it directly as follows:
+makejinja is packaged in nixpkgs.
+To use the most recent version, you can run it via `nix run`:
 
 ```shell
 nix run github:mirkolenz/makejinja -- -i ./input -o ./output
 ```
+
+Alternatively, you can add this repository as an input to your flake and use `makejinja.packages.${system}.default`.
 
 ### Docker
 
