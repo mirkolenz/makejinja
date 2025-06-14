@@ -5,7 +5,7 @@ on:
     branches: [main, beta]
 jobs:
   autofix:
-    if: ${{ github.repository_owner == 'wi2trier' }}
+    if: ${{ github.repository_owner == 'mirkolenz' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
