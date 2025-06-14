@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.8.0](https://github.com/mirkolenz/makejinja/compare/v2.7.2...v2.8.0) (2025-06-14)
+
+### Features
+
+* allow passing file-specific data ([ea2f3af](https://github.com/mirkolenz/makejinja/commit/ea2f3af332a17e4f6a909b3e2e1deda84394242d))
+
 ## [2.7.2](https://github.com/mirkolenz/makejinja/compare/v2.7.1...v2.7.2) (2024-11-17)
 
 ### Bug Fixes
