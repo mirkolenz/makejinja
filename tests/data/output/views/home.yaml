@@ -1,3 +1,4 @@
+# Test file: Demonstrates nested directory processing, custom functions (getlang), and filters (hassurl)
 - title: Living room
   path: living-room
   icon: mdi:sofa
