@@ -20,6 +20,6 @@ jobs:
           name: mirkolenz
           authToken: ${{ secrets.CACHIX_TOKEN }}
       - run: nix fmt
-      - uses: autofix-ci/action@v1.3.1
+      - uses: autofix-ci/action@v1.3.2
         with:
           commit-message: "chore: reformat code"
