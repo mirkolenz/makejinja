@@ -78,7 +78,6 @@
             inherit system;
             overlays = lib.singleton (
               final: prev: {
-                python3 = final.python312;
                 uv = uv2nix.packages.${system}.uv-bin;
               }
             );
