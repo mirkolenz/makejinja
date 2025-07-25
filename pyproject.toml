@@ -45,7 +45,7 @@ dependencies = [
     "jinja2>=3,<4",
     "pyyaml>=6,<7",
     "rich-click>=1,<2",
-    "typed-settings[attrs,cattrs,click]>=23,<25",
+    "typed-settings[attrs,cattrs,click]>=25,<26",
     "immutables>=0.20,<1",
 ]
 
