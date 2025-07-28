@@ -184,7 +184,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3,<4" },
     { name = "pyyaml", specifier = ">=6,<7" },
     { name = "rich-click", specifier = ">=1,<2" },
-    { name = "typed-settings", extras = ["attrs", "cattrs", "click"], specifier = ">=23,<25" },
+    { name = "typed-settings", extras = ["attrs", "cattrs", "click"], specifier = ">=23,<26" },
 ]
 
 [package.metadata.requires-dev]
