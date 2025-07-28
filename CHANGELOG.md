@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.8.1](https://github.com/mirkolenz/makejinja/compare/v2.8.0...v2.8.1) (2025-07-28)
+
+### Bug Fixes
+
+* **deps:** allow typed-settings v25 ([f8be326](https://github.com/mirkolenz/makejinja/commit/f8be32643d9b971873beb5a0c6283b7e84cef78f))
+
 ## [2.8.0](https://github.com/mirkolenz/makejinja/compare/v2.7.2...v2.8.0) (2025-06-14)
 
 ### Features
