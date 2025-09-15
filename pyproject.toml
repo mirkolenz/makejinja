@@ -60,7 +60,7 @@ Changelog = "https://github.com/mirkolenz/makejinja/releases"
 makejinja = "makejinja.cli:makejinja_cli"
 
 [dependency-groups]
-test = ["pytest>=8,<9", "pytest-cov>=6,<7"]
+test = ["pytest>=8,<9", "pytest-cov>=7,<8"]
 docs = ["pdoc>=15,<16"]
 
 [build-system]
