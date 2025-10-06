@@ -463,15 +463,16 @@ wheels = [
 
 [[package]]
 name = "rich-click"
-version = "1.9.1"
+version = "1.9.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "rich" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/29/c2/f08b5e7c1a33af8a115be640aa0796ba01c4732696da6d2254391376b314/rich_click-1.9.1.tar.gz", hash = "sha256:4f2620589d7287f86265432e6a909de4f281de909fe68d8c835fbba49265d268", size = 73109, upload-time = "2025-09-20T22:40:35.362Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0c/4d/e8fcbd785a93dc5d7aef38f8aa4ade1e31b0c820eb2e8ff267056eda70b1/rich_click-1.9.2.tar.gz", hash = "sha256:1c4212f05561be0cac6a9c1743e1ebcd4fe1fb1e311f9f672abfada3be649db6", size = 73533, upload-time = "2025-10-04T21:56:25.36Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a8/77/e9144dcf68a0b3f3f4386986f97255c3d9f7c659be58bb7a5fe8f26f3efa/rich_click-1.9.1-py3-none-any.whl", hash = "sha256:ea6114a9e081b7d68cc07b315070398f806f01bb0e0c49da56f129e672877817", size = 69759, upload-time = "2025-09-20T22:40:34.099Z" },
+    { url = "https://files.pythonhosted.org/packages/a9/27/7a82106d69738aefb81e044d6dd278053c5263581c5e8e5330e1339b8444/rich_click-1.9.2-py3-none-any.whl", hash = "sha256:5079dad67ed7df434a9ec1f20b1d62d831e58c78740026f968ce3d3b861f01a0", size = 70153, upload-time = "2025-10-04T21:56:24.066Z" },
 ]
 
 [[package]]
@@ -515,11 +516,11 @@ wheels = [
 
 [[package]]
 name = "typed-settings"
-version = "25.0.0"
+version = "25.1.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f0/c2/292035683029b7a6c00d952baf1f0ac828e03dd912c383760762eb4a937b/typed_settings-25.0.0.tar.gz", hash = "sha256:29bafd31cd4f5e00fe380c3f003a771d70beae700970512a8e55f142aff5c113", size = 3478917, upload-time = "2025-07-25T20:37:25.415Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c6/43/5312ce92b414885358e625e2d8b6b672c17e083772a96d0e1f46f0a5fa42/typed_settings-25.1.0.tar.gz", hash = "sha256:660304ea5408f881e4793f74f81554a621e110ee46a93d033588c69082e0f520", size = 3501090, upload-time = "2025-09-30T07:12:15.445Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/39/20/0fcbf638c7e47b6270dae533e32b7a3d71a733dd33f4aaae1af3747ac3b7/typed_settings-25.0.0-py3-none-any.whl", hash = "sha256:d95ec61a7f8109f91b6bb910237cd801e5d861face2bf09e6563a6a76637fc63", size = 60650, upload-time = "2025-07-25T20:37:23.807Z" },
+    { url = "https://files.pythonhosted.org/packages/76/67/2ba61a9c6904abebb763a49021c15378742368d513648ff060e5dca9fab3/typed_settings-25.1.0-py3-none-any.whl", hash = "sha256:97d0f19e97791b5f1eaf966c1758f7704a7a987ef22783e15a4f53bb561084cb", size = 62581, upload-time = "2025-09-30T07:12:14.065Z" },
 ]
 
 [package.optional-dependencies]
