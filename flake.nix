@@ -74,14 +74,6 @@
             ;
         in
         {
-          _module.args.pkgs = import nixpkgs {
-            inherit system;
-            overlays = lib.singleton (
-              final: prev: {
-                uv = uv2nix.packages.${system}.uv-bin;
-              }
-            );
-          };
           overlayAttrs = {
             inherit (config.packages) makejinja;
           };
