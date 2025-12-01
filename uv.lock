@@ -536,11 +536,11 @@ wheels = [
 
 [[package]]
 name = "typed-settings"
-version = "25.2.0"
+version = "25.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b6/78/583bd0698e81d778ed1166d6c69ea10f442f1aba5ad29e5ce671ad1ce535/typed_settings-25.2.0.tar.gz", hash = "sha256:dcf3d95b51a1132f72d53f2f2ddf448052d1f15b0a84fe38f36432346beeae0b", size = 3489486, upload-time = "2025-10-26T20:53:55.663Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/30/19/a8155d9f411ed7cb4a5f510a6c37ac09ea6065542c597c23d0a88ec2fbed/typed_settings-25.3.0.tar.gz", hash = "sha256:865eb52c3184f467705645a1e58db9d719e08b9d7957448a2ad8cbbc22ed21a6", size = 3492969, upload-time = "2025-11-29T22:10:25.768Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d8/1d/4311c0e315b077d6d6bf0aee0b83e5a149c9991fa7cc8174f512afa86afe/typed_settings-25.2.0-py3-none-any.whl", hash = "sha256:66887a8f8d6a97eb1ce1827e310cc80bb4f314e3f9b99143f7386c5bf52e66c0", size = 62896, upload-time = "2025-10-26T20:53:53.554Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/9e/d01ef2bed8e995bbdeeb5307a571729a10545de4a6f8f06d9175fc7a1978/typed_settings-25.3.0-py3-none-any.whl", hash = "sha256:8fe578c84ae2e44f6e8bdde256d2449fbff45f47dca3c4092aeee03900efc12c", size = 63962, upload-time = "2025-11-29T22:10:23.77Z" },
 ]
 
 [package.optional-dependencies]
