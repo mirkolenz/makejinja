@@ -181,7 +181,7 @@ class Config:
             Path to a directory containing template files or a single template file.
             It is passed to Jinja's [FileSystemLoader](https://jinja.palletsprojects.com/en/3.1.x/api/#jinja2.FileSystemLoader) when creating the environment.
             **Note:** This option may be passed multiple times to pass a list of values.
-            If a template exists in multiple inputs, the last value with be used.
+            If a template exists in multiple inputs, the first matching template in the provided order will be used.
         """,
     )
     output: Path = ts.option(
