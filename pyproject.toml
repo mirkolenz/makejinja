@@ -70,8 +70,8 @@ build-backend = "setuptools.build_meta"
 [tool.uv]
 default-groups = ["test", "docs"]
 
-[tool.pytest.ini_options]
-addopts = "--cov makejinja --cov-report term-missing"
+[tool.pytest]
+addopts = ["--cov=makejinja", "--cov-report=term-missing"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
