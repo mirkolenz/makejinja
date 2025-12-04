@@ -10,11 +10,11 @@ from inspect import signature
 from pathlib import Path
 from typing import Any
 
+import rich_click as click
 import yaml
 from jinja2 import BaseLoader, ChoiceLoader, DictLoader, Environment, FileSystemLoader
 from jinja2.environment import load_extensions
 from jinja2.utils import import_string
-from rich import print
 
 from makejinja.config import Config
 from makejinja.plugin import Data, MutableData, PathFilter, Plugin
@@ -26,8 +26,8 @@ STDIN_PATH = Path("/dev/stdin").resolve()
 
 
 def log(message: str, config: Config) -> None:
-    if not config.quiet and config.output != STDOUT_PATH:
-        print(message)
+    if not config.quiet:
+        click.echo(message, err=True)
 
 
 def exec(cmd: str) -> None:

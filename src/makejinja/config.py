@@ -38,9 +38,10 @@ class Undefined(Enum):
 
 def _exclude_patterns_validator(instance, attribute, value) -> None:
     if any("**" in pattern for pattern in value):
-        # raise ValueError("The recursive wildcard `**` is not supported by `exclude_patterns`.")
-        print(
+        # todo: for next major release, raise ValueError instead of printing a warning
+        click.echo(
             "The recursive wildcard `**` is not supported by `exclude_patterns` (it acts like non-recursive `*`).",
+            err=True,
         )
 
 
