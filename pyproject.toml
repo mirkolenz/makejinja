@@ -64,8 +64,8 @@ test = ["pytest>=9,<10", "pytest-cov>=7,<8"]
 docs = ["pdoc>=16,<17"]
 
 [build-system]
-requires = ["setuptools>=61"]
-build-backend = "setuptools.build_meta"
+requires = ["uv-build>=0.9,<1"]
+build-backend = "uv_build"
 
 [tool.uv]
 default-groups = ["test", "docs"]
