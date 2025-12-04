@@ -254,19 +254,38 @@ def from_yaml(path: Path) -> dict[str, Any]:
 
     with path.open("rb") as fp:
         for doc in yaml.safe_load_all(fp):
-            data |= doc
+            if isinstance(doc, abc.Mapping):
+                data |= doc
+            else:
+                raise TypeError(
+                    f"Expected YAML documents in '{path}' to be mappings but found {type(doc).__name__}"
+                )
 
     return data
 
 
 def from_toml(path: Path) -> dict[str, Any]:
     with path.open("rb") as fp:
-        return tomllib.load(fp)
+        data = tomllib.load(fp)
+
+    if isinstance(data, abc.Mapping):
+        return dict(data)
+
+    raise TypeError(
+        f"Expected TOML documents in '{path}' to be mappings but found {type(data).__name__}"
+    )
 
 
 def from_json(path: Path) -> dict[str, Any]:
     with path.open("rb") as fp:
-        return json.load(fp)
+        data = json.load(fp)
+
+    if isinstance(data, abc.Mapping):
+        return data
+
+    raise TypeError(
+        f"Expected JSON documents in '{path}' to be mappings but found {type(data).__name__}"
+    )
 
 
 DATA_LOADERS: dict[str, abc.Callable[[Path], dict[str, Any]]] = {
