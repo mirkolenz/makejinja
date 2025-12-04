@@ -15,8 +15,8 @@ let
   pdocRepo = fetchFromGitHub {
     owner = "mitmproxy";
     repo = "pdoc";
-    tag = "v15.0.1";
-    hash = "sha256-HDrDGnK557EWbBQtsvDzTst3oV0NjLRm4ilXaxd6/j8=";
+    tag = "v16.0.0";
+    hash = "sha256-9amp6CWYIcniVfdlmPKYuRFR7B5JJtuMlOoDxpfvvJA=";
   };
   workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
   pyprojectOverlay = workspace.mkPyprojectOverlay {
