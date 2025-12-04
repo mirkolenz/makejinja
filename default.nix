@@ -22,7 +22,7 @@ let
   pyprojectOverlay = workspace.mkPyprojectOverlay {
     sourcePreference = "wheel";
   };
-  pyprojectOverrides = final: prev: {
+  packageOverlay = final: prev: {
     makejinja = prev.makejinja.overrideAttrs (old: {
       meta = (old.meta or { }) // {
         mainProgram = "makejinja";
@@ -113,7 +113,7 @@ in
     lib.composeManyExtensions [
       pyproject-build-systems.overlays.wheel
       pyprojectOverlay
-      pyprojectOverrides
+      packageOverlay
     ]
   );
 }
