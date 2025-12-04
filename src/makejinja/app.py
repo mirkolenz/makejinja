@@ -231,7 +231,7 @@ def init_jinja_env(
         line_comment_prefix=config.prefix.line_comment,
         trim_blocks=config.whitespace.trim_blocks,
         lstrip_blocks=config.whitespace.lstrip_blocks,
-        newline_sequence=config.whitespace.newline_sequence,  # type: ignore
+        newline_sequence=config.whitespace.newline_sequence,
         keep_trailing_newline=config.whitespace.keep_trailing_newline,
         optimized=config.internal.optimized,
         undefined=config.undefined.value,

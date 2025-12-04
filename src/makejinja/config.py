@@ -10,9 +10,7 @@ from jinja2 import (
     DebugUndefined,
     StrictUndefined,
 )
-from jinja2 import (
-    Undefined as DefaultUndefined,
-)
+from jinja2 import Undefined as DefaultUndefined
 from jinja2.defaults import (
     BLOCK_END_STRING,
     BLOCK_START_STRING,
@@ -24,6 +22,7 @@ from jinja2.defaults import (
     VARIABLE_END_STRING,
     VARIABLE_START_STRING,
 )
+from rich_click.utils import OptionGroupDict
 
 __all__ = ["Config", "Delimiter", "Internal", "Prefix", "Whitespace", "Undefined"]
 frozendict = immutables.Map
@@ -385,7 +384,7 @@ class Config:
     internal: Internal = Internal()
 
 
-OPTION_GROUPS = {
+OPTION_GROUPS: dict[str, list[OptionGroupDict]] = {
     "makejinja": [
         {
             "name": "Input/Output",
