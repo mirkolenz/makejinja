@@ -73,9 +73,5 @@ default-groups = ["test", "docs"]
 [tool.pytest.ini_options]
 addopts = "--cov makejinja --cov-report term-missing"
 
-[tool.ruff.lint]
-select = ["E", "W", "F", "B", "UP"]
-ignore = ["E501"]
-
 [tool.ruff.lint.pydocstyle]
 convention = "google"
