@@ -34,7 +34,7 @@ def exec(cmd: str) -> None:
     subprocess.run(cmd, shell=True, check=True)
 
 
-def makejinja(config: Config):
+def makejinja(config: Config) -> None:
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/)."""
 
     for cmd in config.exec_pre:
