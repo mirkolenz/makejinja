@@ -120,27 +120,12 @@ wheels = [
 ]
 
 [[package]]
-name = "immutables"
-version = "0.21"
+name = "frozendict"
+version = "2.4.7"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/69/41/0ccaa6ef9943c0609ec5aa663a3b3e681c1712c1007147b84590cec706a0/immutables-0.21.tar.gz", hash = "sha256:b55ffaf0449790242feb4c56ab799ea7af92801a0a43f9e2f4f8af2ab24dfc4a", size = 89008, upload-time = "2024-10-10T00:55:01.434Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/90/b2/2a3d1374b7780999d3184e171e25439a8358c47b481f68be883c14086b4c/frozendict-2.4.7.tar.gz", hash = "sha256:e478fb2a1391a56c8a6e10cc97c4a9002b410ecd1ac28c18d780661762e271bd", size = 317082, upload-time = "2025-11-11T22:40:14.251Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4d/f9/0c46f600702b815182212453f5514c0070ee168b817cdf7c3767554c8489/immutables-0.21-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:ef1ed262094b755903122c3c3a83ad0e0d5c3ab7887cda12b2fe878769d1ee0d", size = 31885, upload-time = "2024-10-10T00:54:19.406Z" },
-    { url = "https://files.pythonhosted.org/packages/29/34/7608d2eab6179aa47e8f59ab0fbd5b3eeb2333d78c9dc2da0de8de4ed322/immutables-0.21-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:ce604f81d9d8f26e60b52ebcb56bb5c0462c8ea50fb17868487d15f048a2f13e", size = 31537, upload-time = "2024-10-10T00:54:20.998Z" },
-    { url = "https://files.pythonhosted.org/packages/f7/52/cb9e2bb7a69338155ffabbd2f993c968c750dd2d5c6c6eaa6ebb7bfcbdfa/immutables-0.21-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b48b116aaca4500398058b5a87814857a60c4cb09417fecc12d7da0f5639b73d", size = 104270, upload-time = "2024-10-10T00:54:21.912Z" },
-    { url = "https://files.pythonhosted.org/packages/0f/a4/25df835a9b9b372a4a869a8a1ac30a32199f2b3f581ad0e249f7e3d19eed/immutables-0.21-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dad7c0c74b285cc0e555ec0e97acbdc6f1862fcd16b99abd612df3243732e741", size = 104864, upload-time = "2024-10-10T00:54:22.956Z" },
-    { url = "https://files.pythonhosted.org/packages/4a/51/b548fbc657134d658e179ee8d201ae82d9049aba5c3cb2d858ed2ecb7e3f/immutables-0.21-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:e44346e2221a5a676c880ca8e0e6429fa24d1a4ae562573f5c04d7f2e759b030", size = 99733, upload-time = "2024-10-10T00:54:23.99Z" },
-    { url = "https://files.pythonhosted.org/packages/47/db/d7b1e0e88faf07fe9a88579a86f58078a9a37fff871f4b3dbcf28cad9a12/immutables-0.21-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:8b10139b529a460e53fe8be699ebd848c54c8a33ebe67763bcfcc809a475a26f", size = 101698, upload-time = "2024-10-10T00:54:25.734Z" },
-    { url = "https://files.pythonhosted.org/packages/69/2d/6fe42a1a053dd8cfb9f45e91d5246522637c7287dc6bd347f67aedf7aedb/immutables-0.21-cp312-cp312-win32.whl", hash = "sha256:fc512d808662614feb17d2d92e98f611d69669a98c7af15910acf1dc72737038", size = 30977, upload-time = "2024-10-10T00:54:27.436Z" },
-    { url = "https://files.pythonhosted.org/packages/63/45/d062aca6971e99454ce3ae42a7430037227fee961644ed1f8b6c9b99e0a5/immutables-0.21-cp312-cp312-win_amd64.whl", hash = "sha256:461dcb0f58a131045155e52a2c43de6ec2fe5ba19bdced6858a3abb63cee5111", size = 35088, upload-time = "2024-10-10T00:54:28.388Z" },
-    { url = "https://files.pythonhosted.org/packages/5e/db/60da6f5a3c3f64e0b3940c4ad86e1971d9d2eb8b13a179c26eda5ec6a298/immutables-0.21-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:79674b51aa8dd983f9ac55f7f67b433b1df84a6b4f28ab860588389a5659485b", size = 31922, upload-time = "2024-10-10T00:54:29.305Z" },
-    { url = "https://files.pythonhosted.org/packages/9b/89/5420f1d16a652024fcccc9c07d46d4157fcaf33ff37c82412c83fc16ef36/immutables-0.21-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:93c8350f8f7d0d9693f708229d9d0578e6f3b785ce6da4bced1da97137aacfad", size = 31552, upload-time = "2024-10-10T00:54:30.282Z" },
-    { url = "https://files.pythonhosted.org/packages/d2/d0/a5fb7c164ddb298ec37537e618b70dfa30c7cae9fac01de374c36489cbc9/immutables-0.21-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:583d2a63e444ce1538cc2bda56ae1f4a1a11473dbc0377c82b516bc7eec3b81e", size = 104334, upload-time = "2024-10-10T00:54:31.284Z" },
-    { url = "https://files.pythonhosted.org/packages/f3/a5/5fda0ee4a261a85124011ac0750fec678f00e1b2d4a5502b149a3b4d86d9/immutables-0.21-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b274a52da9b106db55eceb93fc1aea858c4e6f4740189e3548e38613eafc2021", size = 104898, upload-time = "2024-10-10T00:54:32.295Z" },
-    { url = "https://files.pythonhosted.org/packages/93/fa/d46bfe92f2c66d35916344176ff87fa839aac9c16849652947e722b7a15f/immutables-0.21-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:338bede057250b33716a3e4892e15df0bf5a5ddbf1d67ead996b3e680b49ef9e", size = 99966, upload-time = "2024-10-10T00:54:34.046Z" },
-    { url = "https://files.pythonhosted.org/packages/d7/f5/2a19e2e095f7a39d8d77dcc10669734d2d99773ce00c99bdcfeeb7d714e6/immutables-0.21-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:8781c89583b68f604cf30f0978b722165824c3075888639fde771bf1a3e12dc0", size = 101773, upload-time = "2024-10-10T00:54:35.851Z" },
-    { url = "https://files.pythonhosted.org/packages/86/80/5b6ee53f836cf2067ced997efbf2ce20890627f150c3089ea50cf607e783/immutables-0.21-cp313-cp313-win32.whl", hash = "sha256:e97ea83befad873712f283c0cccd630f70cba753e207b4868af28d5b85e9dc54", size = 30988, upload-time = "2024-10-10T00:54:37.618Z" },
-    { url = "https://files.pythonhosted.org/packages/ff/07/f623e6da78368fc0b1772f4877afbf60f34c4cc93f1a8f1006507afa21ec/immutables-0.21-cp313-cp313-win_amd64.whl", hash = "sha256:cfcb23bd898f5a4ef88692b42c51f52ca7373a35ba4dcc215060a668639eb5da", size = 35147, upload-time = "2024-10-10T00:54:38.558Z" },
+    { url = "https://files.pythonhosted.org/packages/38/74/f94141b38a51a553efef7f510fc213894161ae49b88bffd037f8d2a7cb2f/frozendict-2.4.7-py3-none-any.whl", hash = "sha256:972af65924ea25cf5b4d9326d549e69a9a4918d8a76a9d3a7cd174d98b237550", size = 16264, upload-time = "2025-11-11T22:40:12.836Z" },
 ]
 
 [[package]]
@@ -169,7 +154,7 @@ name = "makejinja"
 version = "2.8.1"
 source = { editable = "." }
 dependencies = [
-    { name = "immutables" },
+    { name = "frozendict" },
     { name = "jinja2" },
     { name = "pyyaml" },
     { name = "rich-click" },
@@ -187,7 +172,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "immutables", specifier = ">=0.20,<1" },
+    { name = "frozendict", specifier = ">=2,<3" },
     { name = "jinja2", specifier = ">=3,<4" },
     { name = "pyyaml", specifier = ">=6,<7" },
     { name = "rich-click", specifier = ">=1,<2" },

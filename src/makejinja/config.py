@@ -2,9 +2,9 @@ from collections import abc
 from enum import Enum
 from pathlib import Path
 
-import immutables
 import rich_click as click
 import typed_settings as ts
+from frozendict import frozendict
 from jinja2 import (
     ChainableUndefined,
     DebugUndefined,
@@ -25,7 +25,6 @@ from jinja2.defaults import (
 from rich_click.utils import OptionGroupDict
 
 __all__ = ["Config", "Delimiter", "Internal", "Prefix", "Whitespace", "Undefined"]
-frozendict = immutables.Map
 
 
 class Undefined(Enum):
