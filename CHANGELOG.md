@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.8.2](https://github.com/mirkolenz/makejinja/compare/v2.8.1...v2.8.2) (2025-12-05)
+
+### Bug Fixes
+
+* **app:** verify supplied data is a mapping ([133ebe6](https://github.com/mirkolenz/makejinja/commit/133ebe6158872effb4c826234b5e45662eadadce))
+* **build:** drop support for python 3.11 ([3b83516](https://github.com/mirkolenz/makejinja/commit/3b835167f733c75934411ec7c864438d63596765))
+* **build:** switch from immutables to frozendict ([bdb843f](https://github.com/mirkolenz/makejinja/commit/bdb843fdf68245d7b979f5ca3c09b2d21553e959))
+* **build:** switch from setuptools to uv-build ([6e4573d](https://github.com/mirkolenz/makejinja/commit/6e4573dd69266ee4a433e3c7561ce0fafd3edb41))
+* **logging:** use stderr instead of stdout ([667a0ae](https://github.com/mirkolenz/makejinja/commit/667a0ae4c4856394554f42632d42bbbd0eae22a7))
+* **typing:** enforce rich option group types ([1499d15](https://github.com/mirkolenz/makejinja/commit/1499d15dcfde5d581a987f7ebab32af7729226bf))
+
 ## [2.8.1](https://github.com/mirkolenz/makejinja/compare/v2.8.0...v2.8.1) (2025-07-28)
 
 ### Bug Fixes
