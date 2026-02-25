@@ -59,22 +59,12 @@
           config,
           ...
         }:
-        let
-          inherit
-            (pkgs.callPackage ./default.nix {
-              inherit (inputs) uv2nix pyproject-nix pyproject-build-systems;
-            })
-            pythonSet
-            workspace
-            mkApplication
-            ;
-        in
         {
           overlayAttrs = {
             inherit (config.packages) makejinja;
           };
-          checks = pythonSet.makejinja.passthru.tests // {
-            inherit (pythonSet.makejinja.passthru) docs;
+          checks = config.packages.makejinja.passthru.tests // {
+            inherit (config.packages.makejinja.passthru) docs;
           };
           treefmt = {
             projectRootFile = "flake.nix";
@@ -85,11 +75,10 @@
             };
           };
           packages = {
-            inherit (pythonSet.makejinja.passthru) docs;
+            inherit (config.packages.makejinja.passthru) docs;
             default = config.packages.makejinja;
-            makejinja = mkApplication {
-              venv = pythonSet.mkVirtualEnv "makejinja-env" workspace.deps.optionals;
-              package = pythonSet.makejinja;
+            makejinja = pkgs.callPackage ./default.nix {
+              inherit (inputs) uv2nix pyproject-nix pyproject-build-systems;
             };
             docker = pkgs.dockerTools.streamLayeredImage {
               name = "makejinja";
