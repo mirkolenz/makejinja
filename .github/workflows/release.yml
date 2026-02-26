@@ -33,7 +33,7 @@ jobs:
         id: semanticrelease
         with:
           uv-publish: false
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: ${{ steps.semanticrelease.outputs.released == 'true' }}
         with:
           name: uv-build
@@ -78,7 +78,7 @@ jobs:
       name: release
       url: https://pypi.org/project/makejinja/${{needs.release.outputs.version}}/
     steps:
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: uv-build
           path: ./dist
