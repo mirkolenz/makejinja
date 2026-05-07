@@ -15,7 +15,7 @@ jobs:
         with:
           extra-conf: |
             accept-flake-config = true
-      - uses: cachix/cachix-action@v16
+      - uses: cachix/cachix-action@v17
         with:
           name: mirkolenz
           authToken: ${{ secrets.CACHIX_TOKEN }}
