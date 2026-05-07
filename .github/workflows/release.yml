@@ -95,7 +95,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ needs.release.outputs.git-head }}
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: DeterminateSystems/nix-installer-action@v22
         with:
           extra-conf: |
