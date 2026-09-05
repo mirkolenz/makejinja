@@ -186,7 +186,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3,<4" },
     { name = "pyyaml", specifier = ">=6,<7" },
     { name = "rich-click", specifier = ">=1,<2" },
-    { name = "typed-settings", extras = ["attrs", "cattrs", "click"], specifier = ">=23,<26" },
+    { name = "typed-settings", extras = ["attrs", "cattrs", "click"], specifier = ">=26,<27" },
 ]
 
 [package.metadata.requires-dev]
@@ -436,11 +436,11 @@ wheels = [
 
 [[package]]
 name = "typed-settings"
-version = "25.3.0"
+version = "26.0.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/30/19/a8155d9f411ed7cb4a5f510a6c37ac09ea6065542c597c23d0a88ec2fbed/typed_settings-25.3.0.tar.gz", hash = "sha256:865eb52c3184f467705645a1e58db9d719e08b9d7957448a2ad8cbbc22ed21a6", size = 3492969, upload-time = "2025-11-29T22:10:25.768Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f0/e0/e218ac603b238b8860f4282abbb74a842a9c645fe1138283c2ca3115b86b/typed_settings-26.0.0.tar.gz", hash = "sha256:88d0da33e440a0419f194e24b92ecce4c12e7c165b5b96697fe4140c83d386ea", size = 3525263, upload-time = "2026-09-02T20:32:30.457Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8b/9e/d01ef2bed8e995bbdeeb5307a571729a10545de4a6f8f06d9175fc7a1978/typed_settings-25.3.0-py3-none-any.whl", hash = "sha256:8fe578c84ae2e44f6e8bdde256d2449fbff45f47dca3c4092aeee03900efc12c", size = 63962, upload-time = "2025-11-29T22:10:23.77Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/52/c293cdd51731f23ddbc1764974934f6ac2ae4575e594fd9d8edcfb35b892/typed_settings-26.0.0-py3-none-any.whl", hash = "sha256:5ab31409af33d7912f02df51b38d66738e0dc990c042ce1b45a6b30dc9caba04", size = 65971, upload-time = "2026-09-02T20:32:31.905Z" },
 ]
 
 [package.optional-dependencies]
