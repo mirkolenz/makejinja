@@ -2,76 +2,76 @@
 name = "makejinja"
 version = "2.8.2"
 description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins"
-authors = [{ name = "Mirko Lenz", email = "mirko@mirkolenz.com" }]
 readme = "README.md"
+requires-python = ">=3.12,<4"
+license = "MIT"
+authors = [{ name = "Mirko Lenz", email = "mirko@mirkolenz.com" }]
 keywords = [
-    "jinja2",
-    "home-assistant",
-    "hassio",
-    "dashboard",
-    "lovelace",
-    "template",
-    "generator",
-    "cli",
-    "tool",
-    "library",
+  "cli",
+  "dashboard",
+  "generator",
+  "hassio",
+  "home-assistant",
+  "jinja2",
+  "library",
+  "lovelace",
+  "template",
+  "tool",
 ]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Environment :: Console",
-    "Framework :: Pytest",
-    "Intended Audience :: Developers",
-    "Intended Audience :: End Users/Desktop",
-    "Intended Audience :: System Administrators",
-    "License :: OSI Approved :: MIT License",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Programming Language :: Python :: 3",
-    "Topic :: File Formats",
-    "Topic :: Home Automation",
-    "Topic :: Software Development :: Code Generators",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: System :: Software Distribution",
-    "Topic :: System :: Systems Administration",
-    "Topic :: Text Processing :: Markup",
-    "Topic :: Utilities",
-    "Typing :: Typed",
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Framework :: Pytest",
+  "Intended Audience :: Developers",
+  "Intended Audience :: End Users/Desktop",
+  "Intended Audience :: System Administrators",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: File Formats",
+  "Topic :: Home Automation",
+  "Topic :: Software Development :: Code Generators",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Software Distribution",
+  "Topic :: System :: Systems Administration",
+  "Topic :: Text Processing :: Markup",
+  "Topic :: Utilities",
+  "Typing :: Typed",
 ]
-requires-python = ">=3.12,<4"
 dependencies = [
-    "frozendict>=2,<3",
-    "jinja2>=3,<4",
-    "pyyaml>=6,<7",
-    "rich-click>=1,<2",
-    "typed-settings[attrs,cattrs,click]>=23,<26",
+  "frozendict>=2,<3",
+  "jinja2>=3,<4",
+  "pyyaml>=6,<7",
+  "rich-click>=1,<2",
+  "typed-settings[attrs,cattrs,click]>=25,<27",
 ]
 
 [project.urls]
-Repository = "https://github.com/mirkolenz/makejinja"
-Homepage = "https://mirkolenz.github.io/makejinja/"
-Documentation = "https://mirkolenz.github.io/makejinja/makejinja/cli.html"
-Issues = "https://github.com/mirkolenz/makejinja/issues"
 Changelog = "https://github.com/mirkolenz/makejinja/releases"
+Documentation = "https://mirkolenz.github.io/makejinja/makejinja/cli.html"
+Homepage = "https://mirkolenz.github.io/makejinja/"
+Issues = "https://github.com/mirkolenz/makejinja/issues"
+Repository = "https://github.com/mirkolenz/makejinja"
 
 [project.scripts]
 makejinja = "makejinja.cli:makejinja_cli"
 
 [dependency-groups]
-test = ["pytest>=9,<10", "pytest-cov>=7,<8"]
 docs = ["pdoc>=16,<17"]
+test = ["pytest>=9,<10", "pytest-cov>=7,<8"]
 
 [build-system]
-requires = ["uv-build>=0.9,<1"]
+requires = ["uv-build>=0.12,<1"]
 build-backend = "uv_build"
-
-[tool.uv]
-default-groups = ["test", "docs"]
 
 [tool.pytest]
 addopts = ["--cov=makejinja", "--cov-report=term-missing"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.uv]
+default-groups = ["test", "docs"]
