@@ -112,7 +112,7 @@
             ];
             UV_PYTHON = lib.getExe pkgs.python3;
             shellHook = ''
-              uv sync --all-extras --locked
+              uv sync --all-extras
             '';
           };
         };
