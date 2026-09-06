@@ -39,7 +39,7 @@ Our comprehensive [Home Assistant example](https://github.com/mirkolenz/makejinj
 - **Multi-Source Data Integration**: Load variables from YAML, TOML, and Python files, with support for file-specific data sources and runtime variable injection.
 - **Custom Template Delimiters**: Configure Jinja delimiters (e.g., `<% %>` instead of `{{ }}`) to avoid conflicts with target file formats like Home Assistant, Kubernetes, or Terraform.
 - **Flexible Directory Processing**: Process multiple input directories with complex nested structures, preserving hierarchy while applying powerful template transformations.
-- **Extensible Plugin System**: Create custom [plugins](https://mirkolenz.github.io/makejinja/makejinja/plugin.html#Plugin) with filters, functions, and path filtering logic for specialized requirements.
+- **Extensible Plugin System**: Create custom [plugins](https://mirkolenz.github.io/makejinja/makejinja/plugin.html#Plugin) with filters, functions, data, tests, policies, extensions, and path filtering logic for specialized requirements.
 - **Production-Ready**: Comprehensive CLI interface, configuration file support, and Python library API for seamless workflow integration.
 
 ## Use Cases

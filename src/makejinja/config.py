@@ -306,10 +306,11 @@ class Config:
         help="""
             Use custom Python code to adjust the used Jinja environment to your needs.
             The specified Python file should export a **class** containing a subset of the following functions:
-            `filters`, `globals`, `data`, and `extensions`.
-            In addition, you may add an `__init__` function that receives two positional arguments:
-            the created Jinja environment and the data parsed from the files supplied to makejinja's `data` option.
-            This allows you to apply arbitrary logic to makejinja.
+            `filters`, `functions`, `data`, `tests`, `policies`, `extensions`, and `path_filters`.
+            The `globals` method is deprecated, use `functions` and `data` instead.
+            An optional `__init__` method can receive any subset of the keyword arguments `env` (or `environment`), `data`, and `config`.
+            These provide the Jinja environment, loaded global data, and makejinja configuration.
+            Before templates are loaded, the constructor can configure environment features such as `finalize`, custom loaders, and bytecode caching.
             An import path can be specified either in dotted notation (`your.custom.Plugin`)
             or with a colon as object delimiter (`your.custom:Plugin`).
             **Note:** This option may be passed multiple times to pass a list of values.

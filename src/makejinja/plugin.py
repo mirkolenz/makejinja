@@ -25,34 +25,51 @@ type PathFilters = abc.Sequence[PathFilter]
 
 
 class Plugin(Protocol):
-    """Extend the functionality of makejinja with a plugin implementing a subset of this protocol."""
+    """Extend makejinja by implementing any subset of the plugin methods.
+
+    The optional constructor receives supported parameters by keyword.
+    It may request `env` (or `environment`), `data`, and `config`.
+    Configure the environment before loading any templates, including changes to
+    `finalize`, custom loaders, or bytecode caching.
+    """
 
     def __init__(self, *, env: Environment, data: Data, config: Config) -> None:
         pass
 
     def functions(self) -> Functions:
+        """Return global template callables registered by their function names."""
         return []
 
     def data(self) -> Data:
+        """Return global template values that override existing values."""
         return {}
 
     def filters(self) -> Filters:
+        """Return template filters registered by their function names."""
         return []
 
     def tests(self) -> Tests:
+        """Return template tests registered by their function names."""
         return []
 
     def policies(self) -> Policies:
+        """Return overrides for Jinja environment policies."""
         return {}
 
     def extensions(self) -> Extensions:
+        """Return Jinja extension classes to register on the environment."""
         return []
 
     def path_filters(self) -> PathFilters:
+        """Return predicates that exclude discovered paths when they return false."""
         return []
 
-    # Deprecated: Use functions() and data() instead
     def globals(self) -> Functions:
+        """Return global callables.
+
+        Deprecated:
+            Use `functions()` and `data()` instead.
+        """
         return []
 
 
