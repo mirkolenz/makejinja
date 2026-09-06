@@ -27,7 +27,4 @@ class Plugin(makejinja.plugin.Plugin):
         return [self._remove_secrets]
 
     def _remove_secrets(self, path: Path) -> bool:
-        if "secret" in path.stem:
-            return False
-
-        return True
+        return "secret" not in path.stem

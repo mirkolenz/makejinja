@@ -9,18 +9,19 @@ from makejinja.config import Config
 
 __all__ = ["Plugin"]
 
-Extensions = abc.Sequence[type[Extension]]
-Filter = abc.Callable[[Any], Any]
-Filters = abc.Sequence[Filter]
-Function = abc.Callable[..., Any]
-Functions = abc.Sequence[Function]
-Test = abc.Callable[..., Any]
-Tests = abc.Sequence[Test]
-Policies = abc.Mapping[str, Any]
-MutableData = abc.MutableMapping[str, Any]
-Data = abc.Mapping[str, Any]
-PathFilter = abc.Callable[[Path], bool]
-PathFilters = abc.Sequence[PathFilter]
+
+type Extensions = abc.Sequence[type[Extension]]
+type Filter = abc.Callable[..., Any]
+type Filters = abc.Sequence[Filter]
+type Function = abc.Callable[..., Any]
+type Functions = abc.Sequence[Function]
+type Test = abc.Callable[..., Any]
+type Tests = abc.Sequence[Test]
+type Policies = abc.Mapping[str, Any]
+type MutableData = abc.MutableMapping[str, Any]
+type Data = abc.Mapping[str, Any]
+type PathFilter = abc.Callable[[Path], bool]
+type PathFilters = abc.Sequence[PathFilter]
 
 
 class Plugin(Protocol):

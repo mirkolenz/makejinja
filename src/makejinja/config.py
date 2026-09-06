@@ -1,6 +1,7 @@
 from collections import abc
 from enum import Enum
 from pathlib import Path
+from typing import Literal
 
 import rich_click as click
 import typed_settings as ts
@@ -24,7 +25,7 @@ from jinja2.defaults import (
 )
 from rich_click.utils import OptionGroupDict
 
-__all__ = ["Config", "Delimiter", "Internal", "Prefix", "Whitespace", "Undefined"]
+__all__ = ["Config", "Delimiter", "Internal", "Prefix", "Undefined", "Whitespace"]
 
 
 class Undefined(Enum):
@@ -152,7 +153,7 @@ class Whitespace:
             If this is set to `True`, leading spaces and tabs are stripped from the start of a line to a block.
         """,
     )
-    newline_sequence: str = ts.option(
+    newline_sequence: Literal["\n", "\r\n", "\r"] = ts.option(
         default=NEWLINE_SEQUENCE,
         click={"param_decls": "--newline-sequence"},
         help="""
@@ -206,7 +207,7 @@ class Config:
         """,
     )
     exclude_patterns: tuple[str, ...] = ts.option(
-        default=tuple(),
+        default=(),
         click={"param_decls": ("--exclude-pattern", "--exclude", "-E")},
         validator=_exclude_patterns_validator,
         help="""
@@ -250,7 +251,7 @@ class Config:
         """,
     )
     data: tuple[Path, ...] = ts.option(
-        default=tuple(),
+        default=(),
         click={
             "type": click.Path(exists=True, path_type=Path),
             "param_decls": ("--data", "-d"),
@@ -290,7 +291,7 @@ class Config:
         },
     )
     loaders: tuple[str, ...] = ts.option(
-        default=tuple(),
+        default=(),
         click={
             "param_decls": ("--loader", "-l"),
             "hidden": True,
@@ -298,7 +299,7 @@ class Config:
         help="Deprecated, use `--plugin` instead.",
     )
     plugins: tuple[str, ...] = ts.option(
-        default=tuple(),
+        default=(),
         click={
             "param_decls": ("--plugin", "-p"),
         },
@@ -327,7 +328,7 @@ class Config:
         """,
     )
     extensions: tuple[str, ...] = ts.option(
-        default=tuple(),
+        default=(),
         click={"param_decls": ("--extension", "-e")},
         help="""
             List of Jinja extensions to use as strings of import paths.
@@ -346,13 +347,13 @@ class Config:
         ),
     )
     exec_pre: tuple[str, ...] = ts.option(
-        default=tuple(),
+        default=(),
         help="""
             Shell commands to execute before rendering.
         """,
     )
     exec_post: tuple[str, ...] = ts.option(
-        default=tuple(),
+        default=(),
         help="""
             Shell commands to execute after rendering.
         """,

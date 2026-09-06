@@ -8,7 +8,7 @@ import tomllib
 from collections import abc
 from inspect import signature
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import rich_click as click
 import yaml
@@ -17,7 +17,7 @@ from jinja2.environment import load_extensions
 from jinja2.utils import import_string
 
 from makejinja.config import Config
-from makejinja.plugin import Data, MutableData, PathFilter, Plugin
+from makejinja.plugin import Data, Functions, MutableData, PathFilter, Plugin
 
 __all__ = ["makejinja"]
 
@@ -244,7 +244,7 @@ def init_jinja_env(
     )
 
     env.globals.update(data)
-    env.globals["env"] = os.environ
+    cast(dict[str, Any], env.globals)["env"] = os.environ
 
     return env
 
@@ -266,14 +266,7 @@ def from_yaml(path: Path) -> dict[str, Any]:
 
 def from_toml(path: Path) -> dict[str, Any]:
     with path.open("rb") as fp:
-        data = tomllib.load(fp)
-
-    if isinstance(data, abc.Mapping):
-        return dict(data)
-
-    raise TypeError(
-        f"Expected TOML documents in '{path}' to be mappings but found {type(data).__name__}"
-    )
+        return tomllib.load(fp)
 
 
 def from_json(path: Path) -> dict[str, Any]:
@@ -281,7 +274,7 @@ def from_json(path: Path) -> dict[str, Any]:
         data = json.load(fp)
 
     if isinstance(data, abc.Mapping):
-        return data
+        return dict(data)
 
     raise TypeError(
         f"Expected JSON documents in '{path}' to be mappings but found {type(data).__name__}"
@@ -371,6 +364,10 @@ def load_file_data(template_name: str, config: Config) -> dict[str, Any]:
     return file_data
 
 
+def _named_functions(functions: Functions) -> dict[str, Any]:
+    return {cast(Any, func).__name__: func for func in functions}
+
+
 def load_plugin(
     plugin_name: str, env: Environment, data: Data, config: Config
 ) -> Plugin:
@@ -390,10 +387,10 @@ def load_plugin(
     plugin = cls(**params)
 
     if hasattr(plugin, "globals"):
-        env.globals.update({func.__name__: func for func in plugin.globals()})
+        env.globals.update(_named_functions(plugin.globals()))
 
     if hasattr(plugin, "functions"):
-        env.globals.update({func.__name__: func for func in plugin.functions()})
+        env.globals.update(_named_functions(plugin.functions()))
 
     if hasattr(plugin, "data"):
         env.globals.update(plugin.data())
@@ -402,10 +399,10 @@ def load_plugin(
         load_extensions(env, plugin.extensions())
 
     if hasattr(plugin, "filters"):
-        env.filters.update({func.__name__: func for func in plugin.filters()})
+        env.filters.update(_named_functions(plugin.filters()))
 
     if hasattr(plugin, "tests"):
-        env.tests.update({func.__name__: func for func in plugin.tests()})
+        env.tests.update(_named_functions(plugin.tests()))
 
     if hasattr(plugin, "policies"):
         env.policies.update(plugin.policies())

@@ -16,4 +16,4 @@ from .app import makejinja
 
 loader = plugin
 
-__all__ = ["makejinja", "config", "plugin", "loader", "cli"]
+__all__ = ["cli", "config", "loader", "makejinja", "plugin"]

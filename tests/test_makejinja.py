@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
+import typed_settings as ts
 from click.testing import CliRunner
 
 
@@ -150,3 +151,35 @@ def test_nested_directory_processing(test_run: MakejinjaPaths):
     assert len(content.strip()) > 0, (
         f"Nested template should have content but {nested_file} is empty"
     )
+
+
+def test_settings_conversion(tmp_path: Path) -> None:
+    """Convert nested settings and collection values with the default converter."""
+    from makejinja.config import Config, Undefined
+
+    config = ts.load_settings(
+        Config,
+        loaders=[
+            ts.loaders.DictLoader(
+                {
+                    "inputs": [str(tmp_path)],
+                    "output": str(tmp_path / "output"),
+                    "undefined": "strict",
+                    "jinja_suffix": None,
+                    "quiet": "true",
+                    "data_vars": {"nested.value": "42"},
+                    "file_data": {"example.jinja": [str(tmp_path / "data.json")]},
+                    "whitespace": {"newline_sequence": "\r\n"},
+                }
+            )
+        ],
+    )
+
+    assert config.inputs == (tmp_path,)
+    assert config.output == tmp_path / "output"
+    assert config.undefined is Undefined.strict
+    assert config.jinja_suffix is None
+    assert config.quiet is True
+    assert config.data_vars == {"nested.value": "42"}
+    assert config.file_data == {"example.jinja": (tmp_path / "data.json",)}
+    assert config.whitespace.newline_sequence == "\r\n"

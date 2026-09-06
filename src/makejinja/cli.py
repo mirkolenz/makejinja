@@ -13,7 +13,7 @@ from .app import makejinja
 
 __all__: list[str] = []
 
-click.rich_click.USE_MARKDOWN = True
+click.rich_click.TEXT_MARKUP = "markdown"
 click.rich_click.OPTION_GROUPS = OPTION_GROUPS
 
 _ts_loaders = ts.default_loaders(
@@ -24,7 +24,7 @@ _ts_loaders = ts.default_loaders(
 @click.command("makejinja", context_settings={"help_option_names": ("--help", "-h")})
 @click.version_option(None, "--version", "-v")
 @ts.click_options(Config, _ts_loaders)
-def makejinja_cli(config: Config):
+def makejinja_cli(config: Config) -> None:
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
 
     Instead of passing CLI options, you can also write them to a file called `makejinja.toml` in your working directory.
