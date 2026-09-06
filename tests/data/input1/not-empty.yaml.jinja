@@ -1,2 +1,4 @@
+<% set words = ['not'] %>
+<% do words.append('empty') %>
 # Test file: Demonstrates custom Jinja delimiters
-# This file is << 'not empty' | upper >>
+# This file is << words | join(' ') | upper >>

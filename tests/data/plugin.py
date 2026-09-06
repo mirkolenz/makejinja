@@ -2,6 +2,8 @@ from collections import abc
 from pathlib import Path
 from urllib.parse import quote
 
+from jinja2.ext import ExprStmtExtension
+
 import makejinja
 
 
@@ -17,6 +19,9 @@ def getlang(value: str | abc.Mapping[str, str], lang: str, default_lang: str = "
 
 
 class Plugin(makejinja.plugin.Plugin):
+    def extensions(self) -> makejinja.plugin.Extensions:
+        return [ExprStmtExtension]
+
     def filters(self) -> makejinja.plugin.Filters:
         return [hassurl]
 

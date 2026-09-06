@@ -13,7 +13,6 @@ from typing import Any, cast
 import rich_click as click
 import yaml
 from jinja2 import BaseLoader, ChoiceLoader, DictLoader, Environment, FileSystemLoader
-from jinja2.environment import load_extensions
 from jinja2.utils import import_string
 
 from makejinja.config import Config
@@ -396,7 +395,8 @@ def load_plugin(
         env.globals.update(plugin.data())
 
     if hasattr(plugin, "extensions"):
-        load_extensions(env, plugin.extensions())
+        for extension in plugin.extensions():
+            env.add_extension(extension)
 
     if hasattr(plugin, "filters"):
         env.filters.update(_named_functions(plugin.filters()))
