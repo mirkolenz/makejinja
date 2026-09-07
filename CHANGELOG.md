@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.3](https://github.com/mirkolenz/makejinja/compare/v2.8.2...v2.8.3) (2026-09-07)
+
+### Bug Fixes
+
+* load extensions from custom plugins ([7e578c2](https://github.com/mirkolenz/makejinja/commit/7e578c29eab282c7b3027212d4ddefb4707d5e36))
+* modernize code and improve typing ([c5e8b27](https://github.com/mirkolenz/makejinja/commit/c5e8b27689281d5941dfc2c907c96827823b74ed))
+
 ## [2.8.2](https://github.com/mirkolenz/makejinja/compare/v2.8.1...v2.8.2) (2025-12-05)
 
 ### Bug Fixes

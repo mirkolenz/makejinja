@@ -2,10 +2,6 @@ version = 1
 revision = 3
 requires-python = ">=3.13, <4"
 
-[options]
-exclude-newer = "0001-01-01T00:00:00Z" # This has no effect and is included for backwards compatibility when using relative exclude-newer values.
-exclude-newer-span = "P3D"
-
 [[package]]
 name = "attrs"
 version = "26.1.0"
@@ -162,7 +158,7 @@ wheels = [
 
 [[package]]
 name = "makejinja"
-version = "2.8.2"
+version = "2.8.3"
 source = { editable = "." }
 dependencies = [
     { name = "frozendict" },
