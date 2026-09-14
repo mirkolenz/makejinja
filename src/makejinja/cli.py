@@ -23,7 +23,10 @@ _ts_loaders = ts.default_loaders(
 
 @click.command("makejinja", context_settings={"help_option_names": ("--help", "-h")})
 @click.version_option(None, "--version", "-v")
-@ts.click_options(Config, _ts_loaders)
+# Without reloading, `makejinja.toml` is resolved against the working directory at import
+# time. Collection options stay bound to it either way, as typed-settings injects their
+# import-time defaults as if they were passed on the command line.
+@ts.click_options(Config, _ts_loaders, reload_settings_on_invoke=True)
 def makejinja_cli(config: Config) -> None:
     """makejinja can be used to automatically generate files from [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/templates/).
 
