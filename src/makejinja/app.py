@@ -14,6 +14,7 @@ import rich_click as click
 import yaml
 from jinja2 import BaseLoader, ChoiceLoader, DictLoader, Environment, FileSystemLoader
 from jinja2.utils import import_string
+from typed_settings.dict_utils import set_path
 
 from makejinja.config import Config, DataNamespace
 from makejinja.plugin import Data, Functions, MutableData, PathFilter, Plugin
@@ -353,20 +354,6 @@ def dict_nested_setdefault(data: MutableData, keys: abc.Iterable[str]) -> Mutabl
     return data
 
 
-def dict_nested_set(data: MutableData, dotted_key: str, value: Any) -> None:
-    """Set a value in nested dicts, inserting empty dicts for missing entries.
-
-    >>> data = {}
-    >>> dict_nested_set(data, "key1.key2.key3", "value")
-    >>> data
-    {'key1': {'key2': {'key3': 'value'}}}
-    """
-
-    *parent_keys, final_key = dotted_key.split(".")
-
-    dict_nested_setdefault(data, parent_keys)[final_key] = value
-
-
 def load_data(config: Config) -> dict[str, Any]:
     data: dict[str, Any] = {}
 
@@ -384,7 +371,7 @@ def load_data(config: Config) -> dict[str, Any]:
             log(f"Skip unsupported data '{path}'", config)
 
     for key, value in config.data_vars.items():
-        dict_nested_set(data, key, value)
+        set_path(data, key, value)
 
     return data
 
