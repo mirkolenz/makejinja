@@ -155,7 +155,7 @@ def test_nested_directory_processing(test_run: MakejinjaPaths):
 
 def test_settings_conversion(tmp_path: Path) -> None:
     """Convert nested settings and collection values with the default converter."""
-    from makejinja.config import Config, Undefined
+    from makejinja.config import Config, DataNamespace, Undefined
 
     config = ts.load_settings(
         Config,
@@ -165,6 +165,7 @@ def test_settings_conversion(tmp_path: Path) -> None:
                     "inputs": [str(tmp_path)],
                     "output": str(tmp_path / "output"),
                     "undefined": "strict",
+                    "data_namespace": "stem",
                     "jinja_suffix": None,
                     "quiet": "true",
                     "data_vars": {"nested.value": "42"},
@@ -178,8 +179,65 @@ def test_settings_conversion(tmp_path: Path) -> None:
     assert config.inputs == (tmp_path,)
     assert config.output == tmp_path / "output"
     assert config.undefined is Undefined.strict
+    assert config.data_namespace is DataNamespace.stem
     assert config.jinja_suffix is None
     assert config.quiet is True
     assert config.data_vars == {"nested.value": "42"}
     assert config.file_data == {"example.jinja": (tmp_path / "data.json",)}
     assert config.whitespace.newline_sequence == "\r\n"
+
+
+@pytest.mark.parametrize(
+    ("template", "args", "expected"),
+    [
+        ("{{ name }},{{ hosting.provider }}", [], "beta,beta-host"),
+        (
+            "{{ alpha.name }},{{ beta_daten.hosting.provider }}",
+            ["--data-namespace", "stem"],
+            "alpha,beta-host",
+        ),
+        (
+            "{{ alpha.name }},{{ beta_daten.hosting.provider }}",
+            ["--data-namespace", "stem", "-D", "alpha.name=Override"],
+            "Override,beta-host",
+        ),
+        (
+            "{{ alpha.name }},{{ nested.beta_daten.hosting.provider }}",
+            ["--data-namespace", "path"],
+            "alpha,beta-host",
+        ),
+    ],
+)
+def test_data_namespace(
+    template: str, args: list[str], expected: str, tmp_path: Path
+) -> None:
+    """Namespace data files by their stem or path, keeping `data_vars` overrides on top."""
+    assert __package__ is not None
+    data_path = Path(__package__, "namespace", "data").resolve()
+    input_path = tmp_path / "input"
+    input_path.mkdir()
+    (input_path / "result.txt.jinja").write_text(template)
+
+    with pytest.MonkeyPatch.context() as m:
+        # Render from a directory without a `makejinja.toml` to get the documented defaults
+        m.chdir(tmp_path)
+
+        from makejinja.cli import makejinja_cli
+
+        CliRunner().invoke(
+            makejinja_cli,
+            [
+                "--input",
+                "input",
+                "--output",
+                "output",
+                "--data",
+                str(data_path),
+                "--undefined",
+                "strict",
+                *args,
+            ],
+            catch_exceptions=False,
+        )
+
+    assert (tmp_path / "output" / "result.txt").read_text().strip() == expected

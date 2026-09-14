@@ -15,7 +15,7 @@ import yaml
 from jinja2 import BaseLoader, ChoiceLoader, DictLoader, Environment, FileSystemLoader
 from jinja2.utils import import_string
 
-from makejinja.config import Config
+from makejinja.config import Config, DataNamespace
 from makejinja.plugin import Data, Functions, MutableData, PathFilter, Plugin
 
 __all__ = ["makejinja"]
@@ -288,52 +288,98 @@ DATA_LOADERS: dict[str, abc.Callable[[Path], dict[str, Any]]] = {
 }
 
 
-def collect_files(paths: abc.Iterable[Path], pattern: str = "**/*") -> list[Path]:
-    files = []
+def collect_files(paths: abc.Iterable[Path]) -> abc.Iterator[tuple[Path, Path]]:
+    """Find all files in the given paths, yielding them together with their relative path."""
 
     for path in paths:
         if path.is_dir():
-            files.extend(
-                file
-                for file in sorted(path.glob(pattern))
+            yield from (
+                (file, file.relative_to(path))
+                for file in sorted(path.glob("**/*"))
                 if not file.name.startswith(".") and file.is_file()
             )
-        elif path.is_file():
-            files.append(path)
 
-    return files
+        elif path.is_file():
+            yield path, Path(path.name)
+
+
+def to_identifier(name: str) -> str:
+    """Replace all characters that are invalid in a Python identifier with underscores.
+
+    Jinja looks up globals by name, so only identifiers are reachable from templates.
+
+    >>> to_identifier("my-hosting")
+    'my_hosting'
+    >>> to_identifier("2nd")
+    '_2nd'
+    """
+
+    # The `_` prefix isolates the rules for the first character, leaving a continuation check
+    identifier = "".join(char if f"_{char}".isidentifier() else "_" for char in name)
+
+    return identifier if identifier.isidentifier() else f"_{identifier}"
+
+
+def namespace_keys(
+    relative_path: Path, data_namespace: DataNamespace
+) -> tuple[str, ...]:
+    """Determine the nested keys under which the contents of a data file are stored."""
+
+    match data_namespace:
+        case DataNamespace.flat:
+            return ()
+
+        case DataNamespace.stem:
+            parts = (relative_path.stem,)
+
+        case DataNamespace.path:
+            parts = relative_path.with_suffix("").parts
+
+    return tuple(to_identifier(part) for part in parts)
+
+
+def dict_nested_setdefault(data: MutableData, keys: abc.Iterable[str]) -> MutableData:
+    """Traverse nested dicts along `keys`, inserting empty dicts for missing entries.
+
+    >>> data = {}
+    >>> dict_nested_setdefault(data, ["key1", "key2"])["key3"] = "value"
+    >>> data
+    {'key1': {'key2': {'key3': 'value'}}}
+    """
+
+    for key in keys:
+        data = data.setdefault(key, {})
+
+    return data
 
 
 def dict_nested_set(data: MutableData, dotted_key: str, value: Any) -> None:
-    """Given `foo`, 'key1.key2.key3', 'something', set foo['key1']['key2']['key3'] = 'something'
+    """Set a value in nested dicts, inserting empty dicts for missing entries.
 
-    Source: https://stackoverflow.com/a/57561744
+    >>> data = {}
+    >>> dict_nested_set(data, "key1.key2.key3", "value")
+    >>> data
+    {'key1': {'key2': {'key3': 'value'}}}
     """
 
-    # Start off pointing at the original dictionary that was passed in.
-    here = data
+    *parent_keys, final_key = dotted_key.split(".")
 
-    # Turn the string of key names into a list of strings.
-    keys = dotted_key.split(".")
-
-    # For every key *before* the last one, we concentrate on navigating through the dictionary.
-    for key in keys[:-1]:
-        # Try to find here[key]. If it doesn't exist, create it with an empty dictionary. Then,
-        # update our `here` pointer to refer to the thing we just found (or created).
-        here = here.setdefault(key, {})
-
-    # Finally, set the final key to the given value
-    here[keys[-1]] = value
+    dict_nested_setdefault(data, parent_keys)[final_key] = value
 
 
 def load_data(config: Config) -> dict[str, Any]:
     data: dict[str, Any] = {}
 
-    for path in collect_files(config.data):
+    for path, relative_path in collect_files(config.data):
         if loader := DATA_LOADERS.get(path.suffix):
-            log(f"Load data '{path}'", config)
+            keys = namespace_keys(relative_path, config.data_namespace)
+            dotted_keys = ".".join(keys)
+            suffix = f" as '{dotted_keys}'" if keys else ""
 
-            data |= loader(path)
+            log(f"Load data '{path}'{suffix}", config)
+
+            dict_nested_setdefault(data, keys).update(loader(path))
+
         else:
             log(f"Skip unsupported data '{path}'", config)
 

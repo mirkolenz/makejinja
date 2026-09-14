@@ -1,5 +1,5 @@
 from collections import abc
-from enum import Enum
+from enum import Enum, auto
 from pathlib import Path
 from typing import Literal
 
@@ -25,7 +25,15 @@ from jinja2.defaults import (
 )
 from rich_click.utils import OptionGroupDict
 
-__all__ = ["Config", "Delimiter", "Internal", "Prefix", "Undefined", "Whitespace"]
+__all__ = [
+    "Config",
+    "DataNamespace",
+    "Delimiter",
+    "Internal",
+    "Prefix",
+    "Undefined",
+    "Whitespace",
+]
 
 
 class Undefined(Enum):
@@ -35,6 +43,14 @@ class Undefined(Enum):
     chainable = ChainableUndefined
     debug = DebugUndefined
     strict = StrictUndefined
+
+
+class DataNamespace(Enum):
+    """Where the contents of a data file are placed in the global namespace."""
+
+    flat = auto()
+    stem = auto()
+    path = auto()
 
 
 def _exclude_patterns_validator(instance, attribute, value) -> None:
@@ -264,6 +280,19 @@ class Config:
                 If multiple files are supplied, beware that previous declarations will be overwritten by newer ones.
             """,
     )
+    data_namespace: DataNamespace = ts.option(
+        default=DataNamespace.flat,
+        help="""
+                Determine where the contents of each `data` file are placed in the Jinja globals.
+                With `flat`, all files are merged into a single namespace, so identical keys are overwritten by files loaded later.
+                With `stem`, each file is nested under its name without the suffix, making `data/hosting.toml` available as `{{ hosting.provider }}`.
+                With `path`, each file is nested under its path relative to the `data` entry it was found in,
+                making `data/catalogs/hosting.toml` available as `{{ catalogs.hosting.provider }}` when passing `-d data`.
+                A `data` entry pointing to a file instead of a directory always uses its stem.
+                **Note:** Characters that are invalid in a Python identifier are replaced with `_` to keep the keys reachable in templates,
+                so `my-hosting.toml` is available as `{{ my_hosting.provider }}`.
+            """,
+    )
     data_vars: abc.Mapping[str, str] = ts.option(
         default=frozendict(),
         click={
@@ -405,6 +434,7 @@ OPTION_GROUPS: dict[str, list[OptionGroupDict]] = {
             "name": "Jinja Environment",
             "options": [
                 "--data",
+                "--data-namespace",
                 "--data-var",
                 "--file-data",
                 "--plugin",

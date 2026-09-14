@@ -1,0 +1,4 @@
+name = "beta"
+
+[hosting]
+provider = "beta-host"
