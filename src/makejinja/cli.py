@@ -22,7 +22,7 @@ _ts_loaders = ts.default_loaders(
 
 
 @click.command("makejinja", context_settings={"help_option_names": ("--help", "-h")})
-@click.version_option(None, "--version", "-v")
+@click.version_option(None, "--version", "-v", package_name="makejinja")
 # Without reloading, `makejinja.toml` is resolved against the working directory at import
 # time. Collection options stay bound to it either way, as typed-settings injects their
 # import-time defaults as if they were passed on the command line.
