@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.9.0](https://github.com/mirkolenz/makejinja/compare/v2.8.3...v2.9.0) (2026-09-14)
+
+### Features
+
+* **data:** allow namespacing loaded data by source file ([bb43c8a](https://github.com/mirkolenz/makejinja/commit/bb43c8a7fd1a9bcf7d6b0203ff106ed330f43a88))
+
+### Bug Fixes
+
+* **cli:** resolve makejinja.toml at invocation time ([f4d30cc](https://github.com/mirkolenz/makejinja/commit/f4d30cc5b3b261a1d6d1d9c49e5da7941997a5be))
+
 ## [2.8.3](https://github.com/mirkolenz/makejinja/compare/v2.8.2...v2.8.3) (2026-09-07)
 
 ### Bug Fixes
