@@ -1,6 +1,6 @@
 [project]
 name = "makejinja"
-version = "2.9.0"
+version = "2.9.1"
 description = "Generate entire directory structures using Jinja templates with support for external data and custom plugins"
 readme = "README.md"
 requires-python = ">=3.13,<4"

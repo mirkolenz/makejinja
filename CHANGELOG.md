@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.9.1](https://github.com/mirkolenz/makejinja/compare/v2.9.0...v2.9.1) (2026-09-14)
+
+### Bug Fixes
+
+* **cli:** correctly detect version ([219791a](https://github.com/mirkolenz/makejinja/commit/219791a6a9a432715b069a318b06dd4d18637c0f))
+
 ## [2.9.0](https://github.com/mirkolenz/makejinja/compare/v2.8.3...v2.9.0) (2026-09-14)
 
 ### Features
