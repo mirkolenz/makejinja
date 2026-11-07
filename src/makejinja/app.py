@@ -14,7 +14,6 @@ import rich_click as click
 import yaml
 from jinja2 import BaseLoader, ChoiceLoader, DictLoader, Environment, FileSystemLoader
 from jinja2.utils import import_string
-from typed_settings.dict_utils import set_path
 
 from makejinja.config import Config, DataNamespace
 from makejinja.plugin import Data, Functions, MutableData, PathFilter, Plugin
@@ -371,7 +370,8 @@ def load_data(config: Config) -> dict[str, Any]:
             log(f"Skip unsupported data '{path}'", config)
 
     for key, value in config.data_vars.items():
-        set_path(data, key, value)
+        *parents, leaf = key.split(".")
+        dict_nested_setdefault(data, parents)[leaf] = value
 
     return data
 
