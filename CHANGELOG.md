@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.9.2](https://github.com/mirkolenz/makejinja/compare/v2.9.1...v2.9.2) (2026-11-08)
+
+### Bug Fixes
+
+* avoid using typed-settings internals and support v27 ([0263c4b](https://github.com/mirkolenz/makejinja/commit/0263c4be6647ab3da3f4add9037de3a90397237b))
+
 ## [2.9.1](https://github.com/mirkolenz/makejinja/compare/v2.9.0...v2.9.1) (2026-09-14)
 
 ### Bug Fixes
